@@ -16,15 +16,26 @@ import './index.css';
 
 // initialize player line api
 const player = new Player({
-  baseUrl: 'http://the.url.com:port',
+  baseUrl: process.env.EXPO_PUBLIC_XC_URL,
   // username and password of user line
   auth: {
-    username: 'admin',
-    password: 'password'
+    username: process.env.EXPO_PUBLIC_XC_USERNAME,
+    password: process.env.EXPO_PUBLIC_XC_PASSWORD
   }
 })
 
-player.baseURL = 'http://the.url.com:port'
+player.baseURL = process.env.EXPO_PUBLIC_XC_URL
+
+// const player = new Player({
+//   baseUrl: '***REMOVED***',
+//   // username and password of user line
+//   auth: {
+//     username: '***REMOVED***',
+//     password: '***REMOVED***'
+//   }
+// })
+
+// player.baseURL = '***REMOVED***'
 
 // retrieve account line information
 // player.getAccountInfo()
