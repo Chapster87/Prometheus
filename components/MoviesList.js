@@ -42,7 +42,7 @@ function MoviesList({player, catData}) {
                   <Card
                     className={`media-tile movie`}
                     onClick={(event) => handleCategoryClick(event, vod)}>
-                    <Card.Img variant="top" src={vod.stream_icon} />
+                    <Card.Img variant="top" src={vod.stream_icon} loading="lazy"/>
                     <Card.Body>
                       <Card.Title className={`text-center`}>{vod.name}</Card.Title>
                     </Card.Body>
