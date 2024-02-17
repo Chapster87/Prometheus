@@ -37,17 +37,6 @@ const player = new Player({
 
 player.baseURL = process.env.EXPO_PUBLIC_XC_URL
 
-// const player = new Player({
-//   baseUrl: '***REMOVED***',
-//   // username and password of user line
-//   auth: {
-//     username: '***REMOVED***',
-//     password: '***REMOVED***'
-//   }
-// })
-
-// player.baseURL = '***REMOVED***'
-
 // retrieve account line information
 // player.getAccountInfo()
 //   .then(console.log)
