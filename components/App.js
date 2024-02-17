@@ -1,18 +1,29 @@
-import { Component, useState } from 'react';
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import Player from './components/Player';
-import Movies from './components/Movies';
-import Series from './components/Series';
-import LiveTV from './components/LiveTV';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Player from './Player';
+import MovieCategories from './MovieCategories';
+import Series from './Series';
+import LiveTV from './LiveTV';
 
-import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../assets/scss/index.scss';
 
 // Resources
 // https://github.com/brunocarvalhodearaujo/xtream-codes
 // https://github.com/4gray/iptvnator
 // https://github.com/iptv-org/awesome-iptv
 // https://github.com/gtaman92/XtreamCodesExtendAPI/tree/master
+
+// For Live Streams the main format is
+// http(s)://domain:port/live/username/password/streamID.ext ( In allowed_output_formats element you have the available ext )
+// For VOD Streams the format is:
+// http(s)://domain:port/movie/username/password/streamID.ext ( In target_container element you have the available ext )
+// For Series Streams the format is
+// http(s)://domain:port/series/username/password/streamID.ext ( In target_container element you have the available ext )
 
 // initialize player line api
 const player = new Player({
@@ -103,39 +114,30 @@ function App() {
   }
 
   return (
-    <View style={styles.container}>
+    <>
       <StatusBar style="auto" />
-      {(activePage === 'Home') ? 
-        <>
-          <button onClick={clickMovies}>Movies</button>
-          <button onClick={clickSeries}>Series</button>
-          <button onClick={clickTV}>Live TV</button>
-        </>
-        :
-        <button onClick={clickHome}>Home</button>
-      }
-      {(activePage === 'Movies') && <Movies player={player}></Movies>}
-      {(activePage === 'Series') && <Series player={player}></Series>}
-      {(activePage === 'TV') && <LiveTV player={player}></LiveTV>}
-  </View>
+      <div>
+        <Container>
+          <Row>
+            <Col>
+              {(activePage === 'Home') ?
+                <>
+                  <Button variant="primary" onClick={clickMovies}>Movies</Button>
+                  <Button variant="primary" onClick={clickSeries}>Series</Button>
+                  <Button variant="primary" onClick={clickTV}>Live TV</Button>
+                </>
+              :
+                <Button variant="primary" onClick={clickHome}>Home</Button>
+              }
+            </Col>
+          </Row>
+        </Container>
+      </div>
+      {(activePage === 'Movies') && <MovieCategories player={player} />}
+      {(activePage === 'Series') && <Series player={player} />}
+      {(activePage === 'TV') && <LiveTV player={player} />}
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#25292e',
-    alignItems: 'center',
-  },
-  imageContainer: {
-    flex: 1,
-    paddingTop: 58,
-  },
-  image: {
-    width: 320,
-    height: 440,
-    borderRadius: 18,
-  },
-});
 
 export default App;
