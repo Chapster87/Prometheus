@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 
-import MoviesVOD from './MoviesVOD';
+import MoviesVOD from './MoviesDetail';
 
 function MoviesList({player, catData}) {
   const [movieCategoryData, setMovieCategoryData] = useState([]);

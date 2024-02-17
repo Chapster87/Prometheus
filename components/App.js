@@ -5,9 +5,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Player from './Player';
-import MovieCategories from './MovieCategories';
-import Series from './Series';
-import LiveTV from './LiveTV';
+import MovieCategories from './movies/MovieCategories';
+import Series from './series/Series';
+import LiveTV from './tv/LiveTV';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/scss/index.scss';
