@@ -5,9 +5,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Player from './Player';
-import MovieCategories from './movies/MovieCategories';
-import Series from './series/Series';
 import LiveTV from './tv/LiveTV';
+import VODCats from './vod/VODCats';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/scss/index.scss';
@@ -89,17 +88,9 @@ function App() {
   function clickHome() {
     setActivePage('Home');
   }
-  
-  function clickMovies() {
-    setActivePage('Movies');
-  }
 
-  function clickSeries() {
-    setActivePage('Series');
-  }
-
-  function clickTV() {
-    setActivePage('TV');
+  function selectMedia(VodType) {
+    setActivePage(VodType);
   }
 
   return (
@@ -111,9 +102,9 @@ function App() {
             <Col>
               {(activePage === 'Home') ?
                 <>
-                  <Button variant="primary" onClick={clickMovies}>Movies</Button>
-                  <Button variant="primary" onClick={clickSeries}>Series</Button>
-                  <Button variant="primary" onClick={clickTV}>Live TV</Button>
+                  <Button variant="primary" onClick={() => selectMedia('TV')}>Live TV</Button>
+                  <Button variant="primary" onClick={() => selectMedia('Movies')}>Movies</Button>
+                  <Button variant="primary" onClick={() => selectMedia('Series')}>Series</Button>
                 </>
               :
                 <Button variant="primary" onClick={clickHome}>Home</Button>
@@ -122,9 +113,8 @@ function App() {
           </Row>
         </Container>
       </div>
-      {(activePage === 'Movies') && <MovieCategories player={player} />}
-      {(activePage === 'Series') && <Series player={player} />}
       {(activePage === 'TV') && <LiveTV player={player} />}
+      {(activePage === 'Movies' || activePage === 'Series') && <VODCats page={activePage} player={player} />}
     </>
   );
 }

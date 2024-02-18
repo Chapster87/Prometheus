@@ -92,6 +92,13 @@ export default class Player {
     }
 
     /**
+     * @param {string} [category]
+     */
+    getSeriesStreams (category) {
+        return this.execute('get_series', { category_id: category })
+    }
+
+    /**
      * GET VOD Info
      *
      * @param {number} id This will get info such as video codecs, duration, description, directors for 1 VOD
@@ -102,6 +109,26 @@ export default class Player {
         }
 
         return this.execute('get_vod_info', { vod_id: id })
+        .then(T => {
+            if (T.hasOwnProperty('info') && T.info.length === 0) {
+            return Promise.reject(new Error(`vod with id: ${id} not found`))
+            }
+
+            return T
+        })
+    }
+
+    /**
+     * GET Series Info
+     *
+     * @param {number} id This will get info such as video codecs, duration, description, directors for 1 Series
+     */
+    getSeriesInfo (id) {
+        if (!id) {
+        return Promise.reject(new Error('Vod Id not defined'))
+        }
+
+        return this.execute('get_series_info', { series_id: id })
         .then(T => {
             if (T.hasOwnProperty('info') && T.info.length === 0) {
             return Promise.reject(new Error(`vod with id: ${id} not found`))

@@ -2,4 +2,6 @@
 - Improve Navigation
 - TV Channels
 - TV Guide
-- Series
+- Sign In
+- All Movies/Series
+- Intregrate with TMDB API
