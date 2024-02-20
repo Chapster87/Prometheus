@@ -31,6 +31,7 @@ ul, ol {
 
 img, video {
     max-width: 100%;
+    max-height: 100%;
 }
 
 .media-tile {
@@ -39,4 +40,54 @@ img, video {
     cursor: pointer;
     border: 0;
     margin-bottom: 1rem;
+}
+
+.vod-list {
+    .card-img-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--bs-gray-300);
+        height: 300px;
+        color: var(--bs-gray-500);
+    }
+}
+
+.tv-guide {
+    .channel {
+        display: flex;
+        height: 120px;
+        margin-bottom: 8px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .channel-inner{
+        display: flex;
+        align-items: stretch;
+        height: 100%;
+    }
+
+    .channel-namecard {
+        display: flex;
+        align-items: center;
+        background-color: var(--bs-gray-300);
+        width: calc(19% - 8px);
+        margin-right: 8px;
+        border-radius: 6px;
+        padding: 20px;
+    }
+
+    .channel-icon {
+        max-width: 90px;
+    }
+
+    .channel-title {
+        margin-left: 16px;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 1.2;
+    }
 }

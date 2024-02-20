@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Player from './Player';
-import LiveTV from './tv/LiveTV';
+import TVGroups from './tv/TVGroups';
 import VODCats from './vod/VODCats';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -102,7 +102,7 @@ function App() {
             <Col>
               {(activePage === 'Home') ?
                 <>
-                  <Button variant="primary" onClick={() => selectMedia('TV')}>Live TV</Button>
+                  <Button variant="primary" onClick={() => selectMedia('Live TV')}>Live TV</Button>
                   <Button variant="primary" onClick={() => selectMedia('Movies')}>Movies</Button>
                   <Button variant="primary" onClick={() => selectMedia('Series')}>Series</Button>
                 </>
@@ -113,7 +113,7 @@ function App() {
           </Row>
         </Container>
       </div>
-      {(activePage === 'TV') && <LiveTV player={player} />}
+      {(activePage === 'Live TV') && <TVGroups page={activePage} player={player} />}
       {(activePage === 'Movies' || activePage === 'Series') && <VODCats page={activePage} player={player} />}
     </>
   );
