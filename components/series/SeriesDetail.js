@@ -19,9 +19,9 @@ function VOD({player, vodWrapper}) {
   const [showVideoModal, setShowVideoModal] = useState(MODAL_DEFAULT);
 
   // GET VOD Info
-  player.getSeriesInfo(seriesCatData.series_id) // This will get info such as video codecs, duration, description, directors for 1 VOD
-    .then(console.log)
-    .catch(console.log)
+  // player.getSeriesInfo(seriesCatData.series_id) // This will get info such as video codecs, duration, description, directors for 1 VOD
+  //   .then(console.log)
+  //   .catch(console.log)
 
   useEffect(() => {
     player.getSeriesInfo(seriesCatData.series_id)

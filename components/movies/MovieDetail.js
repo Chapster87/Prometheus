@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View} from 'react-native';
+import VideoJS from '../VideoJS'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -48,6 +49,32 @@ function VOD({player, vodWrapper}) {
   //   }
   // }
 
+  const playerRef = useRef(null);
+
+  const videoJsOptions = {
+    autoplay: true,
+    controls: true,
+    responsive: true,
+    fluid: true,
+    sources: [{
+      src: '/path/to/video.mp4',
+      type: 'video/mp4'
+    }]
+  };
+
+  const handlePlayerReady = (player) => {
+    playerRef.current = player;
+
+    // You can handle player events here, for example:
+    player.on('waiting', () => {
+      videojs.log('player is waiting');
+    });
+
+    player.on('dispose', () => {
+      videojs.log('player will dispose');
+    });
+  };
+
   return (
     <>
       {/* May be better to define a dummy data object and then replace than checking to see if it's there and rendering on the second page load */}
@@ -62,7 +89,18 @@ function VOD({player, vodWrapper}) {
           <Container style={{ marginTop: '100px', background: 'rgba(0, 0, 0, 0.7)', padding:'30px' }}>
             <Row>
               <Col>
-                <p><video src={movieData.movie_data.stream_url} type='video/x-matroska; codecs="theora, vorbis"' controls ></video></p>
+                {/* <p><video src={movieData.movie_data.stream_url} type='video/x-matroska; codecs="theora, vorbis"' controls ></video></p> */}
+                <VideoJS options={{
+                  autoplay: false,
+                  controls: true,
+                  responsive: true,
+                  fluid: true,
+                  sources: [{
+                    src: movieData.movie_data.stream_url,
+                    type: 'video/mp4'
+                  }]}}
+                  onReady={handlePlayerReady} 
+                />
               </Col>
             </Row>
             <Row >
