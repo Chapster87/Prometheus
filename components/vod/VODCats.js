@@ -4,11 +4,12 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import Placeholder from 'react-bootstrap/Placeholder';
 
 import VODList from './VODList';
 
 function VODCats({page, player}) {
-  const [mediaCategory, setMediaCategory] = useState([]);
+  const [mediaCategory, setMediaCategory] = useState();
   const [listData, setListData] = useState();
 
   if(page === 'Series') {
@@ -45,6 +46,11 @@ function VODCats({page, player}) {
           <Row>
             <Col>
               <h1>{page}</h1>
+            </Col>
+          </Row>
+          <Row>
+          {(mediaCategory) ?
+            <Col>
               <View style={styles.tileGrid}>
                 {mediaCategory.map(cat =>
                   <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }} key={cat.category_id} onClick={() => handleCategoryClick(cat)}>
@@ -55,6 +61,23 @@ function VODCats({page, player}) {
                 )}
               </View>
             </Col>
+          :
+            [...Array(60)].map((elementInArray, index) => ( 
+              <Col>
+                <View style={styles.tileGrid}>
+                  <Card style={{ width: '18rem', margin: '1rem' }}>
+                    <Card.Body>
+                      <Card.Title>
+                        <Placeholder animation="glow">
+                          <Placeholder xs={10} />
+                        </Placeholder>
+                      </Card.Title>
+                    </Card.Body>
+                  </Card>
+                </View>
+              </Col>
+            ))
+          }
           </Row>
         </Container>
       }
