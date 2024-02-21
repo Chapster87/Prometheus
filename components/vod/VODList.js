@@ -13,8 +13,7 @@ import SeriesDetail from '../series/SeriesDetail';
 function VODList({page, player, catData}) {
   const [VODCatData, setVODCatData] = useState();
   const [VODData, setVODData] = useState();
-
-  console.log(catData);
+  const [movieData, setMovieData] = useState();
 
   if(page === 'Series') {
     // GET Series Streams
@@ -24,19 +23,31 @@ function VODList({page, player, catData}) {
 
     useEffect(() => {
       player.getSeriesStreams(catData.category_id)
-      .then((data) => setVODCatData(data));
+        .then((data) => setVODCatData(data));
     }, []);
+
+    // May need to also fetch move data for each to link tmdb id and create page based on that
+
 
   } else if (page === 'Movies') {
 
     // GET Movie Streams
-    // player.getVODStreams(catData.category_id)
-    // .then(console.log)
-    // .catch(console.log)
+    player.getVODStreams(catData.category_id)
+    .then(console.log)
+    .catch(console.log)
 
     useEffect(() => {
       player.getVODStreams(catData.category_id)
-      .then((data) => setVODCatData(data));
+        .then(data => {
+          setVODCatData(data);
+        });
+
+      // player.getVODInfo(VODCatData.stream_id)
+      //   .then(data => {
+      //     setMovieData(data);
+      //     console.log("Move Data from List", data)
+      //   });
+      
     }, []);
   }
 
@@ -57,11 +68,11 @@ function VODList({page, player, catData}) {
             {(VODCatData) ?
               VODCatData.map(vod => {
                 const isSeries = (vod.stream_type === 'series');
-                
+
                 return (
                   <Col xs='6' md='4' lg='3' xl='2' style={{ display: 'flex', alignItems: "stretch"}} key={isSeries ? vod.series_id : vod.stream_id}>
                     <Card
-                      className={`media-tile movie`}
+                      className={`vod-card`}
                       onClick={() => handleCategoryClick(vod)}>
                       <Card.Img variant="top" src={isSeries ? vod.cover : vod.stream_icon} loading="lazy"/>
                       <Card.Body>
@@ -74,7 +85,7 @@ function VODList({page, player, catData}) {
             :
               [...Array(18)].map((elementInArray, index) => ( 
                 <Col xs='6' md='4' lg='3' xl='2' style={{ display: 'flex', alignItems: "stretch"}}>
-                  <Card className={`media-tile movie`}>
+                  <Card className={`vod-card movie`}>
                     <div className={`card-img-top card-img-placeholder`}>
                       <ImgPlaceholder width={120} height={40} />
                     </div>

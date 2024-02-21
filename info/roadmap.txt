@@ -1,0 +1,7 @@
+- Search
+- Improve Navigation
+- TV Channels
+- TV Guide
+- Sign In
+- All Movies/Series
+- Intregrate with TMDB API

@@ -10,9 +10,9 @@ function VOD({player, vodWrapper}) {
   const [movieData, setMovieData] = useState();
 
   // GET VOD Info
-  // player.getVODInfo(movieCategoryData.stream_id) // This will get info such as video codecs, duration, description, directors for 1 VOD
-  //   .then(console.log)
-  //   .catch(console.log)
+  player.getVODInfo(movieCategoryData.stream_id) // This will get info such as video codecs, duration, description, directors for 1 VOD
+    .then(console.log)
+    .catch(console.log)
 
   useEffect(() => {
     player.getVODInfo(movieCategoryData.stream_id)
@@ -24,7 +24,7 @@ function VOD({player, vodWrapper}) {
       data.movie_data.stream_url = streamUrl;
 
       setMovieData(data);
-      // console.log("Movie Data", movieData);
+      // console.log("Movie Data", data);
     });
   }, []);
 
