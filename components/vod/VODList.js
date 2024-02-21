@@ -7,12 +7,13 @@ import Card from 'react-bootstrap/Card';
 import Placeholder from 'react-bootstrap/Placeholder';
 import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
 
+import VODCard from '../vod/VODCard';
 import MovieDetail from '../movies/MovieDetail';
 import SeriesDetail from '../series/SeriesDetail';
 
 function VODList({page, player, catData}) {
   const [VODCatData, setVODCatData] = useState();
-  const [VODData, setVODData] = useState();
+  const [VodID, setVodID] = useState();
   const [movieData, setMovieData] = useState();
 
   if(page === 'Series') {
@@ -27,7 +28,6 @@ function VODList({page, player, catData}) {
     }, []);
 
     // May need to also fetch move data for each to link tmdb id and create page based on that
-
 
   } else if (page === 'Movies') {
 
@@ -51,13 +51,13 @@ function VODList({page, player, catData}) {
     }, []);
   }
 
-  function handleCategoryClick(vodData){
-    setVODData(vodData);
+  function handleCardClick(mediaID){
+    setVodID(mediaID);
   }
 
   return (
     <>
-      {(!VODData) &&
+      {(!VodID) &&
         <Container fluid className='vod-list'>
           <Row>
             <Col>
@@ -68,18 +68,11 @@ function VODList({page, player, catData}) {
             {(VODCatData) ?
               VODCatData.map(vod => {
                 const isSeries = (vod.stream_type === 'series');
+                const mediaID = isSeries ? vod.series_id : vod.stream_id;
+                const mediaImg = isSeries ? vod.cover : vod.stream_icon
 
                 return (
-                  <Col xs='6' md='4' lg='3' xl='2' style={{ display: 'flex', alignItems: "stretch"}} key={isSeries ? vod.series_id : vod.stream_id}>
-                    <Card
-                      className={`vod-card`}
-                      onClick={() => handleCategoryClick(vod)}>
-                      <Card.Img variant="top" src={isSeries ? vod.cover : vod.stream_icon} loading="lazy"/>
-                      <Card.Body>
-                        <Card.Title className={`text-center`}>{vod.name}</Card.Title>
-                      </Card.Body>
-                    </Card>
-                  </Col>
+                  <VODCard key={mediaID} mediaID={mediaID} image={mediaImg} name={vod.name} onCardClick={handleCardClick} />
                 );
               })
             :
@@ -104,8 +97,8 @@ function VODList({page, player, catData}) {
         </Container>
       }
 
-      {(VODData && page === 'Movies') && <MovieDetail player={player} vodWrapper={VODData} />}
-      {(VODData && page === 'Series') && <SeriesDetail player={player} vodWrapper={VODData} />}
+      {(VodID && page === 'Movies') && <MovieDetail player={player} streamID={VodID} />}
+      {(VodID && page === 'Series') && <SeriesDetail player={player} seriesID={VodID} />}
     </>
   )
 }

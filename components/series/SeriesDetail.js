@@ -13,18 +13,18 @@ const MODAL_DEFAULT = {
   episodeURL: null
 }
 
-function VOD({player, vodWrapper}) {
-  const [seriesCatData, setSeriesCatData] = useState(vodWrapper);
+function VOD({player, seriesID}) {
+  // const [seriesCatData, setSeriesCatData] = useState(seriesID); // May not be needed
   const [seriesData, setSeriesData] = useState();
   const [showVideoModal, setShowVideoModal] = useState(MODAL_DEFAULT);
 
   // GET VOD Info
-  // player.getSeriesInfo(seriesCatData.series_id) // This will get info such as video codecs, duration, description, directors for 1 VOD
+  // player.getSeriesInfo(seriesID) // This will get info such as video codecs, duration, description, directors for 1 VOD
   //   .then(console.log)
   //   .catch(console.log)
 
   useEffect(() => {
-    player.getSeriesInfo(seriesCatData.series_id)
+    player.getSeriesInfo(seriesID)
       .then(data => {
         // Alot of series have a season 0 for "specials", but episode data doesn't seem to have an season 0
         if (!data.episodes[0]) {

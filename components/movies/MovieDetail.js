@@ -5,17 +5,17 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-function VOD({player, vodWrapper}) {
-  const [movieCategoryData, setMovieCategoryData] = useState(vodWrapper);
+function VOD({player, streamID}) {
+  // const [movieCategoryData, setMovieCategoryData] = useState(streamID); // May not be needed
   const [movieData, setMovieData] = useState();
 
   // GET VOD Info
-  player.getVODInfo(movieCategoryData.stream_id) // This will get info such as video codecs, duration, description, directors for 1 VOD
+  player.getVODInfo(streamID) // This will get info such as video codecs, duration, description, directors for 1 VOD
     .then(console.log)
     .catch(console.log)
 
   useEffect(() => {
-    player.getVODInfo(movieCategoryData.stream_id)
+    player.getVODInfo(streamID)
     .then(data => {
 
       // http(s)://domain:port/movie/username/password/streamID.ext

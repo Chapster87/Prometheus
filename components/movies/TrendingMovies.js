@@ -47,7 +47,7 @@ function TrendingMovies() {
       {(trendingData) ?
         <>
           {trendingData.results.map(trending =>
-            <VODCard key={trending.id} id={trending.id} image={`https://image.tmdb.org/t/p/w400${trending.poster_path}`} name={trending.title} />
+            <VODCard key={trending.id} image={`https://image.tmdb.org/t/p/w400${trending.poster_path}`} name={trending.title} />
           )}
         </>
       :

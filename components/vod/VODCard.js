@@ -1,13 +1,17 @@
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 
-function VODCard({id, image, name}) {
+function VODCard({ mediaID, image, name, onCardClick }) {
+
+  function handleCardClick(mediaID){
+    onCardClick(mediaID);
+  }
 
   return (
-    <Col xs='6' md='4' lg='3' xl='2' style={{ display: 'flex', alignItems: "stretch"}} key={id}>
+    <Col xs='6' md='4' lg='3' xl='2' style={{ display: 'flex', alignItems: "stretch"}}>
       <Card
         className={`vod-card`}
-        // onClick={() => handleCategoryClick(vod)}
+        onClick={() => handleCardClick(mediaID)}
       >
         <Card.Img variant="top" src={image} loading="lazy"/>
         <Card.Body>
