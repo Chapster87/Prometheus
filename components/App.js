@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import Player from './Player';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import Player from './Player';
+
 import TVGroups from './tv/TVGroups';
 import VODCats from './vod/VODCats';
 import TrendingMovies from './movies/TrendingMovies';

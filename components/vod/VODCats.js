@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, View} from 'react-native';
+import { Link } from 'expo-router';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -20,18 +21,24 @@ function VODCats({page, player}) {
 
     useEffect(() => {
       player.getSeriesCategories()
-      .then((data) => setMediaCategory(data));
+      .then(categories => {
+        setMediaCategory(categories);
+      });
     }, []);
 
   } else if (page === 'Movies') {
     // GET VOD Streams 
-    // player.getVODStreamCategories()
-    //   .then(console.log)
-    //   .catch(console.log);
+    player.getVODStreamCategories()
+      .then(console.log)
+      .catch(console.log);
 
     useEffect(() => {
       player.getVODStreamCategories()
-      .then((data) => setMediaCategory(data));
+        .then(categories => {
+          setMediaCategory(categories);
+        });
+
+      
     }, []);
   }
 
@@ -52,6 +59,13 @@ function VODCats({page, player}) {
           {(mediaCategory) ?
             <Col>
               <View style={styles.tileGrid}>
+                <Link href="/movies/all" asChild>
+                  <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }}>
+                    <Card.Body>
+                      <Card.Title>All Movies</Card.Title>
+                    </Card.Body>
+                  </Card>
+                </Link>
                 {mediaCategory.map(cat =>
                   <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }} key={cat.category_id} onClick={() => handleCategoryClick(cat)}>
                     <Card.Body>
