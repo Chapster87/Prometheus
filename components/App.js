@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import { Link } from 'expo-router';
 import Player from './Player';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -48,6 +49,9 @@ function App() {
                   <Button variant="primary" onClick={() => selectMedia('Live TV')}>Live TV</Button>
                   <Button variant="primary" onClick={() => selectMedia('Movies')}>Movies</Button>
                   <Button variant="primary" onClick={() => selectMedia('Series')}>Series</Button>
+                  <Link href="/account" asChild>
+                    <Button variant="primary">Account</Button>
+                  </Link>
                 </>
               :
                 <Button variant="primary" onClick={clickHome}>Home</Button>
