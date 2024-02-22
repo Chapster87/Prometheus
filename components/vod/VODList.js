@@ -14,7 +14,6 @@ import SeriesDetail from '../series/SeriesDetail';
 function VODList({page, player, catData}) {
   const [VODCatData, setVODCatData] = useState();
   const [VodID, setVodID] = useState();
-  const [movieData, setMovieData] = useState();
 
   if(page === 'Series') {
     // GET Series Streams
@@ -31,23 +30,14 @@ function VODList({page, player, catData}) {
 
   } else if (page === 'Movies') {
 
-    // GET Movie Streams
-    player.getVODStreams(catData.category_id)
-    .then(console.log)
-    .catch(console.log)
-
     useEffect(() => {
+      // GET Movie Streams
+      // player.getVODStreams(catData.category_id)
+      //   .then(data => console.log("VOD", data))
+      //   .catch(console.log);
+    
       player.getVODStreams(catData.category_id)
-        .then(data => {
-          setVODCatData(data);
-        });
-
-      // player.getVODInfo(VODCatData.stream_id)
-      //   .then(data => {
-      //     setMovieData(data);
-      //     console.log("Move Data from List", data)
-      //   });
-      
+        .then(data => setVODCatData(data));
     }, []);
   }
 
@@ -77,7 +67,7 @@ function VODList({page, player, catData}) {
               })
             :
               [...Array(18)].map((elementInArray, index) => ( 
-                <Col xs='6' md='4' lg='3' xl='2' style={{ display: 'flex', alignItems: "stretch"}}>
+                <Col xs='6' md='4' lg='3' xl='2' style={{ display: 'flex', alignItems: "stretch"}} key={index} >
                   <Card className={`vod-card movie`}>
                     <div className={`card-img-top card-img-placeholder`}>
                       <ImgPlaceholder width={120} height={40} />

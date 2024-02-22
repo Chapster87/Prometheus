@@ -28,9 +28,9 @@ function VODCats({page, player}) {
 
   } else if (page === 'Movies') {
     // GET VOD Streams 
-    player.getVODStreamCategories()
-      .then(console.log)
-      .catch(console.log);
+    // player.getVODStreamCategories()
+    //   .then(console.log)
+    //   .catch(console.log);
 
     useEffect(() => {
       player.getVODStreamCategories()
@@ -77,7 +77,7 @@ function VODCats({page, player}) {
             </Col>
           :
             [...Array(60)].map((elementInArray, index) => ( 
-              <Col>
+              <Col key={index}>
                 <View style={styles.tileGrid}>
                   <Card style={{ width: '18rem', margin: '1rem' }}>
                     <Card.Body>

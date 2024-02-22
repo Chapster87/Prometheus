@@ -45,14 +45,14 @@
 // .catch(console.log)
 
 // // GET short_epg for LIVE Streams (same as stalker portal, prints the next X EPG that will play soon)
-// player.getEPGLivetreams(id, limit)
+// player.getEPGLiveStreams(id, limit)
 // .then(console.log)
 // .catch(console.log)
-// player.getEPGLivetreams('1461898', 0) // Cartoon Newtork
+// player.getEPGLiveStreams('1461898', 0) // Cartoon Newtork
 // .then(console.log)
 // .catch(console.log)
 
 // // GET ALL EPG for LIVE Streams (same as stalker portal, but it will print all epg listings regardless of the day)
-// player.getEPGLivetreams(id)
+// player.getEPGLiveStreams(id)
 // .then(console.log)
 // .catch(console.log)

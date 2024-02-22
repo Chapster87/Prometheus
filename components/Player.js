@@ -1,7 +1,6 @@
 require('fetch-everywhere')
 const qs = require('querystring-es3')
-const pickBy = require('lodash.pickby')
-const Promise = require('bluebird')
+const pickBy = require('lodash.pickby');
 
 export default class Player {
     /**
@@ -37,65 +36,76 @@ export default class Player {
      * @param {{ [ key: string ]: string }} [filter]
      * @returns {Promise<any>}
      */
-    execute (action, filter) {
+    async execute(action, filter) {
         const query = pickBy({ ...this.config.auth, action, ...filter })
 
-        return Promise.resolve()
-        .then(() => fetch(`${this.config.baseUrl}/player_api.php?${qs.stringify(query)}`))
-        .then(T => T.json())
-        .then(data => {
-            if (action && data.hasOwnProperty('user') &&
+        const res = await fetch(`${this.config.baseUrl}/player_api.php?${qs.stringify(query)}`);
+
+        if (!res.ok) {
+            const message = `An error has occured: ${response.status}`;
+            throw new Error(message);
+        }
+
+        const data = await res.json();
+
+        if (action && data.hasOwnProperty('user') &&
             data.user.hasOwnProperty('status') &&
             data.user_info.status === 'Disabled') {
-            return Promise.reject(new Error('account disabled'))
-            }
+            const message = `Account disabled`;
+            throw new Error(message);
+        }
 
-            return data
-        })
+        return data;
     }
 
-    getAccountInfo () {
-        return this.execute()
-        .then(response => {
-            if (response.user_info.auth === 0) {
-            return Promise.reject(new Error('authentication error'))
-            }
+    async getAccountInfo() {
+        const res = await this.execute()
+        
+        if (res.user_info.auth === 0) {
+            const message = `Authentication Error`;
+            throw new Error(message);
+        }
 
-            return response.user_info
-        })
+        return res.user_info;
     }
 
-    getLiveStreamCategory () {
-        return this.execute('get_live_categories')
+    async getLiveStreamCategory() {
+        const res = await this.execute('get_live_categories');
+        return res;
     }
 
-    getVODStreamCategories () {
-        return this.execute('get_vod_categories')
+    async getVODStreamCategories() {
+        const res = await this.execute('get_vod_categories');
+        return res;
     }
 
-    getSeriesCategories () {
-        return this.execute('get_series_categories')
-    }
-
-    /**
-     * @param {string} [category]
-     */
-    getLiveStreams (category) {
-        return this.execute('get_live_streams', { category_id: category })
+    async getSeriesCategories() {
+        const res = await this.execute('get_series_categories');
+        return res;
     }
 
     /**
      * @param {string} [category]
      */
-    getVODStreams (category) {
-        return this.execute('get_vod_streams', { category_id: category })
+    async getLiveStreams(category) {
+        const res = await this.execute('get_live_streams', { category_id: category });
+        return res;
     }
 
     /**
      * @param {string} [category]
      */
-    getSeriesStreams (category) {
-        return this.execute('get_series', { category_id: category })
+    async getVODStreams(category) {
+        const res = await this.execute('get_vod_streams', { category_id: category });
+        return res;
+    }
+
+    /**
+     * @param {string} [category]
+     */
+    async getSeriesStreams(category) {
+        const res = await this.execute('get_series', { category_id: category });
+        return res;
     }
 
     /**
@@ -103,19 +113,20 @@ export default class Player {
      *
      * @param {number} id This will get info such as video codecs, duration, description, directors for 1 VOD
      */
-    getVODInfo (id) {
+    async getVODInfo(id) {
         if (!id) {
-        return Promise.reject(new Error('Vod Id not defined'))
+            const message = `Vod Id not defined`;
+            throw new Error(message);
         }
 
-        return this.execute('get_vod_info', { vod_id: id })
-        .then(T => {
-            if (T.hasOwnProperty('info') && T.info.length === 0) {
-            return Promise.reject(new Error(`vod with id: ${id} not found`))
-            }
+        const res = await this.execute('get_vod_info', { vod_id: id });
 
-            return T
-        })
+        if (res.hasOwnProperty('info') && res.info.length === 0) {
+            const message = `vod with id: ${id} not found`;
+            throw new Error(message);
+        }
+
+        return res;
     }
 
     /**
@@ -123,19 +134,20 @@ export default class Player {
      *
      * @param {number} id This will get info such as video codecs, duration, description, directors for 1 Series
      */
-    getSeriesInfo (id) {
+    async getSeriesInfo(id) {
         if (!id) {
-        return Promise.reject(new Error('Vod Id not defined'))
+            const message = `Vod Id not defined`;
+            throw new Error(message);
         }
 
-        return this.execute('get_series_info', { series_id: id })
-        .then(T => {
-            if (T.hasOwnProperty('info') && T.info.length === 0) {
-            return Promise.reject(new Error(`vod with id: ${id} not found`))
-            }
+        const res = await this.execute('get_series_info', { series_id: id });
 
-            return T
-        })
+        if (res.hasOwnProperty('info') && res.info.length === 0) {
+            const message = `vod with id: ${id} not found`;
+            throw new Error(message);
+        }
+
+        return res;
     }
 
     /**
@@ -144,8 +156,9 @@ export default class Player {
      * @param {number} id
      * @param {number} limit You can specify a limit too, without limit the default is 4 epg listings
      */
-    getEPGLivetreams (id, limit) {
-        return this.execute('get_short_epg', { stream_id: id, limit })
+    async getEPGLiveStreams(id, limit) {
+        const res = await this.execute('get_short_epg', { stream_id: id, limit });
+        return res;
     }
 
     /**
@@ -153,7 +166,25 @@ export default class Player {
      *
      * @param {number} id
      */
-    getAllEPGLiveStreams (id) {
-        return this.execute('get_simple_data_table', { stream_id: id })
+    async getAllEPGLiveStreams(id) {
+        const res = await this.execute('get_simple_data_table', { stream_id: id })
+        return res;
+    }
+
+    /**
+     * * GET Live stream & EPG data combined
+     *
+     * @param {string} [category]
+     */
+    async getLiveGuide(category) {
+        const streamResponse = await this.execute('get_live_streams', { category_id: category })
+        const limit = 0;
+
+        await Promise.all(streamResponse.map(async (stream) =>{
+            const epg = await this.execute('get_short_epg', { stream_id: stream.stream_id, limit })
+            stream.epg_listings = epg.epg_listings;
+        }));
+
+        return streamResponse;
     }
 } 

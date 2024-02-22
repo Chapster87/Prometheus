@@ -8,7 +8,7 @@ function VODCard({ mediaID, image, name, onCardClick }) {
   }
 
   return (
-    <Col xs='6' md='4' lg='3' xl='2' style={{ display: 'flex', alignItems: "stretch"}}>
+    <Col xs='6' md='4' lg='3' xl='2' style={{ display: 'flex', alignItems: "stretch"}} key={mediaID}>
       <Card
         className={`vod-card`}
         onClick={() => handleCardClick(mediaID)}

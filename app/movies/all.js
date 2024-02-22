@@ -35,6 +35,7 @@ export default function Page() {
   }, []);
 
   function handleCardClick(mediaID){
+    // Disabled for now - need to make each movie it's own route
     console.log("click");
     // setVodID(mediaID);
   }
