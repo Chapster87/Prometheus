@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { Text, Pressable } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import { Link } from 'expo-router';
 import Container from 'react-bootstrap/Container';
@@ -40,8 +41,10 @@ function App() {
                   <Button variant="primary" onClick={() => selectMedia('Live TV')}>Live TV</Button>
                   <Button variant="primary" onClick={() => selectMedia('Movies')}>Movies</Button>
                   <Button variant="primary" onClick={() => selectMedia('Series')}>Series</Button>
-                  <Link href="/account" asChild>
-                    <Button variant="primary">Account</Button>
+                  <Link href="/account" className={`btn btn-primary`} asChild>
+                    <Pressable>
+                      <Text>Account</Text>
+                    </Pressable>
                   </Link>
                 </>
               :

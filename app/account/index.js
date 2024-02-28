@@ -1,15 +1,10 @@
 import { useState, useEffect } from 'react';
+import { Text, Pressable } from "react-native";
 import { Link } from 'expo-router';
 import Player from '../../components/Player';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Placeholder from 'react-bootstrap/Placeholder';
-import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
-
-import VODCard from '../../components/vod/VODCard';
 
 // initialize player line api
 const player = new Player();
@@ -27,8 +22,10 @@ export default function Page() {
       <Container>
         <Row>
           <Col>
-            <Link href="/" asChild>
-              <Button variant="primary">Home</Button>
+            <Link href="/" className={`btn btn-primary`} asChild>
+              <Pressable>
+                <Text>Home</Text>
+              </Pressable>
             </Link>
           </Col>
         </Row>
