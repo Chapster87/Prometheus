@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View} from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -37,8 +37,6 @@ function VODCats({page, player}) {
         .then(categories => {
           setMediaCategory(categories);
         });
-
-      
     }, []);
   }
 
@@ -60,11 +58,13 @@ function VODCats({page, player}) {
             <Col>
               <View style={styles.tileGrid}>
                 <Link href="/movies/all" asChild>
-                  <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }}>
-                    <Card.Body>
-                      <Card.Title>All Movies</Card.Title>
-                    </Card.Body>
-                  </Card>
+                  <Pressable>
+                    <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }}>
+                      <Card.Body>
+                        <Card.Title>All Movies</Card.Title>
+                      </Card.Body>
+                    </Card>
+                  </Pressable>
                 </Link>
                 {mediaCategory.map(cat =>
                   <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }} key={cat.category_id} onClick={() => handleCategoryClick(cat)}>

@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, View} from 'react-native';
+import { useState, useEffect, useRef } from 'react';
+import { useLocalSearchParams } from 'expo-router';
+import { View } from 'react-native';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,33 +9,27 @@ import Tabs from 'react-bootstrap/Tabs';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
+import Player from '../../components/Player';
+import VideoJS from '../../components/VideoJS'
+
+// initialize player line api
+const player = new Player();
+
 const MODAL_DEFAULT = {
   show: false,
   episodeURL: null
 }
 
-function VOD({player, seriesID}) {
-  // const [seriesCatData, setSeriesCatData] = useState(seriesID); // May not be needed
+export default function Page() {
+  const { id } = useLocalSearchParams(); 
   const [seriesData, setSeriesData] = useState();
   const [showVideoModal, setShowVideoModal] = useState(MODAL_DEFAULT);
-
-  // GET VOD Info
-  // player.getSeriesInfo(seriesID) // This will get info such as video codecs, duration, description, directors for 1 VOD
-  //   .then(console.log)
-  //   .catch(console.log)
-
+  
   useEffect(() => {
-    player.getSeriesInfo(seriesID)
+    player.getSeriesInfo(id)
       .then(data => {
-        // Alot of series have a season 0 for "specials", but episode data doesn't seem to have an season 0
-        if (!data.episodes[0]) {
-          // Determines if there are episodes for "Season 0",
-          // if not, it removes "Season 0" and saves it
-          const season0 = data.seasons.shift();
-        }
-
         setSeriesData(data);
-        // console.log("Data", seriesData);
+        console.log('Page Data', data)
       });
   }, []);
 
@@ -45,6 +40,7 @@ function VOD({player, seriesID}) {
       episodeURL: null
     }
   });
+
   const handleShow = (episodeURL) => setShowVideoModal(prevState => {
     return {
       ...prevState,
@@ -52,6 +48,32 @@ function VOD({player, seriesID}) {
       episodeURL: episodeURL
     }
   });
+
+  const playerRef = useRef(null);
+
+  const videoJsOptions = {
+    autoplay: true,
+    controls: true,
+    responsive: true,
+    fluid: true,
+    sources: [{
+      src: '/path/to/video.mp4',
+      type: 'video/mp4'
+    }]
+  };
+
+  const handlePlayerReady = (player) => {
+    playerRef.current = player;
+
+    // You can handle player events here, for example:
+    player.on('waiting', () => {
+      videojs.log('player is waiting');
+    });
+
+    player.on('dispose', () => {
+      videojs.log('player will dispose');
+    });
+  };
 
   return (
     <>
@@ -99,31 +121,33 @@ function VOD({player, seriesID}) {
                     id="uncontrolled-tab-example"
                     className="mb-3"
                   >
-                    {seriesData.seasons.map(season => 
+                    {seriesData.seasons.map((season, index) => 
                       <Tab eventKey={season.season_number} title={season.name} key={season.id}>
-                        {seriesData.episodes[season.season_number].map(episode => {
-                            // http(s)://domain:port/series/username/password/streamID.ext
-                            const episodeURL = `${player.baseURL}/series/${player.config.auth.username}/${player.config.auth.password}/${episode.id}.${episode.container_extension}`;
-                          return (
-                            <Row key={episode.id}>
-                              <Col xs='12' md='6' lg='3'>
-                                <img src={episode.info.movie_image} alt={episode.title} />
-                                <Button variant="primary" onClick={() => handleShow(episodeURL)}>
-                                  Play Episode
-                                </Button>
-                              </Col>
-                              <Col xs='12' md='6' lg='9'>
-                                <h3>{episode.title}</h3>
-                                <ul className={`unstyled mb-3`}>
-                                  <li><strong>Runtime:</strong> {episode.info.duration}</li>
-                                  <li><strong>Rating:</strong> <strong>{episode.info.rating}</strong> / 10</li>
-                                  <li>{episodeURL}</li>
-                                </ul>
-                                <p>{episode.info.plot}</p>
-                              </Col>
-                            </Row>
-                          )
-                        })}
+                        {(seriesData.episodes[index]) &&
+                          seriesData.episodes[index].map(episode => {
+                              // http(s)://domain:port/series/username/password/streamID.ext
+                              const episodeURL = `${player.config.baseUrl}/series/${player.config.auth.username}/${player.config.auth.password}/${episode.id}.${episode.container_extension}`;
+                            return (
+                              <Row key={episode.id}>
+                                <Col xs='12' md='6' lg='3'>
+                                  <img src={episode.info.movie_image} alt={episode.title} />
+                                  <Button variant="primary" onClick={() => handleShow(episodeURL)}>
+                                    Play Episode
+                                  </Button>
+                                </Col>
+                                <Col xs='12' md='6' lg='9'>
+                                  <h3>{episode.title}</h3>
+                                  <ul className={`unstyled mb-3`}>
+                                    <li><strong>Runtime:</strong> {episode.info.duration}</li>
+                                    <li><strong>Rating:</strong> <strong>{episode.info.rating}</strong> / 10</li>
+                                    <li>{episodeURL}</li>
+                                  </ul>
+                                  <p>{episode.info.plot}</p>
+                                </Col>
+                              </Row>
+                            )
+                          }
+                        )}
                       </Tab>
                     )}
                   </Tabs>
@@ -136,13 +160,21 @@ function VOD({player, seriesID}) {
               <Modal.Title>Modal heading</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <p><video src={showVideoModal.episodeURL} type='video/x-matroska; codecs="theora, vorbis"' controls ></video></p>
+              <VideoJS options={{
+                autoplay: false,
+                controls: true,
+                responsive: true,
+                fluid: true,
+                sources: [{
+                  src: showVideoModal.episodeURL,
+                  type: 'video/mp4'
+                }]}}
+                onReady={handlePlayerReady} 
+              />
             </Modal.Body>
           </Modal>
         </>
       }
     </>
-  )
+  );
 }
-
-export default VOD;

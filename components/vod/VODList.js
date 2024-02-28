@@ -8,8 +8,6 @@ import Placeholder from 'react-bootstrap/Placeholder';
 import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
 
 import VODCard from '../vod/VODCard';
-import MovieDetail from '../movies/MovieDetail';
-import SeriesDetail from '../series/SeriesDetail';
 
 function VODList({page, player, catData}) {
   const [VODCatData, setVODCatData] = useState();
@@ -18,8 +16,8 @@ function VODList({page, player, catData}) {
   if(page === 'Series') {
     // GET Series Streams
     // player.getSeriesStreams(catData.category_id)
-    // .then(console.log)
-    // .catch(console.log)
+    //   .then(console.log)
+    //   .catch(console.log)
 
     useEffect(() => {
       player.getSeriesStreams(catData.category_id)
@@ -32,17 +30,13 @@ function VODList({page, player, catData}) {
 
     useEffect(() => {
       // GET Movie Streams
-      // player.getVODStreams(catData.category_id)
-      //   .then(data => console.log("VOD", data))
-      //   .catch(console.log);
+      player.getVODStreams(catData.category_id)
+        .then(data => console.log("VOD", data))
+        .catch(console.log);
     
       player.getVODStreams(catData.category_id)
         .then(data => setVODCatData(data));
     }, []);
-  }
-
-  function handleCardClick(mediaID){
-    setVodID(mediaID);
   }
 
   return (
@@ -59,10 +53,10 @@ function VODList({page, player, catData}) {
               VODCatData.map(vod => {
                 const isSeries = (vod.stream_type === 'series');
                 const mediaID = isSeries ? vod.series_id : vod.stream_id;
-                const mediaImg = isSeries ? vod.cover : vod.stream_icon
+                const mediaImg = isSeries ? vod.cover : vod.stream_icon;
 
                 return (
-                  <VODCard key={mediaID} mediaID={mediaID} image={mediaImg} name={vod.name} onCardClick={handleCardClick} />
+                  <VODCard key={mediaID} mediaID={mediaID} streamType={vod.stream_type} name={vod.name} image={mediaImg} />
                 );
               })
             :
@@ -86,9 +80,6 @@ function VODList({page, player, catData}) {
           </Row>
         </Container>
       }
-
-      {(VodID && page === 'Movies') && <MovieDetail player={player} streamID={VodID} />}
-      {(VodID && page === 'Series') && <SeriesDetail player={player} seriesID={VodID} />}
     </>
   )
 }

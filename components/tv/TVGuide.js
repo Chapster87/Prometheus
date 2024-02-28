@@ -5,6 +5,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 
+const date = new Date();
+
+let day = date.getDate();
+let month = date.getMonth() + 1;
+let year = date.getFullYear();
+
+let currTime = Date.now()
+
 function TVGuide({page, player, groupData}) {
   const [channels, setChannels] = useState();
 
@@ -20,6 +28,7 @@ function TVGuide({page, player, groupData}) {
   return (
     <>
       {/* Needs dummy content */}
+
       {(channels) &&
         <Container fluid className={`tv-guide`}>
           <Row>
@@ -29,20 +38,36 @@ function TVGuide({page, player, groupData}) {
           </Row>
           <Row>
             <Col>
+              <div>{new Date(currTime * 1000).toString()}</div>
+              <div>{date.toLocaleTimeString('en-US')}</div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
               {channels.map(channel => 
-                <Row key={channel.num} className={`channel`}>
-                  <Col className={`channel-inner`}>
+                <div key={channel.num} className={`channel`}>
+                  <div className={`channel-inner`}>
                     <div className={`channel-namecard`}>
                       <img className={`channel-icon`} src={channel.stream_icon} /><span className={`channel-title`}>{channel.name}</span>
                     </div>
-                    {channel.epg_listings.map(epg => 
-                        <div key={epg.id}>
-                          {atob(epg.title)}
-                        </div>
-                      )
-                    }
-                  </Col>
-                </Row>
+                    <div className={`program-list`}>
+                      {channel.epg_listings.map(epg => {
+                          const guideWidthMinutes = 120;
+                          const programLengthMinutes = (epg.stop_timestamp - epg.start_timestamp)/60;
+                          const programWidth = (programLengthMinutes / guideWidthMinutes * 100) + '%';
+
+                          return (
+                            <div key={epg.id} className={`program`} style={{ width: programWidth }}>
+                              <div className={`program-inner`}>
+                                {atob(epg.title)}
+                              </div>
+                            </div>
+                          );
+                        })
+                      }
+                    </div>
+                  </div>
+                </div>
               )}
             </Col>
           </Row>

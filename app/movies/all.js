@@ -12,16 +12,7 @@ import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
 import VODCard from '../../components/vod/VODCard';
 
 // initialize player line api
-const player = new Player({
-  baseUrl: process.env.EXPO_PUBLIC_XC_URL,
-  // username and password of user line
-  auth: {
-    username: process.env.EXPO_PUBLIC_XC_USERNAME,
-    password: process.env.EXPO_PUBLIC_XC_PASSWORD
-  }
-})
-
-player.baseURL = process.env.EXPO_PUBLIC_XC_URL
+const player = new Player();
 
 export default function Page() {
   const [allMedia, setAllMedia] = useState();
@@ -30,7 +21,7 @@ export default function Page() {
     player.getVODStreams('X')
       .then(data => {
         setAllMedia(data);
-        console.log("All Movies", data);
+        // console.log("All Movies", data);
       });
   }, []);
 

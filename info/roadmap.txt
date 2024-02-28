@@ -3,7 +3,4 @@
 - TV Channels
 - TV Guide
 - Sign In
-- All Movies/Series
-- Series not working in all cases - maybe add a season zero to episodes when there is a Season 0
-- Intregrate with TMDB API
-- Create better way for "Player" constructor to exist globally
+- All Series

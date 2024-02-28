@@ -12,24 +12,12 @@ import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
 import VODCard from '../../components/vod/VODCard';
 
 // initialize player line api
-const player = new Player({
-  baseUrl: process.env.EXPO_PUBLIC_XC_URL,
-  // username and password of user line
-  auth: {
-    username: process.env.EXPO_PUBLIC_XC_USERNAME,
-    password: process.env.EXPO_PUBLIC_XC_PASSWORD
-  }
-})
-
-player.baseURL = process.env.EXPO_PUBLIC_XC_URL
+const player = new Player();
 
 export default function Page() {
   const [account, setAccount] = useState();
   
   useEffect(() => {
-  player.getAccountInfo()
-    .then(data => console.log("Account", data));
-
   player.getAccountInfo()
     .then(data => setAccount(data));
   }, []);
@@ -51,6 +39,7 @@ export default function Page() {
             <h1>Account Info</h1>
           </Col>
         </Row>
+        {(account) &&
         <Row>
           <Col xs='12'>
             <h3>{account.message}</h3>
@@ -63,6 +52,7 @@ export default function Page() {
             <p><strong>Created:</strong> {new Date(account.created_at * 1000).toString()}</p>
           </Col>
         </Row>
+        }
       </Container>
     </>
   );

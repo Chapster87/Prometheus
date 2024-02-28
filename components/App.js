@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Link } from 'expo-router';
-import Player from './Player';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
+import Player from './Player';
 import TVGroups from './tv/TVGroups';
 import VODCats from './vod/VODCats';
 import TrendingMovies from './movies/TrendingMovies';
@@ -15,16 +15,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/scss/index.scss';
 
 // initialize player line api
-const player = new Player({
-  baseUrl: process.env.EXPO_PUBLIC_XC_URL,
-  // username and password of user line
-  auth: {
-    username: process.env.EXPO_PUBLIC_XC_USERNAME,
-    password: process.env.EXPO_PUBLIC_XC_PASSWORD
-  }
-})
-
-player.baseURL = process.env.EXPO_PUBLIC_XC_URL
+const player = new Player();
 
 function App() {
   const [activePage, setActivePage] = useState('Home');
