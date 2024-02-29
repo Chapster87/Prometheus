@@ -1,5 +1,6 @@
 import { Pressable } from "react-native";
 import { Link } from 'expo-router';
+import { Badge } from "@gluestack-ui/themed"
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 

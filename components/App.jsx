@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { Text, Pressable } from "react-native";
+import { Pressable } from "react-native";
 import { StatusBar } from 'expo-status-bar';
-import { Link } from 'expo-router';
+import { GluestackUIProvider, Text } from "@gluestack-ui/themed"
+import { config } from '../config/gluestack-ui.config'
+import { Link, LinkText } from "@gluestack-ui/themed"
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -30,7 +32,7 @@ function App() {
   }
 
   return (
-    <>
+    <GluestackUIProvider config={config}>
       <StatusBar style="auto" />
       <div>
         <Container>
@@ -42,9 +44,7 @@ function App() {
                   <Button variant="primary" onClick={() => selectMedia('Movies')}>Movies</Button>
                   <Button variant="primary" onClick={() => selectMedia('Series')}>Series</Button>
                   <Link href="/account" className={`btn btn-primary`} asChild>
-                    <Pressable>
-                      <Text>Account</Text>
-                    </Pressable>
+                    <LinkText size="lg">Account</LinkText>
                   </Link>
                 </>
               :
@@ -70,7 +70,7 @@ function App() {
       </div>
       {(activePage === 'Live TV') && <TVGroups page={activePage} player={player} />}
       {(activePage === 'Movies' || activePage === 'Series') && <VODCats page={activePage} player={player} />}
-    </>
+    </GluestackUIProvider>
   );
 }
 
