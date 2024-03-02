@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import VODCard from '../vod/VODCard';
+import { HStack } from '@gluestack-ui/themed';
 
+import VODCard from '../vod/VODCard';
 import Player from '../Player';
 
 // initialize player line api
@@ -32,11 +33,11 @@ function TrendingMovies() {
   return (
     <>
       {(trendingData) ?
-        <>
+        <HStack space="none" reversed={false}>
           {trendingData.map(trending =>
             <VODCard key={trending.id} mediaID={trending.stream_id} image={`https://image.tmdb.org/t/p/w400${trending.poster_path}`} name={trending.title} />
           )}
-        </>
+        </HStack>
       :
         <div>No Results</div>
       }

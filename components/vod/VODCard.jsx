@@ -1,8 +1,15 @@
-import { Pressable } from "react-native";
-import { Link } from 'expo-router';
-import { Badge } from "@gluestack-ui/themed"
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
+import { Dimensions, StyleSheet } from "react-native";
+import { Badge, BadgeText, Card, Image, Link, Heading, View } from "@gluestack-ui/themed"
+
+import styles from '../../assets/styles/global';
+
+const { width, height } = Dimensions.get('window');
+const cardWidth = width * 0.1666666;
+const cardAR = 400 / 660;
+const cardHeight = cardWidth / cardAR;
+const imageWidth = cardWidth;
+const imageAR = 400 / 593;
+const imageHeight = imageWidth / imageAR;
 
 function VODCard({ mediaID, streamType, name, image }) {
 
@@ -10,34 +17,88 @@ function VODCard({ mediaID, streamType, name, image }) {
   const mediaType = isSeries ? 'series' : 'movies';
 
   return (
-    <Col xs='6' md='4' lg='3' xl='2' key={mediaID}>
-      
+    <View
+      style={local_styles.container}
+      key={mediaID}
+    >
       {(mediaID) ?
-        <Link href={`/${mediaType}/${mediaID}`} className={`vod-link`} asChild>
-          <Pressable>
-            <Card
-              className={`vod-card`}
-            >
-              <Card.Img variant="top" src={image} loading="lazy"/>
-              <Card.Body>
-                <Card.Title className={`text-center`}>{name}</Card.Title>
-              </Card.Body>
-            </Card>
-          </Pressable>
+        <Link 
+          href={`/${mediaType}/${mediaID}`}
+          height="100%"
+        >
+          <Card style={local_styles.card}>
+            <Image
+              style={local_styles.cardImage}
+              resizeMode="cover"
+              borderRadius="$md"
+              alt={name}
+              source={{
+                uri: image,
+              }}
+            />
+            <Heading style={local_styles.cardHeading}>{name}</Heading>
+          </Card>
         </Link>
       :
-      <Card
-        className={`vod-card`}
-      >
-        <div className={`vod-badge`}>Coming Soon!</div>
-        <Card.Img variant="top" src={image} loading="lazy"/>
-        <Card.Body>
-          <Card.Title className={`text-center`}>{name}</Card.Title>
-        </Card.Body>
+      <Card style={local_styles.card}>
+        <Badge style={local_styles.cardBadge} size="lg" bg="$amber400">
+          <BadgeText style={local_styles.cardBadgeText} color="$white">Coming Soon</BadgeText>
+        </Badge>
+        <Image
+          style={local_styles.cardImage}
+          resizeMode="cover"
+          borderRadius="$md"
+          alt={name}
+          source={{
+            uri: image,
+          }}
+        />
+        <Heading style={local_styles.cardHeading}>{name}</Heading>
       </Card>
       }
-    </Col>
+    </View>
   );
 }
+
+const local_styles = StyleSheet.create({
+  container: {
+    width: cardWidth,
+    height: cardHeight,
+    paddingHorizontal: 12,
+    marginBottom: 16
+  },
+  card: {
+    position: "relative",
+    padding: 0,
+    height: "100%"
+  },
+  cardImage: {
+    width: imageWidth,
+    height: imageHeight,
+    borderBottomRightRadius: 0,
+    borderBottomLeftRadius: 0
+  },
+  cardBadge: {
+    position: "absolute",
+    top: 16,
+    left: 0,
+    paddingVertical: 5,
+    paddingHorizontal: 12,
+    border: 0,
+    zIndex: 10
+  },
+  cardBadgeText: {
+    fontSize: 16,
+    fontWeight: 700
+  },
+  cardHeading: {
+    height: "10%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    textTransform: "uppercase",
+    textAlign: "center"
+  }
+});
 
 export default VODCard;

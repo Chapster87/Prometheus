@@ -54,18 +54,14 @@ function App() {
           </Row>
         </Container>
         {(activePage === 'Home') &&
-          <Container fluid>
-            <Row>
-              <Col><h1>Trending Movies</h1></Col>
-            </Row>
-            <Row>
-              <Col>
-                <Row>
-                  <TrendingMovies />
-                </Row>
-              </Col>
-            </Row>
-          </Container>
+          <>
+            <Container fluid>
+              <Row>
+                <Col><h1>Trending Movies</h1></Col>
+              </Row>
+            </Container>
+            <TrendingMovies />
+          </>
         }
       </div>
       {(activePage === 'Live TV') && <TVGroups page={activePage} player={player} />}
