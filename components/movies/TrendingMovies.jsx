@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { HStack } from '@gluestack-ui/themed';
 
+import Estyles from '../../assets/styles/global';
+
 import VODCard from '../vod/VODCard';
 import Player from '../Player';
 
@@ -33,7 +35,7 @@ function TrendingMovies() {
   return (
     <>
       {(trendingData) ?
-        <HStack space="none" reversed={false}>
+        <HStack style={Estyles.wrappedHStack} space="none" reversed={false}>
           {trendingData.map(trending =>
             <VODCard key={trending.id} mediaID={trending.stream_id} image={`https://image.tmdb.org/t/p/w400${trending.poster_path}`} name={trending.title} />
           )}

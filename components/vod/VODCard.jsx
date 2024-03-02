@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { Badge, BadgeText, Card, Image, Link, Heading, View } from "@gluestack-ui/themed"
 
-import styles from '../../assets/styles/global';
+import Estyles from '../../assets/styles/global';
 
 const { width, height } = Dimensions.get('window');
 const cardWidth = width * 0.1666666;
@@ -18,7 +18,7 @@ function VODCard({ mediaID, streamType, name, image }) {
 
   return (
     <View
-      style={local_styles.container}
+      style={styles.container}
       key={mediaID}
     >
       {(mediaID) ?
@@ -26,9 +26,9 @@ function VODCard({ mediaID, streamType, name, image }) {
           href={`/${mediaType}/${mediaID}`}
           height="100%"
         >
-          <Card style={local_styles.card}>
+          <Card style={styles.card}>
             <Image
-              style={local_styles.cardImage}
+              style={styles.cardImage}
               resizeMode="cover"
               borderRadius="$md"
               alt={name}
@@ -36,16 +36,16 @@ function VODCard({ mediaID, streamType, name, image }) {
                 uri: image,
               }}
             />
-            <Heading style={local_styles.cardHeading}>{name}</Heading>
+            <Heading style={styles.cardHeading}>{name}</Heading>
           </Card>
         </Link>
       :
-      <Card style={local_styles.card}>
-        <Badge style={local_styles.cardBadge} size="lg" bg="$amber400">
-          <BadgeText style={local_styles.cardBadgeText} color="$white">Coming Soon</BadgeText>
+      <Card style={styles.card}>
+        <Badge style={styles.cardBadge} size="lg" bg="$amber400">
+          <BadgeText style={styles.cardBadgeText} color="$white">Coming Soon</BadgeText>
         </Badge>
         <Image
-          style={local_styles.cardImage}
+          style={styles.cardImage}
           resizeMode="cover"
           borderRadius="$md"
           alt={name}
@@ -53,17 +53,17 @@ function VODCard({ mediaID, streamType, name, image }) {
             uri: image,
           }}
         />
-        <Heading style={local_styles.cardHeading}>{name}</Heading>
+        <Heading style={styles.cardHeading}>{name}</Heading>
       </Card>
       }
     </View>
   );
 }
 
-const local_styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     width: cardWidth,
-    height: cardHeight,
+    minHeight: cardHeight,
     paddingHorizontal: 12,
     marginBottom: 16
   },
@@ -92,7 +92,7 @@ const local_styles = StyleSheet.create({
     fontWeight: 700
   },
   cardHeading: {
-    height: "10%",
+    minHeight: 60,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
