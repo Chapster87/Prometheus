@@ -3,6 +3,10 @@ import { MotionAnimationDriver } from '@gluestack-style/legend-motion-animation-
 import { createConfig, createComponents } from '@gluestack-style/react';
 import * as componentsTheme from './theme';
 
+import colStyles from './columns';
+
+const grid_gutter_x = 1.5; // rems
+
 export const gluestackUIConfig = createConfig({
   aliases: {
     bg: 'backgroundColor',
@@ -467,7 +471,7 @@ export const gluestackUIConfig = createConfig({
       '3/6': '50%',
       '4/6': '66.666%',
       '5/6': '83.333%',
-      'full': '100%',
+      'full': '100%'
     },
     borderWidths: {
       '0': 0,
@@ -489,18 +493,27 @@ export const gluestackUIConfig = createConfig({
     },
     breakpoints: {
       base: 0,
+      xs: 320,
       sm: 480,
+      // sm: 576,
       md: 768,
       lg: 992,
       xl: 1280,
+      // xl: 1200,
+      xxl: 1440
+      // xxl: 1400
     },
     mediaQueries: {
       base: '@media screen and (min-width: 0)',
-      xs: '@media screen and (min-width: 400px)',
-      sm: '@media screen and (min-width: 480px)',
-      md: '@media screen and (min-width: 768px)',
-      lg: '@media screen and (min-width: 992px)',
-      xl: '@media screen and (min-width: 1280px)',
+      xs_up: '@media screen and (min-width: 320px)',
+      sm_up: '@media screen and (min-width: 480px)',
+      // sm_up: '@media screen and (min-width: 576px)',
+      md_up: '@media screen and (min-width: 768px)',
+      lg_up: '@media screen and (min-width: 992px)',
+      xl_up: '@media screen and (min-width: 1280px)',
+      // xl_up: '@media screen and (min-width: 1200px)',
+      xxl_up: '@media screen and (min-width: 1440px)'
+      // xxl_up: '@media screen and (min-width: 1400px)'
     },
     letterSpacings: {
       'xs': -0.4,
@@ -577,6 +590,65 @@ export const gluestackUIConfig = createConfig({
   } as const,
   globalStyle: {
     variants: {
+      grid: {
+        'container-fluid': {
+          minWidth: 320,
+          width: '100%',
+          marginHorizontal: 'auto',
+          paddingHorizontal: (grid_gutter_x * .5) + 'rem',
+        },
+        'container': {
+          minWidth: 320,
+          width: '100%',
+          marginHorizontal: 'auto',
+          paddingHorizontal: (grid_gutter_x * .5) + 'rem',
+          '@sm_up': {
+            maxWidth: 480
+            // maxWidth: 540
+          },
+          '@md_up': {
+            maxWidth: 768
+            // maxWidth: 720
+          },
+          '@lg_up': {
+            maxWidth: 992
+            // maxWidth: 960
+          },
+          '@xl_up': {
+            maxWidth: 1280
+            // maxWidth: 1140
+          },
+          '@xxl_up': {
+            maxWidth: 1440
+            // maxWidth: 1320
+          },
+        },
+        'row': {
+          display: 'flex',
+          flexWrap: 'wrap',
+          flexDirection: 'row',
+          alignItems: 'normal',
+          marginHorizontal: (grid_gutter_x * -.5) + 'rem'
+        },
+        'col': {
+          flex: '1 0 0%',
+          width: '100%',
+          maxWidth: '100%',
+          paddingHorizontal: (grid_gutter_x * .5) + 'rem'
+        }
+      },
+      columns: colStyles.columns,
+      columnsSm: colStyles.columnsSm,
+      columnsMd: colStyles.columnsMd,
+      columnsLg: colStyles.columnsLg,
+      columnsXl: colStyles.columnsXl,
+      columnsXxl: colStyles.columnsXxl,
+      offset: colStyles.offset,
+      offsetSm: colStyles.offsetSm,
+      offsetMd: colStyles.offsetMd,
+      offsetLg: colStyles.offsetLg,
+      offsetXl: colStyles.offsetXl,
+      offsetXxl: colStyles.offsetXxl,
       hardShadow: {
         '1': {
           shadowColor: '$backgroundLight900',
@@ -692,7 +764,7 @@ export const gluestackUIConfig = createConfig({
           },
         },
       },
-    },
+    }
   },
   plugins: [new AnimationResolver(MotionAnimationDriver)],
 });
