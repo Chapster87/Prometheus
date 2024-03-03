@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View, Pressable } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import { Link } from 'expo-router';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { GluestackUIProvider, Box, View, Text } from '@gluestack-ui/themed';
 import Card from 'react-bootstrap/Card';
 import Placeholder from 'react-bootstrap/Placeholder';
 
@@ -47,53 +45,53 @@ function VODCats({page, player}) {
   return (
     <>
       {(!listData) &&
-        <Container fluid>
-          <Row>
-            <Col>
+        <Box grid='container-fluid'>
+          <Box grid='row'>
+            <Box grid='col' columns='12'>
               <h1>{page}</h1>
-            </Col>
-          </Row>
-          <Row>
-          {(mediaCategory) ?
-            <Col>
-              <View style={styles.tileGrid}>
-                <Link href="/movies/all" asChild>
-                  <Pressable>
-                    <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }}>
+            </Box>
+          </Box>
+          <Box grid='row'>
+            {(mediaCategory) ?
+              <Box grid='col' columns='12'>
+                <View style={styles.tileGrid}>
+                  <Link href="/movies/all" asChild>
+                    <Pressable>
+                      <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }}>
+                        <Card.Body>
+                          <Card.Title>All Movies</Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Pressable>
+                  </Link>
+                  {mediaCategory.map(cat =>
+                    <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }} key={cat.category_id} onClick={() => handleCategoryClick(cat)}>
                       <Card.Body>
-                        <Card.Title>All Movies</Card.Title>
+                        <Card.Title>{cat.category_name}</Card.Title>
                       </Card.Body>
                     </Card>
-                  </Pressable>
-                </Link>
-                {mediaCategory.map(cat =>
-                  <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }} key={cat.category_id} onClick={() => handleCategoryClick(cat)}>
-                    <Card.Body>
-                      <Card.Title>{cat.category_name}</Card.Title>
-                    </Card.Body>
-                  </Card>
-                )}
-              </View>
-            </Col>
-          :
-            [...Array(60)].map((elementInArray, index) => ( 
-              <Col key={index}>
-                <View style={styles.tileGrid}>
-                  <Card style={{ width: '18rem', margin: '1rem' }}>
-                    <Card.Body>
-                      <Card.Title>
-                        <Placeholder animation="glow">
-                          <Placeholder xs={10} />
-                        </Placeholder>
-                      </Card.Title>
-                    </Card.Body>
-                  </Card>
+                  )}
                 </View>
-              </Col>
-            ))
-          }
-          </Row>
-        </Container>
+              </Box>
+            :
+              [...Array(60)].map((elementInArray, index) => ( 
+                <Box grid='col' columns='12' key={index}>
+                  <View style={styles.tileGrid}>
+                    <Card style={{ width: '18rem', margin: '1rem' }}>
+                      <Card.Body>
+                        <Card.Title>
+                          <Placeholder animation="glow">
+                            <Placeholder xs={10} />
+                          </Placeholder>
+                        </Card.Title>
+                      </Card.Body>
+                    </Card>
+                  </View>
+                </Box>
+              ))
+            }
+          </Box>
+        </Box>
       }
       {(listData) && <VODList page={page} player={player} catData={listData} />}
     </>

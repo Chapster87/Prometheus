@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View} from 'react-native';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { StyleSheet } from 'react-native';
+import { GluestackUIProvider, Box, ImageBackground, View, Text } from '@gluestack-ui/themed';
+import { config } from '../../config/gluestack-ui.config'
 import Card from 'react-bootstrap/Card';
 
 import TVGuide from './TVGuide';
@@ -27,11 +26,11 @@ function TVGroups({page, player}) {
   }
 
   return (
-    <>
+    <GluestackUIProvider config={config}>
       {(mediaCategory && !groupData) &&
-        <Container fluid>
-          <Row>
-            <Col>
+        <Box grid='container-fluid'>
+          <Box grid='row'>
+            <Box grid='col' columns='12'>
               <h1>{page}</h1>
               <View style={styles.tileGrid}>
                 {mediaCategory.map(cat =>
@@ -42,12 +41,12 @@ function TVGroups({page, player}) {
                   </Card>
                 )}
               </View>
-            </Col>
-          </Row>
-        </Container>
+            </Box>
+          </Box>
+        </Box>
       }
       {(groupData) && <TVGuide page={page} player={player} groupData={groupData} />}
-    </>
+    </GluestackUIProvider>
   )
 }
 

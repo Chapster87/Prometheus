@@ -1,12 +1,8 @@
 import { useState } from 'react';
-import { Pressable } from "react-native";
 import { StatusBar } from 'expo-status-bar';
-import { GluestackUIProvider, Text } from "@gluestack-ui/themed"
+import { GluestackUIProvider, Box, Text } from "@gluestack-ui/themed"
 import { config } from '../config/gluestack-ui.config'
 import { Link, LinkText } from "@gluestack-ui/themed"
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 import Player from './Player';
@@ -35,31 +31,31 @@ function App() {
     <GluestackUIProvider config={config}>
       <StatusBar style="auto" />
       <div>
-        <Container>
-          <Row>
-            <Col>
+        <Box grid='container'>
+          <Box grid='row'>
+            <Box grid='col' columns='12'>
               {(activePage === 'Home') ?
                 <>
                   <Button variant="primary" onClick={() => selectMedia('Live TV')}>Live TV</Button>
                   <Button variant="primary" onClick={() => selectMedia('Movies')}>Movies</Button>
                   <Button variant="primary" onClick={() => selectMedia('Series')}>Series</Button>
-                  <Link href="/account" className={`btn btn-primary`} asChild>
+                  <Link href="/account">
                     <LinkText size="lg">Account</LinkText>
                   </Link>
                 </>
               :
                 <Button variant="primary" onClick={clickHome}>Home</Button>
               }
-            </Col>
-          </Row>
-        </Container>
+            </Box>
+          </Box>
+        </Box>
         {(activePage === 'Home') &&
           <>
-            <Container fluid>
-              <Row>
-                <Col><h1>Trending Movies</h1></Col>
-              </Row>
-            </Container>
+            <Box grid='container-fluid'>
+              <Box grid='row'>
+                <Box grid='col' columns='12'><h1>Trending Movies</h1></Box>
+              </Box>
+            </Box>
             <TrendingMovies />
           </>
         }

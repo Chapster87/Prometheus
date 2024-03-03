@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { View } from 'react-native';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { GluestackUIProvider, Box, ImageBackground, View, Text } from '@gluestack-ui/themed';
+import { config } from '../../config/gluestack-ui.config'
+
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Button from 'react-bootstrap/Button';
@@ -51,17 +50,6 @@ export default function Page() {
 
   const playerRef = useRef(null);
 
-  const videoJsOptions = {
-    autoplay: true,
-    controls: true,
-    responsive: true,
-    fluid: true,
-    sources: [{
-      src: '/path/to/video.mp4',
-      type: 'video/mp4'
-    }]
-  };
-
   const handlePlayerReady = (player) => {
     playerRef.current = player;
 
@@ -76,7 +64,7 @@ export default function Page() {
   };
 
   return (
-    <>
+    <GluestackUIProvider config={config}>
       {/* May be better to define a dummy data object and then replace than checking to see if it's there and rendering on the second page load */}
       {(seriesData) &&
         <>
@@ -87,35 +75,35 @@ export default function Page() {
             backgroundImage: `url("${seriesData.info.backdrop_path}")`,
             backgroundSize: 'cover'
           }}>
-            <Container style={{ marginTop: '100px', background: 'rgba(0, 0, 0, 0.7)', padding:'30px' }}>
-              <Row >
-                <Col xs='12' md='3'>
+            <Box grid='container' style={{ marginTop: '100px', background: 'rgba(0, 0, 0, 0.7)', padding:'30px' }}>
+              <Box grid='row'>
+                <Box grid='col' columns='12' columnsMd='3'>
                   <img src={seriesData.info.cover} alt={seriesData.info.name} />
-                </Col>
-                <Col xs='12' md='9'>
-                  <Row>
-                    <Col>
+                </Box>
+                <Box grid='col' columns='12' columnsMd='9'>
+                  <Box grid='row'>
+                    <Box grid='col' columns='12'>
                       <h1>{seriesData.info.name}</h1>
                       <ul className={`unstyled mb-3`}>
                         {(seriesData.info.genre) && <li><strong>Genre:</strong> {seriesData.info.genre}</li>}
                         <li><strong>Rating:</strong> <strong>{seriesData.info.rating}</strong> / 10</li>
                       </ul>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                    <p>{seriesData.info.plot}</p>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                    <p><strong>Cast:</strong> {seriesData.info.cast}</p>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-              <Row className={`mt-5`}>
-                <Col>
+                    </Box>
+                  </Box>
+                  <Box grid='row'>
+                    <Box grid='col' columns='12'>
+                      <p>{seriesData.info.plot}</p>
+                    </Box>
+                  </Box>
+                  <Box grid='row'>
+                    <Box grid='col' columns='12'>
+                      <p><strong>Cast:</strong> {seriesData.info.cast}</p>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+              <Box grid='row' mt='$8'>
+                <Box grid='col' columns='12'>
                   <Tabs
                     defaultActiveKey="1"
                     id="uncontrolled-tab-example"
@@ -128,14 +116,14 @@ export default function Page() {
                               // http(s)://domain:port/series/username/password/streamID.ext
                               const episodeURL = `${player.config.baseUrl}/series/${player.config.auth.username}/${player.config.auth.password}/${episode.id}.${episode.container_extension}`;
                             return (
-                              <Row key={episode.id}>
-                                <Col xs='12' md='6' lg='3'>
+                              <Box grid='row' key={episode.id}>
+                                <Box grid='col' columns='12' columnsMd='6' columnsLg='3'>
                                   <img src={episode.info.movie_image} alt={episode.title} />
                                   <Button variant="primary" onClick={() => handleShow(episodeURL)}>
                                     Play Episode
                                   </Button>
-                                </Col>
-                                <Col xs='12' md='6' lg='9'>
+                                </Box>
+                                <Box grid='col' columns='12' columnsMd='6' columnsLg='9'>
                                   <h3>{episode.title}</h3>
                                   <ul className={`unstyled mb-3`}>
                                     <li><strong>Runtime:</strong> {episode.info.duration}</li>
@@ -143,17 +131,17 @@ export default function Page() {
                                     <li>{episodeURL}</li>
                                   </ul>
                                   <p>{episode.info.plot}</p>
-                                </Col>
-                              </Row>
+                                </Box>
+                              </Box>
                             )
                           }
                         )}
                       </Tab>
                     )}
                   </Tabs>
-                </Col>
-              </Row>
-            </Container>
+                </Box>
+              </Box>
+            </Box>
           </View>
           <Modal show={showVideoModal.show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -175,6 +163,6 @@ export default function Page() {
           </Modal>
         </>
       }
-    </>
+    </GluestackUIProvider>
   );
 }

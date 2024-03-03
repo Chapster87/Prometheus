@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Text, Pressable } from "react-native";
+import { Pressable } from "react-native";
 import { Link } from 'expo-router';
+import { GluestackUIProvider, Box, ImageBackground, View, Text } from '@gluestack-ui/themed';
+import { config } from '../../config/gluestack-ui.config'
+
 import Player from '../../components/Player';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Placeholder from 'react-bootstrap/Placeholder';
 import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
@@ -32,25 +32,25 @@ export default function Page() {
   }
 
   return (
-    <>
-      <Container>
-        <Row>
-          <Col>
+    <GluestackUIProvider config={config}>
+      <Box grid='container'>
+        <Box grid='row'>
+          <Box grid='col' columns='1'>
             <Link href="/" className={`btn btn-primary`} asChild>
               <Pressable>
                 <Text>Home</Text>
               </Pressable>
             </Link>
-          </Col>
-        </Row>
-      </Container>
-      <Container fluid className='vod-list'>
-        <Row>
-          <Col>
+          </Box>
+        </Box>
+      </Box>
+      <Box grid='container-fluid' className='vod-list'>
+        <Box grid='row'>
+          <Box grid='col' columns='12'>
             <h1>All Movies</h1>
-          </Col>
-        </Row>
-        <Row>
+          </Box>
+        </Box>
+        <Box grid='row'>
           {(allMedia) ?
             allMedia.slice(0, 50).map(media => {
                 return (
@@ -58,8 +58,8 @@ export default function Page() {
                 );
               })
           :
-            [...Array(18)].map((elementInArray, index) => ( 
-              <Col key={index} xs='6' md='4' lg='3' xl='2' style={{ display: 'flex', alignItems: "stretch"}}>
+            [...Array(18)].map((elementInArray, index) => (
+              <Box grid='col' columns='12' columnsMd='4' columnsLg='3' columnsXl='2' style={{ display: 'flex', alignItems: "stretch"}} key={index}>
                 <Card className={`vod-card movie`}>
                   <div className={`card-img-top card-img-placeholder`}>
                     <ImgPlaceholder width={120} height={40} />
@@ -72,11 +72,11 @@ export default function Page() {
                     </Card.Title>
                   </Card.Body>
                 </Card>
-              </Col>
+              </Box>
             ))
           }
-        </Row>
-      </Container>
-    </>
+        </Box>
+      </Box>
+    </GluestackUIProvider>
   );
 }

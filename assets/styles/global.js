@@ -1,15 +1,7 @@
-// low-level global StyleSheet
-import EStyleSheet from 'react-native-extended-stylesheet';
+import StyleSheet from 'react-native';
 
-export default styles = EStyleSheet.create({
-  // descriptions: style function that takes originalWidth, originalHeight as parameters and return
-  // aspectRatio of originalWidth / originalHeight
-  // params: originalWidth, originalHeight
-  // returns: aspectRatio of originalWidth / originalHeight
-  aspect_ratio: (originalWidth, originalHeight) => ({
-    aspectRatio: originalWidth / originalHeight,
-  }),
-  wrappedHStack: {
-    flexWrap: 'wrap'
+export default styles = StyleSheet.create({
+  body: {
+    width: '100%'
   }
 });

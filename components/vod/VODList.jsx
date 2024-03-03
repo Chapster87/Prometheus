@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { StyleSheet} from 'react-native';
+import { GluestackUIProvider, Box, Text } from '@gluestack-ui/themed';
 import Card from 'react-bootstrap/Card';
 import Placeholder from 'react-bootstrap/Placeholder';
 import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
@@ -42,13 +40,13 @@ function VODList({page, player, catData}) {
   return (
     <>
       {(!VodID) &&
-        <Container fluid className='vod-list'>
-          <Row>
-            <Col>
+        <Box grid='container-fluid'>
+          <Box grid='row'>
+            <Box grid='col' columns='12'>
               <h1>{page} - {catData.category_name}</h1>
-            </Col>
-          </Row>
-          <Row>
+            </Box>
+          </Box>
+          <Box grid='row'>
             {(VODCatData) ?
               VODCatData.map(vod => {
                 const isSeries = (vod.stream_type === 'series');
@@ -61,27 +59,36 @@ function VODList({page, player, catData}) {
               })
             :
               [...Array(18)].map((elementInArray, index) => ( 
-                <Col xs='6' md='4' lg='3' xl='2' style={{ display: 'flex', alignItems: "stretch"}} key={index} >
-                  <Card className={`vod-card movie`}>
-                    <div className={`card-img-top card-img-placeholder`}>
+                <Box grid='col' columns='6' columnsMd='4' columnsLg='3' columnsXl='2' style={{ display: 'flex', alignItems: "stretch"}} key={index}>
+                  <Card>
+                    <div style={{ ...styles.placeholderCardImg }} bg='$trueGray200' color='$trueGray500'>
                       <ImgPlaceholder width={120} height={40} />
                     </div>
                     <Card.Body>
-                      <Card.Title className={`text-center`}>
+                      <Card.Title>
                           <Placeholder animation="glow">
                             <Placeholder xs={10} />
                           </Placeholder>
                       </Card.Title>
                     </Card.Body>
                   </Card>
-                </Col>
+                </Box>
               ))
             }
-          </Row>
-        </Container>
+          </Box>
+        </Box>
       }
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  placeholderCardImg: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 300
+  }
+});
 
 export default VODList;

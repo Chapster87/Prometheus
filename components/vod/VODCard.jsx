@@ -1,8 +1,6 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { Badge, BadgeText, Card, Image, Link, Heading, View } from "@gluestack-ui/themed"
 
-import Estyles from '../../assets/styles/global';
-
 const { width, height } = Dimensions.get('window');
 const cardWidth = width * 0.1666666;
 const cardAR = 400 / 660;

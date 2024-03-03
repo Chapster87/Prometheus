@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Text, Pressable } from "react-native";
+import { Pressable } from "react-native";
 import { Link } from 'expo-router';
+import { GluestackUIProvider, Box, Text } from '@gluestack-ui/themed';
+import { config } from '../../config/gluestack-ui.config'
+
 import Player from '../../components/Player';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 // initialize player line api
 const player = new Player();
@@ -18,27 +18,27 @@ export default function Page() {
   }, []);
 
   return (
-    <>
-      <Container>
-        <Row>
-          <Col>
-            <Link href="/" className={`btn btn-primary`} asChild>
+    <GluestackUIProvider config={config}>
+      <Box grid='container'>
+        <Box grid='row'>
+          <Box grid='col' columns='1'>
+            <Link href="/">
               <Pressable>
                 <Text>Home</Text>
               </Pressable>
             </Link>
-          </Col>
-        </Row>
-      </Container>
-      <Container fluid className='account'>
-        <Row>
-          <Col>
+          </Box>
+        </Box>
+      </Box>
+      <Box grid='container'>
+        <Box grid='row'>
+          <Box grid='col' columns='12'>
             <h1>Account Info</h1>
-          </Col>
-        </Row>
+          </Box>
+        </Box>
         {(account) &&
-        <Row>
-          <Col xs='12'>
+        <Box grid='row'>
+          <Box grid='col' columns='12'>
             <h3>{account.message}</h3>
             <hr/>
             <p><strong>Username:</strong> {account.username}</p>
@@ -47,10 +47,10 @@ export default function Page() {
             <p><strong>No. of Connections:</strong> {account.max_connections}</p>
             <p><strong>Expiration:</strong> {new Date(account.exp_date * 1000).toString()}</p>
             <p><strong>Created:</strong> {new Date(account.created_at * 1000).toString()}</p>
-          </Col>
-        </Row>
+          </Box>
+        </Box>
         }
-      </Container>
-    </>
+      </Box>
+    </GluestackUIProvider>
   );
 }
