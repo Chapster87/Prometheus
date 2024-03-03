@@ -7,18 +7,18 @@ import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
 
 import VODCard from '../vod/VODCard';
 
-function VODList({page, spark, catData}) {
+function VODList({page, spark, catId, catName}) {
   const [VODCatData, setVODCatData] = useState();
   const [VodID, setVodID] = useState();
 
   if(page === 'Series') {
     // GET Series Streams
-    // spark.getSeriesStreams(catData.category_id)
+    // spark.getSeriesStreams(catId)
     //   .then(console.log)
     //   .catch(console.log)
 
     useEffect(() => {
-      spark.getSeriesStreams(catData.category_id)
+      spark.getSeriesStreams(catId)
         .then((data) => setVODCatData(data));
     }, []);
 
@@ -28,11 +28,11 @@ function VODList({page, spark, catData}) {
 
     useEffect(() => {
       // GET Movie Streams
-      spark.getVODStreams(catData.category_id)
-        .then(data => console.log("VOD", data))
-        .catch(console.log);
+      // spark.getVODStreams(catId)
+      //   .then(data => console.log("VOD", data))
+      //   .catch(console.log);
     
-      spark.getVODStreams(catData.category_id)
+      spark.getVODStreams(catId)
         .then(data => setVODCatData(data));
     }, []);
   }
@@ -43,7 +43,7 @@ function VODList({page, spark, catData}) {
         <Box grid='container-fluid'>
           <Box grid='row'>
             <Box grid='col' columns='12'>
-              <h1>{page} - {catData.category_name}</h1>
+              <h1>{page} - {catName}</h1>
             </Box>
           </Box>
           <Box grid='row'>

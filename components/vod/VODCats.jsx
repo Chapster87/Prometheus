@@ -10,7 +10,6 @@ import VODList from './VODList';
 function VODCats({page, spark}) {
   const [mediaCategory, setMediaCategory] = useState();
   const [listData, setListData] = useState();
-
   if(page === 'Series') {
     // GET Series Streams 
     // spark.getSeriesCategories()
@@ -55,22 +54,37 @@ function VODCats({page, spark}) {
             {(mediaCategory) ?
               <Box grid='col' columns='12'>
                 <View style={styles.tileGrid}>
-                  <Link href="/movies/all" asChild>
-                    <Pressable>
-                      <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }}>
-                        <Card.Body>
-                          <Card.Title>All Movies</Card.Title>
-                        </Card.Body>
-                      </Card>
-                    </Pressable>
-                  </Link>
-                  {mediaCategory.map(cat =>
-                    <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }} key={cat.category_id} onClick={() => handleCategoryClick(cat)}>
-                      <Card.Body>
-                        <Card.Title>{cat.category_name}</Card.Title>
-                      </Card.Body>
-                    </Card>
-                  )}
+                  {(page === 'Movies') &&
+                    <Link href="/movies/all" asChild>
+                      <Pressable>
+                        <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }}>
+                          <Card.Body>
+                            <Card.Title>All Movies</Card.Title>
+                          </Card.Body>
+                        </Card>
+                      </Pressable>
+                    </Link>
+                  }
+                  {mediaCategory.map(cat => (
+                    <Link 
+                      href={{
+                        pathname: (page === 'Movies') ? '/movies/category/[id]' : '/series/category/[id]',
+                        params: { id: cat.category_id, name: cat.category_name }
+                      }}
+
+                      asChild
+                      key={cat.category_id}
+                    >
+                      <Pressable>
+                        {/* <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }} onClick={() => handleCategoryClick(cat)}> */}
+                        <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }}>
+                          <Card.Body>
+                            <Card.Title>{cat.category_name}</Card.Title>
+                          </Card.Body>
+                        </Card>
+                      </Pressable>
+                    </Link>
+                  ))}
                 </View>
               </Box>
             :
@@ -93,7 +107,7 @@ function VODCats({page, spark}) {
           </Box>
         </Box>
       }
-      {(listData) && <VODList page={page} spark={spark} catData={listData} />}
+      {/* {(listData) && <VODList page={page} spark={spark} catData={listData} />} */}
     </>
   )
 }

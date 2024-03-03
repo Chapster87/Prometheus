@@ -37,8 +37,12 @@ function App() {
               {(activePage === 'Home') ?
                 <>
                   <Button variant="primary" onClick={() => selectMedia('Live TV')}>Live TV</Button>
-                  <Button variant="primary" onClick={() => selectMedia('Movies')}>Movies</Button>
-                  <Button variant="primary" onClick={() => selectMedia('Series')}>Series</Button>
+                  <Link href="/movies">
+                    <LinkText size="lg">Movies</LinkText>
+                  </Link>
+                  <Link href="/series">
+                    <LinkText size="lg">Series</LinkText>
+                  </Link>
                   <Link href="/account">
                     <LinkText size="lg">Account</LinkText>
                   </Link>
@@ -61,7 +65,6 @@ function App() {
         }
       </div>
       {(activePage === 'Live TV') && <TVGroups page={activePage} spark={spark} />}
-      {(activePage === 'Movies' || activePage === 'Series') && <VODCats page={activePage} spark={spark} />}
     </GluestackUIProvider>
   );
 }
