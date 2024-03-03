@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, Pressable } from 'react-native';
 import { Link } from 'expo-router';
-import { GluestackUIProvider, Box, ImageBackground, View, Text } from '@gluestack-ui/themed';
-import { config } from '../../config/gluestack-ui.config'
+import { Box, View } from '@gluestack-ui/themed';
 import Card from 'react-bootstrap/Card';
-
-import TVGuide from './TVGuide';
 
 function TVGroups({page, spark}) {
   const [mediaCategory, setMediaCategory] = useState([]);
-  const [groupData, setGroupData] = useState();
+  
   useEffect(() => {
     // spark.getLiveStreamCategory()
     //   .then(console.log)
@@ -19,12 +16,8 @@ function TVGroups({page, spark}) {
       .then((data) => setMediaCategory(data));
   }, []);
 
-  function handleCategoryClick(catData){
-    setGroupData(catData);
-  }
-
   return (
-    <GluestackUIProvider config={config}>
+    <>
       {(mediaCategory) &&
         <Box grid='container-fluid'>
           <Box grid='row'>
@@ -54,7 +47,7 @@ function TVGroups({page, spark}) {
           </Box>
         </Box>
       }
-    </GluestackUIProvider>
+    </>
   )
 }
 

@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { GluestackUIProvider, Box, ImageBackground, View, Text } from '@gluestack-ui/themed';
-import { config } from '../../config/gluestack-ui.config'
+import { Box, ImageBackground, View, Text } from '@gluestack-ui/themed';
 
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
@@ -64,7 +63,7 @@ export default function Page() {
   };
 
   return (
-    <GluestackUIProvider config={config}>
+    <>
       {/* May be better to define a dummy data object and then replace than checking to see if it's there and rendering on the second page load */}
       {(seriesData) &&
         <>
@@ -163,6 +162,6 @@ export default function Page() {
           </Modal>
         </>
       }
-    </GluestackUIProvider>
+    </>
   );
 }

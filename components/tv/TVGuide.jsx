@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import { GluestackUIProvider, Box, ImageBackground, View, Text } from '@gluestack-ui/themed';
-import { config } from '../../config/gluestack-ui.config'
+import { Box, Text } from '@gluestack-ui/themed';
 
 const date = new Date();
 
@@ -24,9 +23,8 @@ function TVGuide({ page, spark, catId, catName }) {
   }, []);
 
   return (
-    <GluestackUIProvider config={config}>
+    <>
       {/* Needs dummy content */}
-
       {(channels) &&
         <Box grid='container-fluid'>
           <Box grid='row'>
@@ -72,7 +70,7 @@ function TVGuide({ page, spark, catId, catName }) {
           </Box>
         </Box>
       }
-    </GluestackUIProvider>
+    </>
   )
 }
 

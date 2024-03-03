@@ -1,6 +1,5 @@
-import { GluestackUIProvider, Box, Text } from '@gluestack-ui/themed';
+import { Box, Text } from '@gluestack-ui/themed';
 import { StyleSheet} from 'react-native';
-import { config } from '../config/gluestack-ui.config'
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 export default function Page() {
 
   return (
-    <GluestackUIProvider config={config}>
+    <>
       <Box grid='container'>
         <Box grid='row'>
           <Box grid='col' columns='11' offset='1' columnsSm='10' offsetSm='2' columnsMd='8' offsetMd='4' columnsLg='6' offsetLg='6' columnsXl='4' offsetXl='8' columnsXxl='2' offsetXxl='10'
@@ -84,7 +83,7 @@ export default function Page() {
         </Col>
       </Row>
       </Container>
-    </GluestackUIProvider>
+    </>
   );
 }
 

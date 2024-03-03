@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, Pressable } from 'react-native';
 import { Link } from 'expo-router';
-import { GluestackUIProvider, Box, View, Text } from '@gluestack-ui/themed';
+import { Box, View } from '@gluestack-ui/themed';
 import Card from 'react-bootstrap/Card';
 import Placeholder from 'react-bootstrap/Placeholder';
-
-import VODList from './VODList';
 
 function VODCats({page, spark}) {
   const [mediaCategory, setMediaCategory] = useState();

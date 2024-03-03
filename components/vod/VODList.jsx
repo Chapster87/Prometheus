@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet} from 'react-native';
-import { GluestackUIProvider, Box, Text } from '@gluestack-ui/themed';
+import { Box } from '@gluestack-ui/themed';
 import Card from 'react-bootstrap/Card';
 import Placeholder from 'react-bootstrap/Placeholder';
 import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
