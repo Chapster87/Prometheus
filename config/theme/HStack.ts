@@ -34,5 +34,10 @@ export const HStack = createStyle({
         flexDirection: 'row-reverse',
       },
     },
+    wrap: {
+      true: {
+        flexWrap: 'wrap'
+      }
+    }
   },
 });
