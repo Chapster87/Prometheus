@@ -4,16 +4,16 @@ import { Link } from 'expo-router';
 import { GluestackUIProvider, Box, Text } from '@gluestack-ui/themed';
 import { config } from '../../config/gluestack-ui.config'
 
-import Player from '../../components/Player';
+import Spark from '../../components/Spark';
 
-// initialize player line api
-const player = new Player();
+// initialize api engine
+const spark = new Spark();
 
 export default function Page() {
   const [account, setAccount] = useState();
   
   useEffect(() => {
-  player.getAccountInfo()
+  spark.getAccountInfo()
     .then(data => setAccount(data));
   }, []);
 

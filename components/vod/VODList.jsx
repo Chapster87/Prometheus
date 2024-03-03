@@ -7,18 +7,18 @@ import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
 
 import VODCard from '../vod/VODCard';
 
-function VODList({page, player, catData}) {
+function VODList({page, spark, catData}) {
   const [VODCatData, setVODCatData] = useState();
   const [VodID, setVodID] = useState();
 
   if(page === 'Series') {
     // GET Series Streams
-    // player.getSeriesStreams(catData.category_id)
+    // spark.getSeriesStreams(catData.category_id)
     //   .then(console.log)
     //   .catch(console.log)
 
     useEffect(() => {
-      player.getSeriesStreams(catData.category_id)
+      spark.getSeriesStreams(catData.category_id)
         .then((data) => setVODCatData(data));
     }, []);
 
@@ -28,11 +28,11 @@ function VODList({page, player, catData}) {
 
     useEffect(() => {
       // GET Movie Streams
-      player.getVODStreams(catData.category_id)
+      spark.getVODStreams(catData.category_id)
         .then(data => console.log("VOD", data))
         .catch(console.log);
     
-      player.getVODStreams(catData.category_id)
+      spark.getVODStreams(catData.category_id)
         .then(data => setVODCatData(data));
     }, []);
   }

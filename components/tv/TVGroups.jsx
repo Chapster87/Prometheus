@@ -6,17 +6,17 @@ import Card from 'react-bootstrap/Card';
 
 import TVGuide from './TVGuide';
 
-function TVGroups({page, player}) {
+function TVGroups({page, spark}) {
   const [mediaCategory, setMediaCategory] = useState([]);
   const [groupData, setGroupData] = useState();
 
-  // player.getLiveStreamCategory()
+  // spark.getLiveStreamCategory()
   //   .then(console.log)
   //   .catch(console.log)
 
   if(page === 'Live TV') {
     useEffect(() => {
-      player.getLiveStreamCategory()
+      spark.getLiveStreamCategory()
         .then((data) => setMediaCategory(data));
     }, []);
   }
@@ -45,7 +45,7 @@ function TVGroups({page, player}) {
           </Box>
         </Box>
       }
-      {(groupData) && <TVGuide page={page} player={player} groupData={groupData} />}
+      {(groupData) && <TVGuide page={page} spark={spark} groupData={groupData} />}
     </GluestackUIProvider>
   )
 }

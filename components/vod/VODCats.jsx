@@ -7,18 +7,18 @@ import Placeholder from 'react-bootstrap/Placeholder';
 
 import VODList from './VODList';
 
-function VODCats({page, player}) {
+function VODCats({page, spark}) {
   const [mediaCategory, setMediaCategory] = useState();
   const [listData, setListData] = useState();
 
   if(page === 'Series') {
     // GET Series Streams 
-    // player.getSeriesCategories()
+    // spark.getSeriesCategories()
     //   .then(console.log)
     //   .catch(console.log);
 
     useEffect(() => {
-      player.getSeriesCategories()
+      spark.getSeriesCategories()
       .then(categories => {
         setMediaCategory(categories);
       });
@@ -26,12 +26,12 @@ function VODCats({page, player}) {
 
   } else if (page === 'Movies') {
     // GET VOD Streams 
-    // player.getVODStreamCategories()
+    // spark.getVODStreamCategories()
     //   .then(console.log)
     //   .catch(console.log);
 
     useEffect(() => {
-      player.getVODStreamCategories()
+      spark.getVODStreamCategories()
         .then(categories => {
           setMediaCategory(categories);
         });
@@ -93,7 +93,7 @@ function VODCats({page, player}) {
           </Box>
         </Box>
       }
-      {(listData) && <VODList page={page} player={player} catData={listData} />}
+      {(listData) && <VODList page={page} spark={spark} catData={listData} />}
     </>
   )
 }

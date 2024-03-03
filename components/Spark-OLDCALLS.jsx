@@ -3,7 +3,7 @@ const qs = require('querystring-es3')
 const pickBy = require('lodash.pickby')
 const Promise = require('bluebird')
 
-export default class Player {
+export default class Spark {
     /**
      * @param {{ baseUrl: string, auth: { username: string, password: string } }} [config]
      */

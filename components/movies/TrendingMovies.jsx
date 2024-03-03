@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { HStack } from '@gluestack-ui/themed';
 
 import VODCard from '../vod/VODCard';
-import Player from '../Player';
+import Spark from '../Spark';
 
-// initialize player line api
-const player = new Player();
+// initialize api engine
+const spark = new Spark();
 
 const options = {
   method: 'GET',
@@ -19,7 +19,7 @@ function TrendingMovies() {
   const [trendingData, setTrendingData] = useState();
   
   useEffect(() => {
-    player.getTrendingMovies()
+    spark.getTrendingMovies()
       .then(response => {
         setTrendingData(response)
       });

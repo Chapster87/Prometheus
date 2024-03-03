@@ -1,11 +1,8 @@
 require('fetch-everywhere')
 const qs = require('querystring-es3')
 const pickBy = require('lodash.pickby');
-import { optimizeName } from '../utils/utils'
 
-
-
-export default class Player {
+export default class Spark {
     /**
      * @param {{ baseUrl: string, auth: { username: string, password: string } }} [config]
      */

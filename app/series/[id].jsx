@@ -8,11 +8,11 @@ import Tabs from 'react-bootstrap/Tabs';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-import Player from '../../components/Player';
+import Spark from '../../components/Spark';
 import VideoJS from '../../components/VideoJS'
 
-// initialize player line api
-const player = new Player();
+// initialize api engine
+const spark = new Spark();
 
 const MODAL_DEFAULT = {
   show: false,
@@ -25,7 +25,7 @@ export default function Page() {
   const [showVideoModal, setShowVideoModal] = useState(MODAL_DEFAULT);
   
   useEffect(() => {
-    player.getSeriesInfo(id)
+    spark.getSeriesInfo(id)
       .then(data => {
         setSeriesData(data);
         console.log('Page Data', data)
@@ -114,7 +114,7 @@ export default function Page() {
                         {(seriesData.episodes[index]) &&
                           seriesData.episodes[index].map(episode => {
                               // http(s)://domain:port/series/username/password/streamID.ext
-                              const episodeURL = `${player.config.baseUrl}/series/${player.config.auth.username}/${player.config.auth.password}/${episode.id}.${episode.container_extension}`;
+                              const episodeURL = `${spark.config.baseUrl}/series/${spark.config.auth.username}/${spark.config.auth.password}/${episode.id}.${episode.container_extension}`;
                             return (
                               <Box grid='row' key={episode.id}>
                                 <Box grid='col' columns='12' columnsMd='6' columnsLg='3'>

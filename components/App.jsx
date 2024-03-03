@@ -5,7 +5,7 @@ import { config } from '../config/gluestack-ui.config'
 import { Link, LinkText } from "@gluestack-ui/themed"
 import Button from 'react-bootstrap/Button';
 
-import Player from './Player';
+import Spark from './Spark';
 import TVGroups from './tv/TVGroups';
 import VODCats from './vod/VODCats';
 import TrendingMovies from './movies/TrendingMovies';
@@ -13,8 +13,8 @@ import TrendingMovies from './movies/TrendingMovies';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/scss/index.scss';
 
-// initialize player line api
-const player = new Player();
+// initialize api engine
+const spark = new Spark();
 
 function App() {
   const [activePage, setActivePage] = useState('Home');
@@ -60,8 +60,8 @@ function App() {
           </>
         }
       </div>
-      {(activePage === 'Live TV') && <TVGroups page={activePage} player={player} />}
-      {(activePage === 'Movies' || activePage === 'Series') && <VODCats page={activePage} player={player} />}
+      {(activePage === 'Live TV') && <TVGroups page={activePage} spark={spark} />}
+      {(activePage === 'Movies' || activePage === 'Series') && <VODCats page={activePage} spark={spark} />}
     </GluestackUIProvider>
   );
 }

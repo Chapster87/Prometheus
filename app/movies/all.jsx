@@ -4,21 +4,21 @@ import { Link } from 'expo-router';
 import { GluestackUIProvider, Box, ImageBackground, View, Text } from '@gluestack-ui/themed';
 import { config } from '../../config/gluestack-ui.config'
 
-import Player from '../../components/Player';
+import Spark from '../../components/Spark';
 import Card from 'react-bootstrap/Card';
 import Placeholder from 'react-bootstrap/Placeholder';
 import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
 
 import VODCard from '../../components/vod/VODCard';
 
-// initialize player line api
-const player = new Player();
+// initialize api engine
+const spark = new Spark();
 
 export default function Page() {
   const [allMedia, setAllMedia] = useState();
   
   useEffect(() => {
-    player.getVODStreams('X')
+    spark.getVODStreams('X')
       .then(data => {
         setAllMedia(data);
         // console.log("All Movies", data);

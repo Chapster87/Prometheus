@@ -11,14 +11,14 @@ let year = date.getFullYear();
 
 let currTime = Date.now()
 
-function TVGuide({page, player, groupData}) {
+function TVGuide({page, spark, groupData}) {
   const [channels, setChannels] = useState();
 
   useEffect(() => {
-  player.getLiveGuide(groupData.category_id)
+  spark.getLiveGuide(groupData.category_id)
     .then(data => console.log("TV Guide", data))
 
-  player.getLiveGuide(groupData.category_id)
+  spark.getLiveGuide(groupData.category_id)
     .then(data => setChannels(data));
     
   }, []);

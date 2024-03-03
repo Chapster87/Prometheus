@@ -3,22 +3,22 @@ import { useLocalSearchParams } from 'expo-router';
 import { GluestackUIProvider, Box, ImageBackground, View, Text } from '@gluestack-ui/themed';
 import { config } from '../../config/gluestack-ui.config'
 
-import Player from '../../components/Player';
+import Spark from '../../components/Spark';
 import VideoJS from '../../components/VideoJS'
 
-// initialize player line api
-const player = new Player();
+// initialize api engine
+const spark = new Spark();
 
 export default function Page() {
   const [movieData, setMovieData] = useState();
   const { id } = useLocalSearchParams(); 
   
   useEffect(() => {
-    player.getVODInfo(id)
+    spark.getVODInfo(id)
     .then(data => {
 
       // http(s)://domain:port/movie/username/password/streamID.ext
-      const streamUrl = `${player.config.baseUrl}/movie/${player.config.auth.username}/${player.config.auth.password}/${data.movie_data.stream_id}.${data.movie_data.container_extension}`;
+      const streamUrl = `${spark.config.baseUrl}/movie/${spark.config.auth.username}/${spark.config.auth.password}/${data.movie_data.stream_id}.${data.movie_data.container_extension}`;
       
       data.movie_data.stream_url = streamUrl;
 
