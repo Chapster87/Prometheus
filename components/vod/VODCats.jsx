@@ -37,10 +37,6 @@ function VODCats({page, spark}) {
     }, []);
   }
 
-  function handleCategoryClick(catData){
-    setListData(catData);
-  }
-
   return (
     <>
       {(!listData) &&
@@ -71,12 +67,10 @@ function VODCats({page, spark}) {
                         pathname: (page === 'Movies') ? '/movies/category/[id]' : '/series/category/[id]',
                         params: { id: cat.category_id, name: cat.category_name }
                       }}
-
                       asChild
                       key={cat.category_id}
                     >
                       <Pressable>
-                        {/* <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }} onClick={() => handleCategoryClick(cat)}> */}
                         <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }}>
                           <Card.Body>
                             <Card.Title>{cat.category_name}</Card.Title>

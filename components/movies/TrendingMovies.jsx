@@ -23,11 +23,6 @@ function TrendingMovies() {
       .then(response => {
         setTrendingData(response)
       });
-
-  }, []);
-
-  useEffect(() => {
-    
   }, []);
 
   return (

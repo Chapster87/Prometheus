@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
+import { Link } from 'expo-router';
 import { GluestackUIProvider, Box, ImageBackground, View, Text } from '@gluestack-ui/themed';
 import { config } from '../../config/gluestack-ui.config'
 import Card from 'react-bootstrap/Card';
@@ -9,17 +10,14 @@ import TVGuide from './TVGuide';
 function TVGroups({page, spark}) {
   const [mediaCategory, setMediaCategory] = useState([]);
   const [groupData, setGroupData] = useState();
+  useEffect(() => {
+    // spark.getLiveStreamCategory()
+    //   .then(console.log)
+    //   .catch(console.log)
 
-  // spark.getLiveStreamCategory()
-  //   .then(console.log)
-  //   .catch(console.log)
-
-  if(page === 'Live TV') {
-    useEffect(() => {
-      spark.getLiveStreamCategory()
-        .then((data) => setMediaCategory(data));
-    }, []);
-  }
+    spark.getLiveStreamCategory()
+      .then((data) => setMediaCategory(data));
+  }, []);
 
   function handleCategoryClick(catData){
     setGroupData(catData);
@@ -27,25 +25,35 @@ function TVGroups({page, spark}) {
 
   return (
     <GluestackUIProvider config={config}>
-      {(mediaCategory && !groupData) &&
+      {(mediaCategory) &&
         <Box grid='container-fluid'>
           <Box grid='row'>
             <Box grid='col' columns='12'>
               <h1>{page}</h1>
               <View style={styles.tileGrid}>
                 {mediaCategory.map(cat =>
-                  <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }} key={cat.category_id} onClick={() => handleCategoryClick(cat)}>
-                    <Card.Body>
-                      <Card.Title>{cat.category_name}</Card.Title>
-                    </Card.Body>
-                  </Card>
+                  <Link 
+                    href={{
+                      pathname: '/tv/category/[id]',
+                      params: { id: cat.category_id, name: cat.category_name }
+                    }}
+                    asChild
+                    key={cat.category_id}
+                  >
+                    <Pressable>
+                      <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }} key={cat.category_id}>
+                        <Card.Body>
+                          <Card.Title>{cat.category_name}</Card.Title>
+                        </Card.Body>
+                      </Card>
+                    </Pressable>
+                  </Link>
                 )}
               </View>
             </Box>
           </Box>
         </Box>
       }
-      {(groupData) && <TVGuide page={page} spark={spark} groupData={groupData} />}
     </GluestackUIProvider>
   )
 }

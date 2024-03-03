@@ -11,14 +11,14 @@ let year = date.getFullYear();
 
 let currTime = Date.now()
 
-function TVGuide({page, spark, groupData}) {
+function TVGuide({ page, spark, catId, catName }) {
   const [channels, setChannels] = useState();
 
   useEffect(() => {
-  spark.getLiveGuide(groupData.category_id)
-    .then(data => console.log("TV Guide", data))
+  // spark.getLiveGuide(catId)
+  //   .then(data => console.log("TV Guide", data))
 
-  spark.getLiveGuide(groupData.category_id)
+  spark.getLiveGuide(catId)
     .then(data => setChannels(data));
     
   }, []);
@@ -31,7 +31,7 @@ function TVGuide({page, spark, groupData}) {
         <Box grid='container-fluid'>
           <Box grid='row'>
             <Box grid='col' columns='12'>
-              <h1>{page} - {groupData.category_name}</h1>
+              <h1>{page} - {catName}</h1>
             </Box>
           </Box>
           <Box grid='row'>
