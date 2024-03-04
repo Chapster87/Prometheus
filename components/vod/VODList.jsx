@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet} from 'react-native';
-import { Box } from '@gluestack-ui/themed';
-import Card from 'react-bootstrap/Card';
-import Placeholder from 'react-bootstrap/Placeholder';
+import { Box, Card, Heading } from '@gluestack-ui/themed';
+
 import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
 
 import VODCard from '../vod/VODCard';
@@ -43,7 +42,7 @@ function VODList({page, spark, catId, catName}) {
         <Box grid='container-fluid'>
           <Box grid='row'>
             <Box grid='col' columns='12'>
-              <h1>{page} - {catName}</h1>
+              <Heading size='3xl'>{page} - {catName}</Heading>
             </Box>
           </Box>
           <Box grid='row'>
@@ -59,18 +58,11 @@ function VODList({page, spark, catId, catName}) {
               })
             :
               [...Array(18)].map((elementInArray, index) => ( 
-                <Box grid='col' columns='6' columnsMd='4' columnsLg='3' columnsXl='2' style={{ display: 'flex', alignItems: "stretch"}} key={index}>
-                  <Card>
-                    <div style={{ ...styles.placeholderCardImg }} bg='$trueGray200' color='$trueGray500'>
+                <Box grid='col' columns='12' columnsMd='4' columnsLg='3' columnsXl='2' style={{ display: 'flex', alignItems: "stretch"}} key={index}>
+                  <Card size="md" variant="elevated" m="$3">
+                    <Box style={{ ...styles.placeholderCardImg }} bg='$trueGray200' color='$trueGray500'>
                       <ImgPlaceholder width={120} height={40} />
-                    </div>
-                    <Card.Body>
-                      <Card.Title>
-                          <Placeholder animation="glow">
-                            <Placeholder xs={10} />
-                          </Placeholder>
-                      </Card.Title>
-                    </Card.Body>
+                    </Box>
                   </Card>
                 </Box>
               ))

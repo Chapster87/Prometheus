@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Pressable } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
-import { Box, View } from '@gluestack-ui/themed';
-import Card from 'react-bootstrap/Card';
-import Placeholder from 'react-bootstrap/Placeholder';
+import { Box, Card, Heading, View, Pressable } from '@gluestack-ui/themed';
 
 function VODCats({page, spark}) {
   const [mediaCategory, setMediaCategory] = useState();
@@ -41,7 +39,7 @@ function VODCats({page, spark}) {
         <Box grid='container-fluid'>
           <Box grid='row'>
             <Box grid='col' columns='12'>
-              <h1>{page}</h1>
+              <Heading size='3xl'>{page}</Heading>
             </Box>
           </Box>
           <Box grid='row'>
@@ -52,9 +50,7 @@ function VODCats({page, spark}) {
                     <Link href="/movies/all" asChild>
                       <Pressable>
                         <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }}>
-                          <Card.Body>
-                            <Card.Title>All Movies</Card.Title>
-                          </Card.Body>
+                          <Heading size='xl'>All Movies</Heading>
                         </Card>
                       </Pressable>
                     </Link>
@@ -70,9 +66,7 @@ function VODCats({page, spark}) {
                     >
                       <Pressable>
                         <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }}>
-                          <Card.Body>
-                            <Card.Title>{cat.category_name}</Card.Title>
-                          </Card.Body>
+                          <Heading size='xl'>{cat.category_name}</Heading>
                         </Card>
                       </Pressable>
                     </Link>
@@ -84,13 +78,6 @@ function VODCats({page, spark}) {
                 <Box grid='col' columns='12' key={index}>
                   <View style={styles.tileGrid}>
                     <Card style={{ width: '18rem', margin: '1rem' }}>
-                      <Card.Body>
-                        <Card.Title>
-                          <Placeholder animation="glow">
-                            <Placeholder xs={10} />
-                          </Placeholder>
-                        </Card.Title>
-                      </Card.Body>
                     </Card>
                   </View>
                 </Box>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import { Box, Text } from '@gluestack-ui/themed';
+import { Box, Heading, Text } from '@gluestack-ui/themed';
 
 const date = new Date();
 
@@ -29,7 +29,7 @@ function TVGuide({ page, spark, catId, catName }) {
         <Box grid='container-fluid'>
           <Box grid='row'>
             <Box grid='col' columns='12'>
-              <h1>{page} - {catName}</h1>
+              <Heading size='3xl'>{page} - {catName}</Heading>
             </Box>
           </Box>
           <Box grid='row'>

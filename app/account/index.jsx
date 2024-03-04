@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box } from '@gluestack-ui/themed';
+import { Box, Heading } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
 
@@ -18,13 +18,13 @@ export default function Page() {
     <Box grid='container'>
       <Box grid='row'>
         <Box grid='col' columns='12'>
-          <h1>Account Info</h1>
+          <Heading size='3xl'>Account Info</Heading>
         </Box>
       </Box>
       {(account) &&
       <Box grid='row'>
         <Box grid='col' columns='12'>
-          <h3>{account.message}</h3>
+          <Heading size='xl'>{account.message}</Heading>
           <hr/>
           <p><strong>Username:</strong> {account.username}</p>
           <p><strong>Password:</strong> {account.password}</p>

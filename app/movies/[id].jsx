@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { Box, ImageBackground, View, Text } from '@gluestack-ui/themed';
+import { Box, Heading, ImageBackground, View, Text, VStack } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
 import VideoJS from '../../components/VideoJS'
@@ -80,23 +80,15 @@ export default function Page() {
                 <Box grid='col' columns='12' columnsMd='9'>
                   <Box grid='row'>
                     <Box grid='col' columns='12'>
-                      <h1>{movieData.movie_data.name}</h1>
-                      <ul className={`unstyled mb-3`}>
-                        <li><strong>Genre:</strong> {movieData.info.genre}</li>
-                        <li><strong>Runtime:</strong> {movieData.info.duration}</li>
-                        <li><strong>Rating:</strong> <strong>{movieData.info.rating}</strong> / 10</li>
-                        <li>{movieData.movie_data.stream_url}</li>
-                      </ul>
-                    </Box>
-                  </Box>
-                  <Box grid='row'>
-                    <Box grid='col' columns='12'>
-                    <p>{movieData.info.plot}</p>
-                    </Box>
-                  </Box>
-                  <Box grid='row'>
-                    <Box grid='col' columns='12'>
-                    <p><strong>Cast:</strong> {movieData.info.actors}</p>
+                      <Heading size='3xl'>{movieData.movie_data.name}</Heading>
+                      <VStack space="md" reversed={false}>
+                        <Box><strong>Genre:</strong> {movieData.info.genre}</Box>
+                        <Box><strong>Runtime:</strong> {movieData.info.duration}</Box>
+                        <Box><strong>Rating:</strong> <strong>{movieData.info.rating}</strong> / 10</Box>
+                        <Box>{movieData.movie_data.stream_url}</Box>
+                        <Box>{movieData.info.plot}</Box>
+                        <Box><strong>Cast:</strong> {movieData.info.actors}</Box>
+                      </VStack>
                     </Box>
                   </Box>
                 </Box>

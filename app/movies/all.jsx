@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Box } from '@gluestack-ui/themed';
+import { StyleSheet} from 'react-native';
+import { Box, Card, Heading } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
-import Card from 'react-bootstrap/Card';
-import Placeholder from 'react-bootstrap/Placeholder';
 import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
 
 import VODCard from '../../components/vod/VODCard';
@@ -11,7 +10,7 @@ import VODCard from '../../components/vod/VODCard';
 // initialize api engine
 const spark = new Spark();
 
-export default function Page() {
+function Page() {
   const [allMedia, setAllMedia] = useState();
   
   useEffect(() => {
@@ -25,7 +24,7 @@ export default function Page() {
     <Box grid='container-fluid' className='vod-list'>
       <Box grid='row'>
         <Box grid='col' columns='12'>
-          <h1>All Movies</h1>
+          <Heading size='3xl'>All Movies</Heading>
         </Box>
       </Box>
       <Box grid='row'>
@@ -38,17 +37,10 @@ export default function Page() {
         :
           [...Array(18)].map((elementInArray, index) => (
             <Box grid='col' columns='12' columnsMd='4' columnsLg='3' columnsXl='2' style={{ display: 'flex', alignItems: "stretch"}} key={index}>
-              <Card className={`vod-card movie`}>
-                <div className={`card-img-top card-img-placeholder`}>
+              <Card size="md" variant="elevated" m="$3">
+                <Box style={{ ...styles.placeholderCardImg }} bg='$trueGray200' color='$trueGray500'>
                   <ImgPlaceholder width={120} height={40} />
-                </div>
-                <Card.Body>
-                  <Card.Title className={`text-center`}>
-                      <Placeholder animation="glow">
-                        <Placeholder xs={10} />
-                      </Placeholder>
-                  </Card.Title>
-                </Card.Body>
+                </Box>
               </Card>
             </Box>
           ))
@@ -57,3 +49,14 @@ export default function Page() {
     </Box>
   );
 }
+
+const styles = StyleSheet.create({
+  placeholderCardImg: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 300
+  }
+});
+
+export default Page;

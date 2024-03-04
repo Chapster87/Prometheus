@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { HStack } from '@gluestack-ui/themed';
+import { Heading, HStack } from '@gluestack-ui/themed';
 
 import VODCard from '../vod/VODCard';
 import Spark from '../Spark';

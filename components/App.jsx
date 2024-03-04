@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Box } from "@gluestack-ui/themed"
+import { Box, Heading } from "@gluestack-ui/themed"
 
 import TrendingMovies from './movies/TrendingMovies';
 
@@ -8,7 +7,9 @@ function App() {
     <>
       <Box grid='container-fluid'>
         <Box grid='row'>
-          <Box grid='col' columns='12'><h1>Trending Movies</h1></Box>
+          <Box grid='col' columns='12'>
+            <Heading size='3xl'>Trending Movies</Heading>
+          </Box>
         </Box>
       </Box>
       <TrendingMovies />
