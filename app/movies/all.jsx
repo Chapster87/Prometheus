@@ -31,7 +31,7 @@ function Page() {
         {(allMedia) ?
           allMedia.slice(0, 50).map(media => {
               return (
-                <VODCard key={media.stream_id} mediaID={media.stream_id} image={media.stream_icon} name={media.title} />
+                <VODCard key={media.stream_id} streamType='movie' mediaID={media.stream_id} image={media.stream_icon} name={media.title} />
               );
             })
         :

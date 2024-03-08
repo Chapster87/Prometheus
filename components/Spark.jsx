@@ -29,7 +29,7 @@ export default class Spark {
         const res = await fetch(`${this.config.baseUrl}/player_api.php?${qs.stringify(query)}`);
 
         if (!res.ok) {
-            const message = `An error has occured: ${response.status}`;
+            const message = `An error has occured: ${res.status}`;
             throw new Error(message);
         }
 
@@ -53,7 +53,7 @@ export default class Spark {
      * @param {Object} [params]
      * @returns {Promise<any>}
      */
-    async getTmdb(section, content, params) {
+    async getTmdb(section, content, path_params, query_params) {
         const tmdbBaseUrl = 'https://api.themoviedb.org/3';
         const options = {
             method: 'GET',
@@ -64,14 +64,19 @@ export default class Spark {
         };
 
         let fetchUrl = `${tmdbBaseUrl}/${section}/${content}`;
-        if(params){
-            const querystring = new URLSearchParams(params).toString();
+
+        if(path_params) {
+            fetchUrl += `/${path_params}`;
+        }
+
+        if(query_params){
+            const querystring = new URLSearchParams(query_params).toString();
             fetchUrl = fetchUrl + `?${querystring}`;
         }
 
         const res = await fetch(fetchUrl, options);
         if (!res.ok) {
-            const message = `An error has occured: ${response.status}`;
+            const message = `An error has occured: ${res.status}`;
             throw new Error(message);
         }
 
@@ -209,6 +214,44 @@ export default class Spark {
     }
 
     /**
+     * GET VOD Info by Search Values
+     *
+     * @param {Object} seriesList
+     */
+    async getTrendingSeriesIDs(seriesList) {
+        if (!seriesList) {
+            const message = `Series List not defined`;
+            throw new Error(message);
+        }
+
+        const id_all = 'X';
+
+        const AllSeries = await this.execute('get_series', { category_id: id_all });
+
+        console.log('tmdb', seriesList);
+        console.log('xc', AllSeries);
+
+        const missingMovies = [];
+        for (let i in seriesList){
+            const name = seriesList[i]['name'];
+            const releaseYear = seriesList[i]['first_air_date'].substr(0,4);
+
+            let match = AllSeries.filter(series => series.title == name && series.year == releaseYear);
+
+            if(match.length > 0) {
+                seriesList[i].stream_id = match[0].series_id;
+            } else {
+                seriesList[i].stream_id = null;
+                missingMovies.push(seriesList[i]);
+            }
+        }
+
+        console.log('List', seriesList);
+
+        return seriesList;
+    }
+
+    /**
      * GET Series Info
      *
      * @param {number} id This will get info such as video codecs, duration, description, directors for 1 Series
@@ -284,14 +327,29 @@ export default class Spark {
      */
     async getTrendingMovies() {
         const params = {
-            language:'en-US',
-            page: 1
+            language:'en-US'
         };
 
-        const trendingMovies = await this.getTmdb('movie', 'popular', params);
+        const trendingMovies = await this.getTmdb('trending', 'movie', 'week', params);
 
         const updatedTrendingMovies = await this.getTrendingMovieIDs(trendingMovies.results);
 
         return updatedTrendingMovies;
+    }
+
+    /**
+     * Fetch Trending Series from TMDB and attach stream id to link to Series Detail
+     *
+     */
+    async getTrendingSeries() {
+        const params = {
+            language:'en-US'
+        };
+
+        const trendingSeries = await this.getTmdb('trending', 'tv', 'week', params);
+
+        const updatedTrendingSeries = await this.getTrendingSeriesIDs(trendingSeries.results);
+
+        return updatedTrendingSeries;
     }
 } 

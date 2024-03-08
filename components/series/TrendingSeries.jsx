@@ -18,44 +18,28 @@ const options = {
 };
 
 const width = Dimensions.get('window').width;
-// const width = 1000;
 const COUNT = 6;
 
 function TrendingMovies() {
   const [trendingData, setTrendingData] = useState();
-  const [movieCount, setMovieCount] = useState();
+  const [seriesCount, setSeriesCount] = useState();
 
   useEffect(() => {
-    spark.getTrendingMovies()
+    spark.getTrendingSeries()
       .then(response => {
         console.log(response);
         setTrendingData(response)
-        setMovieCount(response.length);
+        setSeriesCount(response.length);
       });
   }, []);
 
   return (
     <>
-      {(trendingData && movieCount) &&
+      {(trendingData && seriesCount) &&
         <>
-          <View style={{ flex: 1 }}>
-            <Carousel
-              loop
-              width={width / COUNT}
-              height={width / 2}
-              autoPlay={false}
-              style={{width: width}}
-              // data={[Object.keys(trendingData)]}
-              data={[...new Array(movieCount).keys()]}
-              onSnapToItem={(index) => console.log('current index:', index)}
-              renderItem={({ index }) => 
-                <VODCard key={trendingData[index].id} streamType='movie' mediaID={trendingData[index].stream_id} image={`https://image.tmdb.org/t/p/w400${trendingData[index].poster_path}`} name={trendingData[index].title} />
-              }
-            />
-          </View>
           <HStack space="none" reversed={false} wrap={false}>
             {trendingData.map(trending =>
-              <VODCard key={trending.id} streamType='movie' mediaID={trending.stream_id} image={`https://image.tmdb.org/t/p/w400${trending.poster_path}`} name={trending.title} />
+              <VODCard key={trending.id} mediaID={trending.stream_id} streamType='series' image={`https://image.tmdb.org/t/p/w400${trending.poster_path}`} name={trending.title} />
             )}
           </HStack>
         </>
