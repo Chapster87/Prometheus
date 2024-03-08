@@ -1,6 +1,5 @@
 - Search
 - Improve Navigation
-- TV Channels
 - TV Guide
 - Sign In
 - All Series

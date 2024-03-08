@@ -470,7 +470,7 @@ export const gluestackUIConfig = createConfig({
       '3/6': '50%',
       '4/6': '66.666%',
       '5/6': '83.333%',
-      'full': '100%'
+      'full': '100%',
     },
     borderWidths: {
       '0': 0,
@@ -763,7 +763,7 @@ export const gluestackUIConfig = createConfig({
           },
         },
       },
-    }
+    },
   },
   plugins: [new AnimationResolver(MotionAnimationDriver)],
 });
