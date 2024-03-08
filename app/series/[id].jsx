@@ -80,10 +80,10 @@ export default function Page() {
                     <Box grid='col' columns='12'>
                       <Heading size='3xl'>{seriesData.info.name}</Heading>
                       <VStack space="md" reversed={false}>
-                        {(seriesData.info.genre) && <Box><strong>Genre:</strong> {seriesData.info.genre}</Box>}
-                        <Box><strong>Rating:</strong> <strong>{seriesData.info.rating}</strong> / 10</Box>
-                        <Box>{seriesData.info.plot}</Box>
-                        <Box><strong>Cast:</strong> {seriesData.info.cast}</Box>
+                        {(seriesData.info.genre) && <Box><Text><strong>Genre:</strong> {seriesData.info.genre}</Text></Box>}
+                        <Box><Text><strong>Rating:</strong> <strong>{seriesData.info.rating}</strong> / 10</Text></Box>
+                        <Box><Text>{seriesData.info.plot}</Text></Box>
+                        <Box><Text><strong>Cast:</strong> {seriesData.info.cast}</Text></Box>
                       </VStack>
                     </Box>
                   </Box>
@@ -91,44 +91,49 @@ export default function Page() {
               </Box>
               <Box grid='row' mt='$8'>
                 <Box grid='col' columns='12'>
-                  <Tabs>
+                  <Tabs defaultValue={seriesData.seasons[0].id}>
                     <TabsTabList>
                     {seriesData.seasons.map((season, index) => 
-                      <TabsTab value={season.id} key={season.id}>
+                      <TabsTab value={`tab-${season.season_number}`} key={season.id}>
                         <TabsTabTitle color='$white'>{season.name}</TabsTabTitle>
                       </TabsTab>
                     )}
                     </TabsTabList>
                     <TabsTabPanels>
-                      {seriesData.seasons.map((season, index) => 
-                        <TabsTabPanel value={season.id} key={season.id}>
-                          {(seriesData.episodes[index]) &&
-                            seriesData.episodes[index].map(episode => {
-                              // http(s)://domain:port/series/username/password/streamID.ext
-                              const episodeURL = `${spark.config.baseUrl}/series/${spark.config.auth.username}/${spark.config.auth.password}/${episode.id}.${episode.container_extension}`;
-                              return (
-                                <Box grid='row' key={episode.id}>
-                                  <Box grid='col' columns='12' columnsMd='6' columnsLg='3'>
-                                    <img src={episode.info.movie_image} alt={episode.title} />
-                                    <Button onPress={() => handleShow(episodeURL)} ref={ref}>
-                                      <ButtonText>Show Modal</ButtonText>
-                                    </Button>
+                      {seriesData.seasons.map((season, index) => {
+                      let episodeIndex = seriesData && seriesData.episodes.length && seriesData.episodes[0].length > 0 ? index : index + 1;
+                        
+                        return (
+                          <TabsTabPanel value={`tab-${episodeIndex}`} key={season.id}>
+                            {(seriesData.episodes[episodeIndex]) &&
+                              seriesData.episodes[episodeIndex].map(episode => {
+                                // http(s)://domain:port/series/username/password/streamID.ext
+                                const episodeURL = `${spark.config.baseUrl}/series/${spark.config.auth.username}/${spark.config.auth.password}/${episode.id}.${episode.container_extension}`;
+                                console.log(episodeIndex);
+                                return (
+                                  <Box grid='row' key={episode.id}>
+                                    <Box grid='col' columns='12' columnsMd='6' columnsLg='3'>
+                                      <img src={episode.info.movie_image} alt={episode.title} />
+                                      <Button onPress={() => handleShow(episodeURL)} ref={ref}>
+                                        <ButtonText>Show Modal</ButtonText>
+                                      </Button>
+                                    </Box>
+                                    <Box grid='col' columns='12' columnsMd='6' columnsLg='9'>
+                                      <Heading size='xl'>{episode.title}</Heading>
+                                      <VStack space="md" reversed={false}>
+                                        <Box><Text><strong>Runtime:</strong> {episode.info.duration}</Text></Box>
+                                        <Box><Text><strong>Rating:</strong> <strong>{episode.info.rating}</strong> / 10</Text></Box>
+                                        <Box><Text>{episodeURL}</Text></Box>
+                                        <Box><Text>{episode.info.plot}</Text></Box>
+                                      </VStack>
+                                    </Box>
                                   </Box>
-                                  <Box grid='col' columns='12' columnsMd='6' columnsLg='9'>
-                                    <Heading size='xl'>{episode.title}</Heading>
-                                    <VStack space="md" reversed={false}>
-                                      <Box><strong>Runtime:</strong> {episode.info.duration}</Box>
-                                      <Box><strong>Rating:</strong> <strong>{episode.info.rating}</strong> / 10</Box>
-                                      <Box>{episodeURL}</Box>
-                                      <Box>{episode.info.plot}</Box>
-                                    </VStack>
-                                  </Box>
-                                </Box>
-                              )
-                            }
-                          )}
-                        </TabsTabPanel>
-                      )}
+                                )
+                              }
+                            )}
+                          </TabsTabPanel>
+                        )
+                      })}
                     </TabsTabPanels>
                   </Tabs>
                 </Box>

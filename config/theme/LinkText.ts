@@ -1,9 +1,13 @@
 import { createStyle } from '@gluestack-style/react';
 
 export const LinkText = createStyle({
-  textDecoration: 'none',
+  textDecoration: 'underline',
   color: '$info700',
   _dark: {
     color: '$info300',
   },
+  _web: {
+    textDecoration: 'underline',
+    color: '$info700'
+  }
 });

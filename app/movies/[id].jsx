@@ -82,12 +82,12 @@ export default function Page() {
                     <Box grid='col' columns='12'>
                       <Heading size='3xl'>{movieData.movie_data.name}</Heading>
                       <VStack space="md" reversed={false}>
-                        <Box><strong>Genre:</strong> {movieData.info.genre}</Box>
-                        <Box><strong>Runtime:</strong> {movieData.info.duration}</Box>
-                        <Box><strong>Rating:</strong> <strong>{movieData.info.rating}</strong> / 10</Box>
-                        <Box>{movieData.movie_data.stream_url}</Box>
-                        <Box>{movieData.info.plot}</Box>
-                        <Box><strong>Cast:</strong> {movieData.info.actors}</Box>
+                        <Box><Text><strong>Genre:</strong> {movieData.info.genre}</Text></Box>
+                        <Box><Text><strong>Runtime:</strong> {movieData.info.duration}</Text></Box>
+                        <Box><Text><strong>Rating:</strong> <strong>{movieData.info.rating}</strong> / 10</Text></Box>
+                        <Box><Text>{movieData.movie_data.stream_url}</Text></Box>
+                        <Box><Text>{movieData.info.plot}</Text></Box>
+                        <Box><Text><strong>Cast:</strong> {movieData.info.actors}</Text></Box>
                       </VStack>
                     </Box>
                   </Box>
