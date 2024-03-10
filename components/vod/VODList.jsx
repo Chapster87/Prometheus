@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet} from 'react-native';
-import { Box, Card, Heading } from '@gluestack-ui/themed';
+import { Box, Heading } from '@gluestack-ui/themed';
 
-import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
-
-import VODCard from '../vod/VODCard';
+import MediaCard from '../media/MediaCard';
+import DummyCard from '../dummies/DummyCard';
 
 function VODList({page, spark, catId, catName}) {
   const [VODCatData, setVODCatData] = useState();
@@ -53,19 +52,13 @@ function VODList({page, spark, catId, catName}) {
                 const mediaImg = isSeries ? vod.cover : vod.stream_icon;
 
                 return (
-                  <VODCard key={mediaID} mediaID={mediaID} streamType={vod.stream_type} name={vod.name} image={mediaImg} />
+                  <MediaCard key={mediaID} mediaID={mediaID} streamType={vod.stream_type} name={vod.name} image={mediaImg} />
                 );
               })
             :
-              [...Array(18)].map((elementInArray, index) => ( 
-                <Box grid='col' columns='12' columnsMd='4' columnsLg='3' columnsXl='2' style={{ display: 'flex', alignItems: "stretch"}} key={index}>
-                  <Card size="md" variant="elevated" m="$3">
-                    <Box style={{ ...styles.placeholderCardImg }} bg='$trueGray200' color='$trueGray500'>
-                      <ImgPlaceholder width={120} height={40} />
-                    </Box>
-                  </Card>
-                </Box>
-              ))
+              [...Array(18)].map((elementInArray, index) =>
+                <DummyCard key={index} />
+              )
             }
           </Box>
         </Box>
@@ -73,14 +66,5 @@ function VODList({page, spark, catId, catName}) {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  placeholderCardImg: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 300
-  }
-});
 
 export default VODList;

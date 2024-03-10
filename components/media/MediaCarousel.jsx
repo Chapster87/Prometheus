@@ -3,19 +3,11 @@ import { Dimensions } from 'react-native';
 import { Heading, HStack, Text, View } from '@gluestack-ui/themed';
 import Carousel from "react-native-reanimated-carousel";
 
-import VODCard from '../vod/VODCard';
+import MediaCard from '../media/MediaCard';
 import Spark from '../Spark';
 
 // initialize api engine
 const spark = new Spark();
-
-const options = {
-  method: 'GET',
-  headers: {
-    accept: 'application/json',
-    Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_API_READ_ACCESS_TOKEN}`
-  }
-};
 
 const width = Dimensions.get('window').width;
 // const width = 1000;
@@ -49,24 +41,14 @@ function TrendingMovies() {
               data={[...new Array(movieCount).keys()]}
               onSnapToItem={(index) => console.log('current index:', index)}
               renderItem={({ index }) => 
-                <VODCard key={trendingData[index].id} streamType='movie' mediaID={trendingData[index].stream_id} image={`https://image.tmdb.org/t/p/w400${trendingData[index].poster_path}`} name={trendingData[index].title} />
+                <MediaCard key={trendingData[index].id} streamType='movie' mediaID={trendingData[index].stream_id} image={`https://image.tmdb.org/t/p/w400${trendingData[index].poster_path}`} name={trendingData[index].title} />
               }
             />
           </View>
-          <HStack space="none" reversed={false} wrap={false}>
-            {trendingData.map(trending =>
-              <VODCard key={trending.id} streamType='movie' mediaID={trending.stream_id} image={`https://image.tmdb.org/t/p/w400${trending.poster_path}`} name={trending.title} />
-            )}
-          </HStack>
         </>
       }
     </>
   );
-}
-
-const MovieGridSX= {
-  display: 'flex',
-  justifyContent: 'center'
 }
 
 export default TrendingMovies;

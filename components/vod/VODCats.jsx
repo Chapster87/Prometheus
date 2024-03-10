@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 import { Box, Card, Heading, View, Pressable } from '@gluestack-ui/themed';
 
-function VODCats({page, spark}) {
+function VODCats({ page, spark }) {
   const [mediaCategory, setMediaCategory] = useState();
   const [listData, setListData] = useState();
   if(page === 'Series') {

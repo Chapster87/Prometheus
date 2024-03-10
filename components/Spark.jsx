@@ -158,100 +158,6 @@ export default class Spark {
     }
 
     /**
-     * GET VOD Info by Search Values
-     *
-     * @param {string} name
-     * @param {number} year
-     */
-    async getTrendingMovieIDs(movieList) {
-        if (!movieList) {
-            const message = `Movie List not defined`;
-            throw new Error(message);
-        }
-
-        const id_newReleases = 1337;
-        const id_all = 'X';
-
-        const newReleases = await this.execute('get_vod_streams', { category_id: id_newReleases });
-
-        const missingMovies = [];
-        for (let i in movieList){
-            const title = movieList[i]['title'];
-            const releaseDate = movieList[i]['release_date'];
-
-            let match = newReleases.filter(movie => movie.title == title && movie.release_date == releaseDate);
-
-            if(match.length > 0) {
-                movieList[i].stream_id = match[0].stream_id;
-            } else {
-                movieList[i].stream_id = null;
-                missingMovies.push(movieList[i]);
-            }
-        }
-
-        if(missingMovies.length > 0) {
-
-            const allMovies = await this.execute('get_vod_streams', { category_id: id_all });
-
-            const stillMissingMovies = [];
-            for (let i in missingMovies){
-                const title = missingMovies[i]['title'];
-                const releaseDate = missingMovies[i]['release_date'];
-
-                let match = allMovies.filter(movie => movie.title == title && movie.release_date == releaseDate);
-
-                if(match.length > 0) {
-                    missingMovies[i].stream_id = match[0].stream_id;
-                    movieList.find(e => e.title === title).stream_id = match[0].stream_id;
-                } else {
-                    missingMovies[i].stream_id = null;
-                    stillMissingMovies.push(missingMovies[i]);
-                }
-            }
-        }
-
-        return movieList;
-    }
-
-    /**
-     * GET VOD Info by Search Values
-     *
-     * @param {Object} seriesList
-     */
-    async getTrendingSeriesIDs(seriesList) {
-        if (!seriesList) {
-            const message = `Series List not defined`;
-            throw new Error(message);
-        }
-
-        const id_all = 'X';
-
-        const AllSeries = await this.execute('get_series', { category_id: id_all });
-
-        console.log('tmdb', seriesList);
-        console.log('xc', AllSeries);
-
-        const missingMovies = [];
-        for (let i in seriesList){
-            const name = seriesList[i]['name'];
-            const releaseYear = seriesList[i]['first_air_date'].substr(0,4);
-
-            let match = AllSeries.filter(series => series.title == name && series.year == releaseYear);
-
-            if(match.length > 0) {
-                seriesList[i].stream_id = match[0].series_id;
-            } else {
-                seriesList[i].stream_id = null;
-                missingMovies.push(seriesList[i]);
-            }
-        }
-
-        console.log('List', seriesList);
-
-        return seriesList;
-    }
-
-    /**
      * GET Series Info
      *
      * @param {number} id This will get info such as video codecs, duration, description, directors for 1 Series
@@ -352,4 +258,89 @@ export default class Spark {
 
         return updatedTrendingSeries;
     }
+
+    /**
+     * Fetch Trending Series from TMDB and attach stream id to link to Series Detail
+     *
+     */
+    async getRandomTrendingMedia() {
+        const trendingSeries = await this.getTrendingSeries();
+        const trendingMovies = await this.getTrendingMovies();
+        const allTrending = trendingSeries.concat(trendingMovies);
+
+        if (allTrending.length > 0) {
+            const random = Math.floor(Math.random() * allTrending.length);
+            const randomMedia = allTrending[random];
+
+            return randomMedia;
+        }
+    }
+
+        /**
+     * GET VOD Info by Search Values
+     *
+     * @param {string} name
+     * @param {number} year
+     */
+        async getTrendingMovieIDs(movieList) {
+            if (!movieList) {
+                const message = `Movie List not defined`;
+                throw new Error(message);
+            }
+    
+            const id_newReleases = 1337;
+            const id_all = 'X';
+    
+            const allMovies = await this.execute('get_vod_streams', { category_id: id_all });
+    
+            const missingMovies = [];
+            for (let i in movieList){
+                const title = movieList[i]['title'];
+                const releaseDate = movieList[i]['release_date'];
+    
+                let match = allMovies.filter(movie => movie.title == title && movie.release_date == releaseDate);
+    
+                if(match.length > 0) {
+                    movieList[i].stream_id = match[0].stream_id;
+                } else {
+                    movieList[i].stream_id = null;
+                    missingMovies.push(movieList[i]);
+                }
+            }
+    
+            return movieList;
+        }
+    
+        /**
+         * GET VOD Info by Search Values
+         *
+         * @param {Object} seriesList
+         */
+        async getTrendingSeriesIDs(seriesList) {
+            if (!seriesList) {
+                const message = `Series List not defined`;
+                throw new Error(message);
+            }
+    
+            const id_all = 'X';
+    
+            const allSeries = await this.execute('get_series', { category_id: id_all });
+    
+            const missingMovies = [];
+            for (let i in seriesList){
+                const name = seriesList[i]['name'];
+                const releaseYear = seriesList[i]['first_air_date'].substr(0,4);
+    
+                let match = allSeries.filter(series => series.title == name && series.year == releaseYear);
+    
+                if(match.length > 0) {
+                    seriesList[i].stream_id = match[0].series_id;
+                } else {
+                    seriesList[i].stream_id = null;
+                    missingMovies.push(seriesList[i]);
+                }
+            }
+    
+            return seriesList;
+        }
 } 

@@ -9,7 +9,7 @@ const imageWidth = cardWidth;
 const imageAR = 400 / 593;
 const imageHeight = imageWidth / imageAR;
 
-function VODCard({ mediaID, streamType, name, image }) {
+function MediaCard({ mediaID, streamType, name, image }) {
 
   const isSeries = (streamType === 'series');
   const mediaType = isSeries ? 'series' : 'movies';
@@ -38,21 +38,21 @@ function VODCard({ mediaID, streamType, name, image }) {
           </Card>
         </Link>
       :
-      <Card style={styles.card}>
-        <Badge style={styles.cardBadge} size="lg" bg="$amber400">
-          <BadgeText style={styles.cardBadgeText} color="$white">Coming Soon</BadgeText>
-        </Badge>
-        <Image
-          style={styles.cardImage}
-          resizeMode="cover"
-          borderRadius="$md"
-          alt={name}
-          source={{
-            uri: image,
-          }}
-        />
-        <Heading style={styles.cardHeading}>{name}</Heading>
-      </Card>
+        <Card style={styles.card}>
+          <Badge style={styles.cardBadge} size="lg" bg="$amber400">
+            <BadgeText style={styles.cardBadgeText} color="$white">Coming Soon</BadgeText>
+          </Badge>
+          <Image
+            style={styles.cardImage}
+            resizeMode="cover"
+            borderRadius="$md"
+            alt={name}
+            source={{
+              uri: image,
+            }}
+          />
+          <Heading style={styles.cardHeading}>{name}</Heading>
+        </Card>
       }
     </View>
   );
@@ -99,4 +99,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default VODCard;
+export default MediaCard;
