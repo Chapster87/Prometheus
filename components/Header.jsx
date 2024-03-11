@@ -12,7 +12,7 @@ function Header() {
   return (
     <>
       <StatusBar style="auto" />
-      <Box grid='container'>
+      <Box grid='container-fluid' sx={{ position: 'sticky', zIndex: '10', top: 0, background: 'rgba(0, 0, 0, 0.5)' }}>
         <Box grid='row'>
           <Box grid='col' columns='12'>
             <HStack reversed={false} sx={NavSX}>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box } from "@gluestack-ui/themed";
+import { Box, View } from "@gluestack-ui/themed";
 
 import MediaHero from './media/MediaHero'
 import MediaRow from './media/MediaRow'
@@ -47,7 +47,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <View sx={{ marginTop: -80 }}>
       {(heroMedia) ? <MediaHero heroMedia={heroMedia} /> : <DummyHero />}
       <Box grid="container-fluid">
         <Box grid="row">
@@ -70,7 +70,7 @@ function App() {
           </Box>
         </Box>
       </Box>
-    </>
+    </View>
   );
 }
 
