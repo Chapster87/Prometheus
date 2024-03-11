@@ -17,7 +17,7 @@ function VODHero({ heroMedia }) {
           <Box grid="row">
             <Box grid="col" columns="5">
               <Box sx={{
-                backgroundColor: '#171717c0',
+                background: 'rgba(0, 0, 0, 0.5)',
                 padding: '$6 $4',
                 borderRadius: '$sm',
                 alignItems: 'flex-start',
@@ -40,15 +40,15 @@ function VODHero({ heroMedia }) {
                 {(media.stream_id) ? 
                   <HStack>
                     <Link href={`/${mediaType === 'Movie' ? 'movies' : 'series'}/${media.stream_id}`}>
-                      <Button action="primary">
+                      <Button action="primary" variant="gradient">
                         <Icon as={Clapperboard} sx={{ color: '$white', marginRight: '$2' }} />
                         <ButtonText>Watch Now</ButtonText>
                       </Button>
                     </Link>
                     <Link href={`/${mediaType === 'Movie' ? 'movies' : 'series'}/${media.stream_id}`} sx={{ marginLeft: '$4' }}>
-                      <Button variant="outline" action="primary" sx={{ backgroundColor: '$white', borderWidth: 2 }}>
-                        <Icon as={Library} sx={{ color: '$primary300', marginRight: '$2' }} />
-                        <ButtonText>{mediaType} Info</ButtonText>
+                      <Button variant="secondary" action="primary" sx={{ backgroundColor: '$white', border: '2px solid $white' }}>
+                        <Icon as={Library} sx={{ color: '$primary0', marginRight: '$2' }} />
+                        <ButtonText sx={{ color: '$primary0' }}>{mediaType} Info</ButtonText>
                       </Button>
                     </Link>
                   </HStack>

@@ -507,6 +507,34 @@ export const Button = createStyle({
           },
         },
       },
+      gradient: {
+        backgroundImage: 'linear-gradient(to right, $analogous200 0%, $analogous300 25%, $analogous400 50%, $analogous500 100%)',
+        transition: '0.5s',
+        backgroundSize: '200% auto',
+        ':hover': {
+          backgroundPosition: 'right center'
+        },
+        _text: {
+          'color': '$textLight0',
+          ':hover': {
+            color: '$textLight0',
+          },
+          ':active': {
+            color: '$textLight0',
+          },
+        },
+        _dark: {
+          _text: {
+            'color': '$textDark0',
+            ':hover': {
+              color: '$textDark0',
+            },
+            ':active': {
+              color: '$textDark0',
+            },
+          },
+        }
+      }
     },
 
     size: {
