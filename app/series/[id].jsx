@@ -71,14 +71,20 @@ export default function Page() {
             backgroundSize: 'cover'
           }}>
             <Box grid='container' style={{ marginTop: '100px', background: 'rgba(0, 0, 0, 0.7)', padding:'30px' }}>
-              <Box grid='row'>
-                <Box grid='col' columns='12' columnsMd='3'>
-                  <img src={seriesData.info.cover} alt={seriesData.info.name} />
+              <Box grid="row">
+                <Box grid='col' columns='12'>
+                  <Heading size='3xl'>{seriesData.info.name}</Heading>
                 </Box>
-                <Box grid='col' columns='12' columnsMd='9'>
-                  <Box grid='row'>
+              </Box>
+              <Box grid="row">
+                <Box grid='col' columns='12' columnsMd='3'>
+                  <Box grid="row">
                     <Box grid='col' columns='12'>
-                      <Heading size='3xl'>{seriesData.info.name}</Heading>
+                      <img src={seriesData.info.cover} alt={seriesData.info.name} />
+                    </Box>
+                  </Box>
+                  <Box grid="row">
+                    <Box grid='col' columns='12'>
                       <VStack space="md" reversed={false}>
                         {(seriesData.info.genre) && <Box><Text><strong>Genre:</strong> {seriesData.info.genre}</Text></Box>}
                         <Box><Text><strong>Rating:</strong> <strong>{seriesData.info.rating}</strong> / 10</Text></Box>
@@ -88,9 +94,7 @@ export default function Page() {
                     </Box>
                   </Box>
                 </Box>
-              </Box>
-              <Box grid='row' mt='$8'>
-                <Box grid='col' columns='12'>
+                <Box grid="col" columns='12' columnsMd='9'>
                   <Tabs defaultValue={seriesData.seasons[0].id}>
                     <TabsTabList>
                     {seriesData.seasons.map((season, index) => 
