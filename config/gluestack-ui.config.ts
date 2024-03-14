@@ -668,6 +668,7 @@ export const gluestackUIConfig = createConfig({
           marginHorizontal: (grid_gutter_x * -.5) + 'rem'
         },
         'col': {
+          display: 'block',
           flex: '1 0 0%',
           width: '100%',
           maxWidth: '100%',
