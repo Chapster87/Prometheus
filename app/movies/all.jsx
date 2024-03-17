@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../components/session/AuthContext';
 import { Box, Heading } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
@@ -6,18 +7,21 @@ import Spark from '../../components/Spark';
 import MediaCard from '../../components/media/MediaCard';
 import DummyCard from '../../components/dummies/DummyCard';
 
-// initialize api engine
-const spark = new Spark();
-
 function Page() {
+  const [session, setSession] = useContext(AuthContext);
   const [allMedia, setAllMedia] = useState();
+
+  // initialize api engine
+  const spark = new Spark(session);
   
   useEffect(() => {
-    spark.getVODStreams('X')
-      .then(data => {
-        setAllMedia(data);
-      });
-  }, []);
+    if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
+      spark.getVODStreams('X')
+        .then(data => {
+          setAllMedia(data);
+        });
+    }
+  }, [session]);
 
   return (
     <Box grid='container-fluid' className='vod-list'>

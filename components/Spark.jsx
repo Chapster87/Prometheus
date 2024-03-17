@@ -1,17 +1,30 @@
 require('fetch-everywhere')
 const qs = require('querystring-es3')
 const pickBy = require('lodash.pickby');
-
 export default class Spark {
     /**
-     * @param {{ baseUrl: string, auth: { username: string, password: string } }} [config]
+     * @param {{ xcUrl: string, auth: { username: string, password: string } }} [config]
      */
-    constructor () {
-        this.config = {
-            baseUrl: process.env.EXPO_PUBLIC_XC_URL,
-            auth: {
-                username: process.env.EXPO_PUBLIC_XC_USERNAME,
-                password: process.env.EXPO_PUBLIC_XC_PASSWORD
+    constructor (session = {}) {
+        if (process.env.EXPO_PUBLIC_USE_ENV === 'true') {
+            this.config = {
+                tmdbApiKey: process.env.EXPO_PUBLIC_TMDB_API_KEY,
+                tmdbApiReadAccessToken: process.env.EXPO_PUBLIC_TMDB_API_READ_ACCESS_TOKEN,
+                xcUrl: process.env.EXPO_PUBLIC_XC_URL,
+                xcAuth: {
+                    username: process.env.EXPO_PUBLIC_XC_USERNAME,
+                    password: process.env.EXPO_PUBLIC_XC_PASSWORD
+                }
+            }
+        } else if (session && session.user) {
+            this.config = {
+                tmdbApiKey: session.user.user_metadata.tmdbApiKey,
+                tmdbApiReadAccessToken: session.user.user_metadata.tmdbApiReadAccessToken,
+                xcUrl: session.user.user_metadata.xcUrl,
+                xcAuth: {
+                    username: session.user.user_metadata.xcUsername,
+                    password: session.user.user_metadata.xcPassword
+                }
             }
         }
     }
@@ -24,25 +37,27 @@ export default class Spark {
      * @returns {Promise<any>}
      */
     async execute(action, filter) {
-        const query = pickBy({ ...this.config.auth, action, ...filter })
+        if (this.config && this.config.xcAuth && this.config.xcUrl) {
+            const query = pickBy({ ...this.config.xcAuth, action, ...filter })
 
-        const res = await fetch(`${this.config.baseUrl}/player_api.php?${qs.stringify(query)}`);
+            const res = await fetch(`${this.config.xcUrl}/player_api.php?${qs.stringify(query)}`);
 
-        if (!res.ok) {
-            const message = `An error has occured: ${res.status}`;
-            throw new Error(message);
+            if (!res.ok) {
+                const message = `An error has occured: ${res.status}`;
+                throw new Error(message);
+            }
+
+            const data = await res.json();
+
+            if (action && data.hasOwnProperty('user') &&
+                data.user.hasOwnProperty('status') &&
+                data.user_info.status === 'Disabled') {
+                const message = `Account disabled`;
+                throw new Error(message);
+            }
+
+            return data;
         }
-
-        const data = await res.json();
-
-        if (action && data.hasOwnProperty('user') &&
-            data.user.hasOwnProperty('status') &&
-            data.user_info.status === 'Disabled') {
-            const message = `Account disabled`;
-            throw new Error(message);
-        }
-
-        return data;
     }
 
     /**
@@ -54,36 +69,37 @@ export default class Spark {
      * @returns {Promise<any>}
      */
     async getTmdb(section, content, path_params, query_params) {
-        const tmdbBaseUrl = 'https://api.themoviedb.org/3';
-        const options = {
-            method: 'GET',
-            headers: {
-                accept: 'application/json',
-                Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_API_READ_ACCESS_TOKEN}`
+        if (this.config && this.config.tmdbApiReadAccessToken) {
+            const tmdbBaseUrl = 'https://api.themoviedb.org/3';
+            const options = {
+                method: 'GET',
+                headers: {
+                    accept: 'application/json',
+                    Authorization: `Bearer ${this.config.tmdbApiReadAccessToken}`
+                }
+            };
+
+            let fetchUrl = `${tmdbBaseUrl}/${section}/${content}`;
+
+            if(path_params) {
+                fetchUrl += `/${path_params}`;
             }
-        };
 
-        let fetchUrl = `${tmdbBaseUrl}/${section}/${content}`;
+            if(query_params){
+                const querystring = new URLSearchParams(query_params).toString();
+                fetchUrl = fetchUrl + `?${querystring}`;
+            }
 
-        if(path_params) {
-            fetchUrl += `/${path_params}`;
+            const res = await fetch(fetchUrl, options);
+            if (!res.ok) {
+                const message = `An error has occured: ${res.status}`;
+                throw new Error(message);
+            }
+
+            const data = await res.json();
+
+            return data;
         }
-
-        if(query_params){
-            const querystring = new URLSearchParams(query_params).toString();
-            fetchUrl = fetchUrl + `?${querystring}`;
-        }
-
-        const res = await fetch(fetchUrl, options);
-        if (!res.ok) {
-            const message = `An error has occured: ${res.status}`;
-            throw new Error(message);
-        }
-
-        const data = await res.json();
-
-        return data;
-
     }
 
     async getAccountInfo() {
@@ -181,8 +197,6 @@ export default class Spark {
         //     // if not, it removes "Season 0" and saves it
         //     const season0 = data.seasons.shift();
         // }
-        
-        console.log(series);
 
         return series;
 
@@ -232,15 +246,18 @@ export default class Spark {
      *
      */
     async getTrendingMovies() {
-        const params = {
-            language:'en-US'
-        };
+        if(this.config) {
+            const params = {
+                language:'en-US'
+            };
 
-        const trendingMovies = await this.getTmdb('trending', 'movie', 'week', params);
+            const trendingMovies = await this.getTmdb('trending', 'movie', 'week', params);
 
-        const updatedTrendingMovies = await this.getTrendingMovieIDs(trendingMovies.results);
-
-        return updatedTrendingMovies;
+            if (trendingMovies && trendingMovies.results) {
+                const updatedTrendingMovies = await this.getTrendingMovieIDs(trendingMovies.results);
+                return updatedTrendingMovies;
+            }
+        }
     }
 
     /**
@@ -254,9 +271,10 @@ export default class Spark {
 
         const trendingSeries = await this.getTmdb('trending', 'tv', 'week', params);
 
-        const updatedTrendingSeries = await this.getTrendingSeriesIDs(trendingSeries.results);
-
-        return updatedTrendingSeries;
+        if (trendingSeries && trendingSeries.results) {
+            const updatedTrendingSeries = await this.getTrendingSeriesIDs(trendingSeries.results);
+            return updatedTrendingSeries;
+        }
     }
 
     /**
@@ -293,18 +311,20 @@ export default class Spark {
     
             const allMovies = await this.execute('get_vod_streams', { category_id: id_all });
     
-            const missingMovies = [];
-            for (let i in movieList){
-                const title = movieList[i]['title'];
-                const releaseDate = movieList[i]['release_date'];
-    
-                let match = allMovies.filter(movie => movie.title == title && movie.release_date == releaseDate);
-    
-                if(match.length > 0) {
-                    movieList[i].stream_id = match[0].stream_id;
-                } else {
-                    movieList[i].stream_id = null;
-                    missingMovies.push(movieList[i]);
+            if (allMovies && allMovies.length > 0 ) {
+                const missingMovies = [];
+                for (let i in movieList){
+                    const title = movieList[i]['title'];
+                    const releaseDate = movieList[i]['release_date'];
+        
+                    let match = allMovies.filter(movie => movie.title == title && movie.release_date == releaseDate);
+        
+                    if(match.length > 0) {
+                        movieList[i].stream_id = match[0].stream_id;
+                    } else {
+                        movieList[i].stream_id = null;
+                        missingMovies.push(movieList[i]);
+                    }
                 }
             }
     
@@ -326,18 +346,20 @@ export default class Spark {
     
             const allSeries = await this.execute('get_series', { category_id: id_all });
     
-            const missingMovies = [];
-            for (let i in seriesList){
-                const name = seriesList[i]['name'];
-                const releaseYear = seriesList[i]['first_air_date'].substr(0,4);
-    
-                let match = allSeries.filter(series => series.title == name && series.year == releaseYear);
-    
-                if(match.length > 0) {
-                    seriesList[i].stream_id = match[0].series_id;
-                } else {
-                    seriesList[i].stream_id = null;
-                    missingMovies.push(seriesList[i]);
+            if (allSeries && allSeries.length > 0 ) {
+                const missingMovies = [];
+                for (let i in seriesList){
+                    const name = seriesList[i]['name'];
+                    const releaseYear = seriesList[i]['first_air_date'].substr(0,4);
+        
+                    let match = allSeries.filter(series => series.title == name && series.year == releaseYear);
+        
+                    if(match.length > 0) {
+                        seriesList[i].stream_id = match[0].series_id;
+                    } else {
+                        seriesList[i].stream_id = null;
+                        missingMovies.push(seriesList[i]);
+                    }
                 }
             }
     

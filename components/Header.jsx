@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
-import { Box, HStack, Link, LinkText, Pressable, Text } from '@gluestack-ui/themed';
+import { Box, Button, ButtonText, HStack, Link, LinkText } from '@gluestack-ui/themed';
+import { supabase } from '../config/supabase'
 
-function Header() {
-  
+function Header({ session }) {
   useEffect(() => {
     // do something
   }, []);
@@ -15,24 +14,35 @@ function Header() {
       <Box grid='container-fluid' sx={{ position: 'sticky', zIndex: '10', top: 0, background: 'rgba(0, 0, 0, 0.5)' }}>
         <Box grid='row'>
           <Box grid='col' columns='12'>
-            <HStack reversed={false} sx={NavSX}>
-              {/* <Text>Prometheus</Text> */}
-              <Link href="/" sx={LinkSX}>
-                <LinkText>Home</LinkText>
-              </Link>
-              <Link href="/tv" sx={LinkSX}>
-                <LinkText>Live TV</LinkText>
-              </Link>
-              <Link href="/movies" sx={LinkSX}>
-                <LinkText>Movies</LinkText>
-              </Link>
-              <Link href="/series" sx={LinkSX}>
-                <LinkText>Series</LinkText>
-              </Link>
-              <Link href="/account" sx={LinkSX}>
-                <LinkText>Account</LinkText>
-              </Link>
-            </HStack>
+            <Box grid="container">
+              <Box grid='row'>
+                <Box grid='col' columns='12' sx={navStyles}>
+                  <HStack reversed={false} sx={MainNavSX}>
+                    <Link href="/" sx={LinkSX}>
+                      <LinkText>Home</LinkText>
+                    </Link>
+                    <Link href="/tv" sx={LinkSX}>
+                      <LinkText>Live TV</LinkText>
+                    </Link>
+                    <Link href="/movies" sx={LinkSX}>
+                      <LinkText>Movies</LinkText>
+                    </Link>
+                    <Link href="/series" sx={LinkSX}>
+                      <LinkText>Series</LinkText>
+                    </Link>
+                    <Link href="/account" sx={LinkSX}>
+                      <LinkText>Account</LinkText>
+                    </Link>
+                  </HStack>
+                  <HStack reversed={false} sx={SecondaryNavSX}>
+                    {(session) &&
+                    <Button variant="gradient" onPress={() => supabase.auth.signOut()}>
+                      <ButtonText>Sign Out</ButtonText>
+                    </Button>}
+                  </HStack>
+                </Box>
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -40,10 +50,14 @@ function Header() {
   );
 }
 
-const NavSX = {
+const navStyles ={
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'center',
+  justifyContent: 'space-between'
+}
+
+const MainNavSX = {
+  display: 'flex',
   height: 80,
   gap: 75
 }
@@ -68,6 +82,15 @@ const LinkSX = {
     }
     
   }
+}
+
+const SecondaryNavSX = {
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: 80,
+  gap: 75
 }
 
 export default Header;

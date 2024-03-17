@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Box, Button, ButtonText, FormControl, FormControlLabel, FormControlLabelText, Heading, Input, InputField } from '@gluestack-ui/themed';
 import { Alert, StyleSheet, View } from 'react-native'
-import { supabase } from '../config/supabase'
+import { supabase } from '../../config/supabase'
 
 export default function Auth() {
   const [email, setEmail] = useState('')
@@ -73,7 +73,7 @@ export default function Auth() {
           </FormControl>
         </Box>
       </Box>
-      <Box grid='row'>
+      <Box grid='row' mb="$3">
         <Box grid='col' columns='3'>
           <Button variant="gradient" disabled={loading} onPress={() => signInWithEmail()}>
             <ButtonText>Sign In</ButtonText>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button, ButtonText, CloseIcon, Heading, Icon, Modal, ModalBackdrop, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalCloseButton, Text, View } from '@gluestack-ui/themed';
-import Auth from './Auth'
+import Auth from './session/Login'
 
 function SiteLock() {
   const [showModal, setShowModal] = useState(true)

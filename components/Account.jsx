@@ -19,8 +19,6 @@ export default function Account({ session }) {
       setLoading(true)
       const { user } = session
 
-      console.log(user);
-
       const { data, error } = await supabase
         .from('profiles')
         .select()
@@ -31,7 +29,6 @@ export default function Account({ session }) {
         if (error) {
           console.warn(error)
         } else if (data) {
-          console.log(data)
           setFirstName(data.firstName)
           setLastName(data.lastName)
           setTmdbApiKey(data.tmdbApiKey)
@@ -68,11 +65,26 @@ export default function Account({ session }) {
       updated_at: new Date(),
     }
 
-    const { error } = await supabase.from('profiles').upsert(updates)
+    async function updateDatabase() {
+      const { error } = await supabase.from('profiles').upsert(updates)
 
-    if (error) {
-      alert(error.message)
+      if (error) {
+        alert(error.message)
+      }
     }
+
+    async function updateAuth() {
+      const { data, error } = await supabase.auth.updateUser({
+        data: updates
+      })
+
+      if (error) {
+        alert(error.message)
+      }
+    }
+
+    updateDatabase();
+    updateAuth();
 
     setLoading(false)
   }

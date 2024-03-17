@@ -5,35 +5,32 @@ import { Box, Heading } from '@gluestack-ui/themed';
 import MediaCard from '../media/MediaCard';
 import DummyCard from '../dummies/DummyCard';
 
-function VODList({page, spark, catId, catName}) {
+function VODList({page, spark, session, catId, catName}) {
   const [VODCatData, setVODCatData] = useState();
   const [VodID, setVodID] = useState();
 
-  if(page === 'Series') {
-    // GET Series Streams
-    // spark.getSeriesStreams(catId)
-    //   .then(console.log)
-    //   .catch(console.log)
+  useEffect(() => {
+    if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
+      if(page === 'Series') {
+        // GET Series Streams
+        // spark.getSeriesStreams(catId)
+        //   .then(console.log)
+        //   .catch(console.log)
 
-    useEffect(() => {
-      spark.getSeriesStreams(catId)
-        .then((data) => setVODCatData(data));
-    }, []);
+        spark.getSeriesStreams(catId)
+          .then((data) => setVODCatData(data));
 
-    // May need to also fetch move data for each to link tmdb id and create page based on that
-
-  } else if (page === 'Movies') {
-
-    useEffect(() => {
-      // GET Movie Streams
-      // spark.getVODStreams(catId)
-      //   .then(data => console.log("VOD", data))
-      //   .catch(console.log);
-    
-      spark.getVODStreams(catId)
-        .then(data => setVODCatData(data));
-    }, []);
-  }
+      } else if (page === 'Movies') {
+        // GET Movie Streams
+        // spark.getVODStreams(catId)
+        //   .then(data => console.log("VOD", data))
+        //   .catch(console.log);
+      
+        spark.getVODStreams(catId)
+          .then(data => setVODCatData(data));
+      }
+    }
+  }, [session])
 
   return (
     <>

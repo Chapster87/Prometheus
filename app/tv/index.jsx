@@ -1,17 +1,19 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../../components/session/AuthContext';
 
 import Spark from '../../components/Spark';
 import TVGroups from '../../components/tv/TVGroups';
 
-// initialize api engine
-const spark = new Spark();
-
-function App() {
+function TV() {
+  const [session, setSession] = useContext(AuthContext);
   const [activePage, setActivePage] = useState('Live TV');
 
+  // initialize api engine
+  const spark = new Spark(session);
+
   return (
-    <TVGroups page={activePage} spark={spark} />
+    <TVGroups page={activePage} spark={spark} session={session} />
   );
 }
 
-export default App;
+export default TV;

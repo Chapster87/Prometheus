@@ -1,30 +1,23 @@
-import { useState, useEffect } from 'react';
-import { Alert } from 'react-native'
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../components/session/AuthContext';
 import { Box, Button, ButtonText, Heading, Text } from '@gluestack-ui/themed';
-import { supabase } from '../../config/supabase'
-import Auth from '../../components/Auth'
+import Auth from '../../components/session/Login'
 import Account from '../../components/Account';
 import Spark from '../../components/Spark';
 
-// initialize api engine
-const spark = new Spark();
-
 export default function Page() {
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useContext(AuthContext);
   const [account, setAccount] = useState();
 
+  // initialize api engine
+  const spark = new Spark(session);
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-    })
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-    })
-
-    spark.getAccountInfo()
-      .then(data => setAccount(data));
-  }, []);
+    if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
+      spark.getAccountInfo()
+        .then(data => setAccount(data));
+    }
+  }, [session]);
 
   return (
     <Box grid='container'>

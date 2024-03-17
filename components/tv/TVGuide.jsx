@@ -10,17 +10,19 @@ let year = date.getFullYear();
 
 let currTime = Date.now()
 
-function TVGuide({ page, spark, catId, catName }) {
+function TVGuide({ page, spark, session, catId, catName }) {
   const [channels, setChannels] = useState();
 
   useEffect(() => {
-  // spark.getLiveGuide(catId)
-  //   .then(data => console.log("TV Guide", data))
+    if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
+      // spark.getLiveGuide(catId)
+      //   .then(data => console.log("TV Guide", data))
 
-  spark.getLiveGuide(catId)
-    .then(data => setChannels(data));
+      spark.getLiveGuide(catId)
+        .then(data => setChannels(data));
+    }
     
-  }, []);
+  }, [session]);
 
   return (
     <>

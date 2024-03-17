@@ -2,9 +2,9 @@ import { Box, HStack, Heading } from '@gluestack-ui/themed';
 
 import MediaCard from './MediaCard';
 
-function MediaRow({ title, mediaData, mediaCount, mediaType}) {
+function MediaRow({ title, mediaData, mediaType}) {
   return (
-    ((mediaData && mediaCount) &&
+    ((mediaData) &&
       <>
         {title && <Heading size="3xl" sx={headingSX}>{title}</Heading>}
         <HStack space="none" reversed={false} wrap={false}>

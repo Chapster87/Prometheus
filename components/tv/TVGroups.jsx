@@ -3,17 +3,20 @@ import { StyleSheet, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import { Box, Card, Heading, View } from '@gluestack-ui/themed';
 
-function TVGroups({page, spark}) {
+function TVGroups({page, spark, session}) {
   const [mediaCategory, setMediaCategory] = useState([]);
   const [groupData, setGroupData] = useState();
-  useEffect(() => {
-    // spark.getLiveStreamCategory()
-    //   .then(console.log)
-    //   .catch(console.log)
 
-    spark.getLiveStreamCategory()
-      .then((data) => setMediaCategory(data));
-  }, []);
+  useEffect(() => {
+    if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
+      // spark.getLiveStreamCategory()
+      //   .then(console.log)
+      //   .catch(console.log)
+
+      spark.getLiveStreamCategory()
+        .then((data) => setMediaCategory(data));
+    }
+  }, [session]);
 
   return (
     <>

@@ -1,12 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
+import { AuthContext } from '../../components/session/AuthContext';
 import { useLocalSearchParams } from 'expo-router';
 import { Box, Button, ButtonText, Heading, ImageBackground, Modal, ModalBackdrop, ModalContent, ModalHeader, ModalBody,  ModalFooter, ModalCloseButton, Icon, CloseIcon, View, VStack, Text, Tabs, TabsTab, TabsTabTitle, TabsTabList, TabsTabPanel, TabsTabPanels } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
 import VideoJS from '../../components/VideoJS'
-
-// initialize api engine
-const spark = new Spark();
 
 const MODAL_DEFAULT = {
   show: false,
@@ -14,17 +12,23 @@ const MODAL_DEFAULT = {
 }
 
 export default function Page() {
+  const [session, setSession] = useContext(AuthContext);
   const { id } = useLocalSearchParams(); 
   const [seriesData, setSeriesData] = useState();
   const [showVideoModal, setShowVideoModal] = useState(MODAL_DEFAULT);
+
+  // initialize api engine
+  const spark = new Spark(session);
   
   useEffect(() => {
-    spark.getSeriesInfo(id)
-      .then(data => {
-        setSeriesData(data);
-        console.log('Page Data', data)
-      });
-  }, []);
+    if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
+      spark.getSeriesInfo(id)
+        .then(data => {
+          setSeriesData(data);
+          console.log('Page Data', data)
+        });
+    }
+  }, [session]);
 
   const handleClose = () => setShowVideoModal(prevState => {
     return {
@@ -112,7 +116,7 @@ export default function Page() {
                             {(seriesData.episodes[episodeIndex]) &&
                               seriesData.episodes[episodeIndex].map(episode => {
                                 // http(s)://domain:port/series/username/password/streamID.ext
-                                const episodeURL = `${spark.config.baseUrl}/series/${spark.config.auth.username}/${spark.config.auth.password}/${episode.id}.${episode.container_extension}`;
+                                const episodeURL = `${spark.config.xcUrl}/series/${spark.config.xcAuth.username}/${spark.config.xcAuth.password}/${episode.id}.${episode.container_extension}`;
                                 console.log(episodeIndex);
                                 return (
                                   <Box grid='row' key={episode.id}>

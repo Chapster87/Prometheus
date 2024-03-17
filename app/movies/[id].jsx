@@ -1,30 +1,35 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
+import { AuthContext } from '../../components/session/AuthContext';
 import { useLocalSearchParams } from 'expo-router';
+
 import { Box, Heading, ImageBackground, View, Text, VStack } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
 import VideoJS from '../../components/VideoJS'
 
-// initialize api engine
-const spark = new Spark();
-
 export default function Page() {
+  const [session, setSession] = useContext(AuthContext);
   const [movieData, setMovieData] = useState();
-  const { id } = useLocalSearchParams(); 
+  const { id } = useLocalSearchParams();
+
+  // initialize api engine
+  const spark = new Spark(session);
   
   useEffect(() => {
-    spark.getVODInfo(id)
-    .then(data => {
+    if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
+      spark.getVODInfo(id)
+      .then(data => {
 
-      // http(s)://domain:port/movie/username/password/streamID.ext
-      const streamUrl = `${spark.config.baseUrl}/movie/${spark.config.auth.username}/${spark.config.auth.password}/${data.movie_data.stream_id}.${data.movie_data.container_extension}`;
-      
-      data.movie_data.stream_url = streamUrl;
+        // http(s)://domain:port/movie/username/password/streamID.ext
+        const streamUrl = `${spark.config.xcUrl}/movie/${spark.config.xcAuth.username}/${spark.config.xcAuth.password}/${data.movie_data.stream_id}.${data.movie_data.container_extension}`;
+        
+        data.movie_data.stream_url = streamUrl;
 
-      setMovieData(data);
-      console.log("Stream Data", data);
-    });
-  }, []);
+        setMovieData(data);
+        console.log("Stream Data", data);
+      });
+    }
+  }, [session]);
 
   const playerRef = useRef(null);
 
