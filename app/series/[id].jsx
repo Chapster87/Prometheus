@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import { AuthContext } from '../../components/session/AuthContext';
 import { useLocalSearchParams } from 'expo-router';
-import { Box, Button, ButtonText, Heading, ImageBackground, Modal, ModalBackdrop, ModalContent, ModalHeader, ModalBody,  ModalFooter, ModalCloseButton, Icon, CloseIcon, View, VStack, Text, Tabs, TabsTab, TabsTabTitle, TabsTabList, TabsTabPanel, TabsTabPanels } from '@gluestack-ui/themed';
+import { Box, Button, ButtonText, Heading, Image, ImageBackground, Modal, ModalBackdrop, ModalContent, ModalHeader, ModalBody,  ModalFooter, ModalCloseButton, Icon, CloseIcon, View, VStack, Text, Tabs, TabsTab, TabsTabTitle, TabsTabList, TabsTabPanel, TabsTabPanels } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
 import VideoJS from '../../components/VideoJS'
@@ -84,7 +84,14 @@ export default function Page() {
                 <Box grid='col' columns='12' columnsMd='3'>
                   <Box grid="row">
                     <Box grid='col' columns='12'>
-                      <img src={seriesData.info.cover} alt={seriesData.info.name} />
+                      <Image
+                        borderRadius="$none"
+                        alt={seriesData.info.name}
+                        sx={{ width: '100%', height: 'auto', aspectRatio: '2/3' }}
+                        source={{
+                          uri: seriesData.info.cover
+                        }}
+                      />
                     </Box>
                   </Box>
                   <Box grid="row">

@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { AuthContext } from '../../components/session/AuthContext';
 import { useLocalSearchParams } from 'expo-router';
 
-import { Box, Heading, ImageBackground, View, Text, VStack } from '@gluestack-ui/themed';
+import { Box, Heading, Image, ImageBackground, View, Text, VStack } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
 import VideoJS from '../../components/VideoJS'
@@ -52,12 +52,11 @@ export default function Page() {
       {(movieData) &&
         <View style={{
           display: 'block',
-          width: '100%',
-          height: '100vh',
+          width: '100%'
         }}>
           <ImageBackground
             source={{ uri: `${movieData.info.backdrop_path}` }}
-            style={{ flex: 1, justifyContent: "center" }}
+            style={{ flex: 1, justifyContent: "center", width: '100%', position: "absolute", top: 0, aspectRatio: "16 / 9" }}
           >
             <Box grid='container'
               style={{ marginTop: '100px', background: 'rgba(0, 0, 0, 0.7)', paddingHorizontal: '30px', paddingVertical: '30px' }}
@@ -79,8 +78,15 @@ export default function Page() {
                 </Box>
               </Box>
               <Box grid='row'>
-                <Box grid='col' columns='12' columnsMd='3'>
-                  <img src={movieData.info.movie_image} alt={movieData.movie_data.name} />
+                <Box grid='col' columns='12' columnsMd='3' sx={{ display: 'flex' }}>
+                  <Image
+                    borderRadius="$none"
+                    alt={movieData.movie_data.name}
+                    sx={{ width: '100%', height: 'auto', aspectRatio: '2/3' }}
+                    source={{
+                      uri: movieData.info.movie_image
+                    }}
+                  />
                 </Box>
                 <Box grid='col' columns='12' columnsMd='9'>
                   <Box grid='row'>
