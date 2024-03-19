@@ -7,7 +7,7 @@ import { AuthProvider } from '../components/session/AuthContext';
 
 import Header from '../components/Header';
 
-import '../assets/scss/index.scss';
+import '../assets/css/index.css';
 import SiteLock from '../components/SiteLock';
 
 

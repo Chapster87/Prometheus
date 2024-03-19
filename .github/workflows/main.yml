@@ -33,7 +33,7 @@ jobs:
     - name: 🔨 Build Project
       run: |
         npm install
-        npx expo export --platform web
+        npx expo export -p web
 
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
