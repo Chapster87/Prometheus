@@ -30,7 +30,7 @@ function TrendingMovies() {
     <>
       {(trendingData && movieCount) &&
         <>
-          <View style={{ flex: 1 }}>
+          <View style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%' }}>
             <Carousel
               loop
               width={width / COUNT}

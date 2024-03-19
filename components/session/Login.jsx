@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button, ButtonText, FormControl, FormControlLabel, FormControlLabelText, Heading, Input, InputField } from '@gluestack-ui/themed';
+import { Box, Button, ButtonText, FormControl, FormControlLabel, FormControlLabelText, Heading, Input, InputField, Text } from '@gluestack-ui/themed';
 import { Alert, StyleSheet, View } from 'react-native'
 import { supabase } from '../../config/supabase'
 

@@ -4,7 +4,9 @@ export const TextareaInput = createStyle({
   p: '$2',
   color: '$textLight900',
   textAlignVertical: 'top',
-  flex: 1,
+  flexGrow: 1,
+  flexShrink: 1,
+  flexBasis: '0%',
   props: {
     // @ts-ignore
     multiline: true,

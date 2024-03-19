@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Box, Button, ButtonText, HStack, Link, LinkText } from '@gluestack-ui/themed';
+import { Link } from 'expo-router';
+import { Box, Button, ButtonText, HStack, LinkText } from '@gluestack-ui/themed';
 import { supabase } from '../config/supabase'
 
 function Header({ session }) {
@@ -11,7 +12,7 @@ function Header({ session }) {
   return (
     <>
       <StatusBar style="auto" />
-      <Box grid='container-fluid' sx={{ position: 'sticky', zIndex: '10', top: 0, background: 'rgba(0, 0, 0, 0.5)' }}>
+      <Box grid='container-fluid' sx={{ position: 'sticky', zIndex: 10, top: 0, background: 'rgba(0, 0, 0, 0.5)' }}>
         <Box grid='row'>
           <Box grid='col' columns='12'>
             <Box grid="container">
@@ -35,7 +36,7 @@ function Header({ session }) {
                     </Link>
                   </HStack>
                   <HStack reversed={false} sx={SecondaryNavSX}>
-                    {(session) &&
+                    {(!!session) &&
                     <Button variant="gradient" onPress={() => supabase.auth.signOut()}>
                       <ButtonText>Sign Out</ButtonText>
                     </Button>}

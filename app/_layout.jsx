@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Slot } from 'expo-router';
-import { GluestackUIProvider } from "@gluestack-ui/themed"
+import { GluestackUIProvider, Text } from "@gluestack-ui/themed"
 import { config } from '../config/gluestack-ui.config'
 import { supabase } from '../config/supabase'
 import { AuthProvider } from '../components/session/AuthContext';
@@ -27,8 +27,8 @@ export default function HomeLayout() {
 
   return (
     <GluestackUIProvider config={config} colorMode='dark'>
-      {session || process.env.EXPO_PUBLIC_USE_ENV === 'true' ? 
-        <AuthProvider>
+      {session || process.env.EXPO_PUBLIC_USE_ENV === 'true' ?
+        <AuthProvider> 
           <Header session={session} />
           <Slot />
         </AuthProvider>

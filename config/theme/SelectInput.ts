@@ -5,7 +5,9 @@ export const SelectInput = createStyle({
     w: '$full',
   },
   pointerEvents: 'none',
-  flex: 1,
+  flexGrow: 1,
+  flexShrink: 1,
+  flexBasis: '0%',
   h: '$full',
   color: '$textLight900',
   props: {

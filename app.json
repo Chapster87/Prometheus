@@ -4,6 +4,7 @@
     "slug": "prometheus",
     "version": "1.0.0",
     "orientation": "default",
+    "scheme": "demo",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -21,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.prometheus"
     },
     "web": {
       "favicon": "./assets/favicon.png",

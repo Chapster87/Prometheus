@@ -1,5 +1,7 @@
 import { createStyle } from '@gluestack-style/react';
 
 export const AlertText = createStyle({
-  flex: 1,
+  flexGrow: 1,
+  flexShrink: 1,
+  flexBasis: '0%',
 });

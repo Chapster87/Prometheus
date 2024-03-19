@@ -56,7 +56,7 @@ export default function Page() {
         }}>
           <ImageBackground
             source={{ uri: `${movieData.info.backdrop_path}` }}
-            style={{ flex: 1, justifyContent: "center", width: '100%', position: "absolute", top: 0, aspectRatio: "16 / 9" }}
+            style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', justifyContent: "center", width: '100%', position: "absolute", top: 0, aspectRatio: "16 / 9" }}
           >
             <Box grid='container'
               style={{ marginTop: '100px', background: 'rgba(0, 0, 0, 0.7)', paddingHorizontal: '30px', paddingVertical: '30px' }}
@@ -93,12 +93,12 @@ export default function Page() {
                     <Box grid='col' columns='12'>
                       <Heading size='3xl'>{movieData.movie_data.name}</Heading>
                       <VStack space="md" reversed={false}>
-                        <Box><Text><strong>Genre:</strong> {movieData.info.genre}</Text></Box>
-                        <Box><Text><strong>Runtime:</strong> {movieData.info.duration}</Text></Box>
-                        <Box><Text><strong>Rating:</strong> <strong>{movieData.info.rating}</strong> / 10</Text></Box>
+                        <Box><Text>Genre: {movieData.info.genre}</Text></Box>
+                        <Box><Text>Runtime: {movieData.info.duration}</Text></Box>
+                        <Box><Text>Rating: {movieData.info.rating} / 10</Text></Box>
                         <Box><Text>{movieData.movie_data.stream_url}</Text></Box>
                         <Box><Text>{movieData.info.plot}</Text></Box>
-                        <Box><Text><strong>Cast:</strong> {movieData.info.actors}</Text></Box>
+                        <Box><Text>Cast: {movieData.info.actors}</Text></Box>
                       </VStack>
                     </Box>
                   </Box>

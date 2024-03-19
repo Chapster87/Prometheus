@@ -74,7 +74,7 @@ export default function Page() {
             backgroundImage: `url("${seriesData.info.backdrop_path}")`,
             backgroundSize: 'cover'
           }}>
-            <Box grid='container' style={{ marginTop: '100px', background: 'rgba(0, 0, 0, 0.7)', padding:'30px' }}>
+            <Box grid='container' style={{ marginTop: 30, background: 'rgba(0, 0, 0, 0.7)', padding: 30 }}>
               <Box grid="row">
                 <Box grid='col' columns='12'>
                   <Heading size='3xl'>{seriesData.info.name}</Heading>
@@ -106,7 +106,7 @@ export default function Page() {
                   </Box>
                 </Box>
                 <Box grid="col" columns='12' columnsMd='9'>
-                  <Tabs defaultValue={seriesData.seasons[0].id}>
+                  <Tabs defaultValue={`tab-1`}>
                     <TabsTabList>
                     {seriesData.seasons.map((season, index) => 
                       <TabsTab value={`tab-${season.season_number}`} key={season.id}>
@@ -119,16 +119,22 @@ export default function Page() {
                       let episodeIndex = seriesData && seriesData.episodes.length && seriesData.episodes[0].length > 0 ? index : index + 1;
                         
                         return (
-                          <TabsTabPanel value={`tab-${episodeIndex}`} key={season.id}>
+                          <TabsTabPanel value={`tab-${episodeIndex}`} key={season.id} sx={{ marginTop: 20 }}>
                             {(seriesData.episodes[episodeIndex]) &&
                               seriesData.episodes[episodeIndex].map(episode => {
                                 // http(s)://domain:port/series/username/password/streamID.ext
                                 const episodeURL = `${spark.config.xcUrl}/series/${spark.config.xcAuth.username}/${spark.config.xcAuth.password}/${episode.id}.${episode.container_extension}`;
-                                console.log(episodeIndex);
                                 return (
-                                  <Box grid='row' key={episode.id}>
+                                  <Box grid='row' key={episode.id} sx={{ marginBottom: 20 }}>
                                     <Box grid='col' columns='12' columnsMd='6' columnsLg='3'>
-                                      <img src={episode.info.movie_image} alt={episode.title} />
+                                      <Image
+                                        borderRadius="$none"
+                                        alt={episode.title}
+                                        sx={{ width: '100%', height: 'auto', aspectRatio: '16/9' }}
+                                        source={{
+                                          uri: episode.info.movie_image
+                                        }}
+                                      />
                                       <Button onPress={() => handleShow(episodeURL)} ref={ref}>
                                         <ButtonText>Show Modal</ButtonText>
                                       </Button>

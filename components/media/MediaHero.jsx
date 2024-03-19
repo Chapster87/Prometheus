@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Box, Button, ButtonText, HStack,  Heading, Icon, ImageBackground, Link, Text } from '@gluestack-ui/themed';
+import { Link } from 'expo-router';
+import { Box, Button, ButtonText, HStack, Heading, Icon, ImageBackground, Text } from '@gluestack-ui/themed';
 import { Clapperboard, Library, TrendingUp } from 'lucide-react-native';
 
 function VODHero({ heroMedia }) {
@@ -11,7 +12,7 @@ function VODHero({ heroMedia }) {
     <Box w="100%" sx={{ aspectRatio: "21 / 9" }}>
       <ImageBackground
         source={{ uri: `https://image.tmdb.org/t/p/original${media.backdrop_path}` }}
-        style={{ flex: 1, justifyContent: "center", width: '100%', position: "absolute", top: 0, aspectRatio: "16 / 9" }}
+        style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', justifyContent: "center", width: '100%', position: "absolute", top: 0, aspectRatio: "16 / 9" }}
       >
         <Box grid="container-fluid">
           <Box grid="row">
@@ -30,7 +31,7 @@ function VODHero({ heroMedia }) {
                   size="4xl"
                   color="$white"
                   fontWeight="$bold"
-                  lineHeight="1.1"
+                  lineHeight={1.1}
                   textAlign="left"
                   marginBottom="$4"
                 >

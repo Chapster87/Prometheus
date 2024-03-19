@@ -1,142 +1,198 @@
 const columns = {
   columns: {
     'fill': {
-      flex: '1 0 0%'
+      flexGrow: 1,
+      flexShrink: 0,
+      flexBasis: '0%',
     },
     'auto': {
-      flex: '0 0 auto',
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
       width: 'auto'
     },
     '1': {
-      flex: '0 0 auto',
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
       width: '8.33333333%'
     },
     '2': {
-      flex: '0 0 auto',
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
       width: '16.66666667%'
     },
     '3': {
-      flex: '0 0 auto',
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
       width: '25%'
     },
     '4': {
-      flex: '0 0 auto',
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
       width: '33.33333333%'
     },
     '5': {
-      flex: '0 0 auto',
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
       width: '41.66666667%'
     },
     '6': {
-      flex: '0 0 auto',
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
       width: '50%'
     },
     '7': {
-      flex: '0 0 auto',
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
       width: '58.33333333%'
     },
     '8': {
-      flex: '0 0 auto',
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
       width: '66.66666667%'
     },
     '9': {
-      flex: '0 0 auto',
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
       width: '75%'
     },
     '10': {
-      flex: '0 0 auto',
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
       width: '83.33333333%'
     },
     '11': {
-      flex: '0 0 auto',
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
       width: '91.66666667%'
     },
     '12': {
-      flex: '0 0 auto',
+      flexGrow: 0,
+      flexShrink: 0,
+      flexBasis: 'auto',
       width: '100%'
     }
   },
   columnsSm: {
     'fill': {
       '@sm_up': {
-        flex: '1 0 0%'
+        flexGrow: 1,
+        flexShrink: 0,
+        flexBasis: '0%',
       }
     },
     'auto': {
       '@sm_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: 'auto'
       }
     },
     '1': {
       '@sm_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '8.33333333%'
       }
     },
     '2': {
       '@sm_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '16.66666667%'
       }
     },
     '3': {
       '@sm_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '25%'
       }
     },
     '4': {
       '@sm_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '33.33333333%'
       }
     },
     '5': {
       '@sm_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '41.66666667%'
       }
     },
     '6': {
       '@sm_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '50%'
       }
     },
     '7': {
       '@sm_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '58.33333333%'
       }
     },
     '8': {
       '@sm_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '66.66666667%'
       }
     },
     '9': {
       '@sm_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '75%'
       }
     },
     '10': {
       '@sm_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '83.33333333%'
       }
     },
     '11': {
       '@sm_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '91.66666667%'
       }
     },
     '12': {
       '@sm_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '100%'
       }
     }
@@ -144,84 +200,112 @@ const columns = {
   columnsMd: {
     'fill': {
       '@md_up': {
-        flex: '1 0 0%'
+        flexGrow: 1,
+        flexShrink: 0,
+        flexBasis: '0%',
       }
     },
     'auto': {
       '@md_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: 'auto'
       }
     },
     '1': {
       '@md_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '8.33333333%'
       }
     },
     '2': {
       '@md_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '16.66666667%'
       }
     },
     '3': {
       '@md_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '25%'
       }
     },
     '4': {
       '@md_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '33.33333333%'
       }
     },
     '5': {
       '@md_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '41.66666667%'
       }
     },
     '6': {
       '@md_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '50%'
       }
     },
     '7': {
       '@md_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '58.33333333%'
       }
     },
     '8': {
       '@md_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '66.66666667%'
       }
     },
     '9': {
       '@md_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '75%'
       }
     },
     '10': {
       '@md_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '83.33333333%'
       }
     },
     '11': {
       '@md_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '91.66666667%'
       }
     },
     '12': {
       '@md_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '100%'
       }
     }
@@ -229,84 +313,112 @@ const columns = {
   columnsLg: {
     'fill': {
       '@lg_up': {
-        flex: '1 0 0%'
+        flexGrow: 1,
+        flexShrink: 0,
+        flexBasis: '0%',
       }
     },
     'auto': {
       '@lg_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: 'auto'
       }
     },
     '1': {
       '@lg_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '8.33333333%'
       }
     },
     '2': {
       '@lg_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '16.66666667%'
       }
     },
     '3': {
       '@lg_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '25%'
       }
     },
     '4': {
       '@lg_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '33.33333333%'
       }
     },
     '5': {
       '@lg_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '41.66666667%'
       }
     },
     '6': {
       '@lg_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '50%'
       }
     },
     '7': {
       '@lg_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '58.33333333%'
       }
     },
     '8': {
       '@lg_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '66.66666667%'
       }
     },
     '9': {
       '@lg_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '75%'
       }
     },
     '10': {
       '@lg_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '83.33333333%'
       }
     },
     '11': {
       '@lg_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '91.66666667%'
       }
     },
     '12': {
       '@lg_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '100%'
       }
     }
@@ -314,84 +426,112 @@ const columns = {
   columnsXl: {
     'fill': {
       '@xl_up': {
-        flex: '1 0 0%'
+        flexGrow: 1,
+        flexShrink: 0,
+        flexBasis: '0%',
       }
     },
     'auto': {
       '@xl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: 'auto'
       }
     },
     '1': {
       '@xl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '8.33333333%'
       }
     },
     '2': {
       '@xl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '16.66666667%'
       }
     },
     '3': {
       '@xl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '25%'
       }
     },
     '4': {
       '@xl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '33.33333333%'
       }
     },
     '5': {
       '@xl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '41.66666667%'
       }
     },
     '6': {
       '@xl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '50%'
       }
     },
     '7': {
       '@xl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '58.33333333%'
       }
     },
     '8': {
       '@xl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '66.66666667%'
       }
     },
     '9': {
       '@xl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '75%'
       }
     },
     '10': {
       '@xl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '83.33333333%'
       }
     },
     '11': {
       '@xl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '91.66666667%'
       }
     },
     '12': {
       '@xl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '100%'
       }
     }
@@ -399,84 +539,112 @@ const columns = {
   columnsXxl: {
     'fill': {
       '@xxl_up': {
-        flex: '1 0 0%'
+        flexGrow: 1,
+        flexShrink: 0,
+        flexBasis: '0%',
       }
     },
     'auto': {
       '@xxl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: 'auto'
       }
     },
     '1': {
       '@xxl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '8.33333333%'
       }
     },
     '2': {
       '@xxl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '16.66666667%'
       }
     },
     '3': {
       '@xxl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '25%'
       }
     },
     '4': {
       '@xxl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '33.33333333%'
       }
     },
     '5': {
       '@xxl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '41.66666667%'
       }
     },
     '6': {
       '@xxl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '50%'
       }
     },
     '7': {
       '@xxl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '58.33333333%'
       }
     },
     '8': {
       '@xxl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '66.66666667%'
       }
     },
     '9': {
       '@xxl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '75%'
       }
     },
     '10': {
       '@xxl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '83.33333333%'
       }
     },
     '11': {
       '@xxl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '91.66666667%'
       }
     },
     '12': {
       '@xxl_up': {
-        flex: '0 0 auto',
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: 'auto',
         width: '100%'
       }
     }

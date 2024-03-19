@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box } from "@gluestack-ui/themed"
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 
@@ -45,9 +46,9 @@ export const VideoJS = (props) => {
   }, [playerRef]);
 
   return (
-    <div data-vjs-player>
-      <div ref={videoRef} />
-    </div>
+    <Box data-vjs-player>
+      <Box ref={videoRef} />
+    </Box>
   );
 }
 

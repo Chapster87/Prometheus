@@ -1,13 +1,12 @@
 import { Dimensions, StyleSheet } from "react-native";
-import { Badge, BadgeText, Card, Heading, Image, Link, View } from "@gluestack-ui/themed"
+import { Link } from "expo-router";
+import { Badge, BadgeText, Card, Heading, Image, View } from "@gluestack-ui/themed"
 
 const { width, height } = Dimensions.get('window');
 const cardWidth = width * 0.1666666;
 const cardAR = 400 / 660;
 const cardHeight = cardWidth / cardAR;
 const imageWidth = cardWidth;
-const imageAR = 400 / 593;
-const imageHeight = imageWidth / imageAR;
 
 function MediaCard({ mediaID, streamType, name, image }) {
 
@@ -72,7 +71,8 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     width: imageWidth,
-    height: imageHeight,
+    height: 'auto',
+    aspectRatio: '2/3',
     borderBottomRightRadius: 0,
     borderBottomLeftRadius: 0
   },

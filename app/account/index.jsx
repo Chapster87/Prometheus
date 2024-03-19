@@ -31,13 +31,12 @@ export default function Page() {
       <Box grid='row'>
         <Box grid='col' columns='12'>
           <Heading size='xl'>{account.message}</Heading>
-          <hr/>
-          <p><strong>Username:</strong> {account.username}</p>
-          <p><strong>Password:</strong> {account.password}</p>
-          <p><strong>Account Status:</strong> {account.status}</p>
-          <p><strong>No. of Connections:</strong> {account.max_connections}</p>
-          <p><strong>Expiration:</strong> {new Date(account.exp_date * 1000).toString()}</p>
-          <p><strong>Created:</strong> {new Date(account.created_at * 1000).toString()}</p>
+          <Text>Username: {account.username}</Text>
+          <Text>Password: {account.password}</Text>
+          <Text>Account Status: {account.status}</Text>
+          <Text>No. of Connections: {account.max_connections}</Text>
+          <Text>Expiration: {new Date(account.exp_date * 1000).toString()}</Text>
+          <Text>Created: {new Date(account.created_at * 1000).toString()}</Text>
         </Box>
       </Box>
       }

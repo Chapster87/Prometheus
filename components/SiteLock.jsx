@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Button, ButtonText, CloseIcon, Heading, Icon, Modal, ModalBackdrop, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalCloseButton, Text, View } from '@gluestack-ui/themed';
-import Auth from './session/Login'
+import Login from './session/Login'
 
 function SiteLock() {
   const [showModal, setShowModal] = useState(true)
@@ -30,7 +30,7 @@ function SiteLock() {
           </ModalHeader>
           <ModalBody>
             <Text mb="$5">If you have a user account, sign in and verify that your TMDB API Read Access Token is set.</Text>
-            <Auth />
+            <Login />
           </ModalBody>
         </ModalContent>
       </Modal>

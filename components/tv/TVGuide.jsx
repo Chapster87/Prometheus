@@ -112,7 +112,9 @@ const styles = StyleSheet.create({
   programList: {
     display: 'flex',
     flexDirection: 'row',
-    flex: 1
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: '0%',
   },
   program: {
     display: 'flex',
