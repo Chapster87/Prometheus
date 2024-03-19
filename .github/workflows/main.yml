@@ -1,4 +1,4 @@
-name: 🚀 Master Branch to Production Site Push
+name: 🚀 Web - Main Branch to Production Push
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the develop branch
@@ -36,7 +36,7 @@ jobs:
         npx expo export --platform web
 
     - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.3.5
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
