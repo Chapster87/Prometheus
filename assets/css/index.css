@@ -1,5 +1,6 @@
 body {
     background-color: var(--colors-backgroundDark950);
+    overflow: auto;
 }
 
 #root {

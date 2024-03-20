@@ -5,18 +5,18 @@ name: 🚀 Web - Main Branch to Production Push
 on:
   push:
     branches: [ main ]
-  pull_request:
-    types:
-      - closed
-    branches: [ main ]
+  # pull_request:
+  #   types:
+  #     - closed
+  #   branches: [ main ]
 
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo The PR was merged
+  # if_merged:
+  #   if: github.event.pull_request.merged == true
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - run: |
+  #       echo The PR was merged
   FTP-Deploy-Action:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
