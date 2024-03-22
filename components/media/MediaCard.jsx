@@ -8,7 +8,7 @@ const cardAR = 400 / 660;
 const cardHeight = cardWidth / cardAR;
 const imageWidth = cardWidth;
 
-function MediaCard({ mediaID, streamType, name, image }) {
+function MediaCard({ mediaID, tmdbID, streamType, xcEnabled, name, image }) {
 
   const isSeries = (streamType === 'series');
   const mediaType = isSeries ? 'series' : 'movies';
@@ -16,12 +16,14 @@ function MediaCard({ mediaID, streamType, name, image }) {
   return (
     <View
       style={styles.container}
-      key={mediaID}
+      key={tmdbID}
     >
       {(mediaID) ?
         <Link 
-          href={`/${mediaType}/${mediaID}`}
-          height="100%"
+          href={{
+            pathname: `/${mediaType}/${mediaID}`,
+            params: { type: 'xc' }
+          }}
         >
           <Card style={styles.card}>
             <Image
@@ -37,21 +39,30 @@ function MediaCard({ mediaID, streamType, name, image }) {
           </Card>
         </Link>
       :
-        <Card style={styles.card}>
-          <Badge style={styles.cardBadge} size="lg" bg="$amber400">
-            <BadgeText style={styles.cardBadgeText} color="$white">Coming Soon</BadgeText>
-          </Badge>
-          <Image
-            style={styles.cardImage}
-            resizeMode="cover"
-            borderRadius="$md"
-            alt={name}
-            source={{
-              uri: image,
-            }}
-          />
-          <Heading style={styles.cardHeading}>{name}</Heading>
-        </Card>
+        <Link 
+          href={{
+            pathname: `/${mediaType}/${tmdbID}`,
+            params: { type: 'tmdb' }
+          }}
+        >
+          <Card style={styles.card}>
+            {xcEnabled &&
+              <Badge style={styles.cardBadge} size="lg" bg="$amber400">
+                <BadgeText style={styles.cardBadgeText} color="$white">Coming Soon</BadgeText>
+              </Badge>
+            }
+            <Image
+              style={styles.cardImage}
+              resizeMode="cover"
+              borderRadius="$md"
+              alt={name}
+              source={{
+                uri: image,
+              }}
+            />
+            <Heading style={styles.cardHeading}>{name}</Heading>
+          </Card>
+        </Link>
       }
     </View>
   );
@@ -67,7 +78,8 @@ const styles = StyleSheet.create({
   card: {
     position: "relative",
     padding: 0,
-    height: "100%"
+    height: "100%",
+    width: "100%"
   },
   cardImage: {
     width: imageWidth,

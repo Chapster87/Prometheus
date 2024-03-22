@@ -22,9 +22,9 @@ function VODList({page, spark, session, catId, catName}) {
 
       } else if (page === 'Movies') {
         // GET Movie Streams
-        // spark.getVODStreams(catId)
-        //   .then(data => console.log("VOD", data))
-        //   .catch(console.log);
+        spark.getVODStreams(catId)
+          .then(data => console.log("VOD", data))
+          .catch(console.log);
       
         spark.getVODStreams(catId)
           .then(data => setVODCatData(data));

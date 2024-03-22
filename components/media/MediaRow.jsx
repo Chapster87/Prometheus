@@ -2,7 +2,7 @@ import { Box, HStack, Heading } from '@gluestack-ui/themed';
 
 import MediaCard from './MediaCard';
 
-function MediaRow({ title, mediaData, mediaType}) {
+function MediaRow({ title, mediaData, mediaType, xcEnabled }) {
   return (
     ((mediaData) &&
       <>
@@ -12,7 +12,7 @@ function MediaRow({ title, mediaData, mediaType}) {
             const isSeries = (mediaType === 'series');
             const mediaName = isSeries ? media.name : media.title;
             return (
-              <MediaCard key={media.id} mediaID={media.stream_id} streamType={mediaType} name={mediaName} image={`https://image.tmdb.org/t/p/w400${media.poster_path}`} />
+              <MediaCard key={media.id} mediaID={media.stream_id} tmdbID={media.id} streamType={mediaType} xcEnabled={xcEnabled} name={mediaName} image={`https://image.tmdb.org/t/p/w400${media.poster_path}`} />
             );
           })}
         </HStack>

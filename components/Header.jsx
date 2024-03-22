@@ -19,20 +19,20 @@ function Header({ session }) {
               <Box grid='row'>
                 <Box grid='col' columns='12' sx={navStyles}>
                   <HStack reversed={false} sx={MainNavSX}>
-                    <Link href="/" sx={LinkSX}>
-                      <LinkText>Home</LinkText>
+                    <Link href="/" style={LinkSX}>
+                      <LinkText sx={LinkTextSX}>Home</LinkText>
                     </Link>
-                    <Link href="/tv" sx={LinkSX}>
-                      <LinkText>Live TV</LinkText>
+                    <Link href="/tv" style={LinkSX}>
+                      <LinkText sx={LinkTextSX}>Live TV</LinkText>
                     </Link>
-                    <Link href="/movies" sx={LinkSX}>
-                      <LinkText>Movies</LinkText>
+                    <Link href="/movies" style={LinkSX}>
+                      <LinkText sx={LinkTextSX}>Movies</LinkText>
                     </Link>
-                    <Link href="/series" sx={LinkSX}>
-                      <LinkText>Series</LinkText>
+                    <Link href="/series" style={LinkSX}>
+                      <LinkText sx={LinkTextSX}>Series</LinkText>
                     </Link>
-                    <Link href="/account" sx={LinkSX}>
-                      <LinkText>Account</LinkText>
+                    <Link href="/account" style={LinkSX}>
+                      <LinkText sx={LinkTextSX}>Account</LinkText>
                     </Link>
                   </HStack>
                   <HStack reversed={false} sx={SecondaryNavSX}>
@@ -51,7 +51,7 @@ function Header({ session }) {
   );
 }
 
-const navStyles ={
+const navStyles = {
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between'
@@ -66,22 +66,20 @@ const MainNavSX = {
 const LinkSX = {
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
-  _text: {
-    color: '$white',
-    fontSize: 24,
-    fontWeight: '700',
-    textDecoration: 'none',
-    borderBottomWidth: 3,
-    borderColor: 'transparent',
-    textTransform: 'uppercase'
-  },
+  justifyContent: 'center'
+}
+
+const LinkTextSX = {
+  color: '$white',
+  fontSize: 24,
+  fontWeight: '700',
+  textDecoration: 'none',
+  borderBottomWidth: 3,
+  borderColor: 'transparent',
+  textTransform: 'uppercase',
   ":hover": {
-    _text: {
-      borderBottomWidth: 3,
-      borderColor:'$borderLight200',
-    }
-    
+    borderBottomWidth: 3,
+    borderColor:'$borderLight200',
   }
 }
 

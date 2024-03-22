@@ -100,7 +100,7 @@ export default function Account({ session }) {
             <Input isDisabled={true}>
               <InputField
                 type="email"
-                value={session.user.email}
+                value={session.user.email || ""}
               />
             </Input>
           </FormControl>
@@ -116,7 +116,7 @@ export default function Account({ session }) {
               <InputField
                 type="text"
                 onChangeText={(text) => setFirstName(text)}
-                value={firstName}
+                value={firstName || ""}
                 placeholder="First Name"
               />
             </Input>
@@ -131,7 +131,7 @@ export default function Account({ session }) {
               <InputField
                 type="text"
                 onChangeText={(text) => setLastName(text)}
-                value={lastName}
+                value={lastName || ""}
                 placeholder="Last Name"
               />
             </Input>
@@ -148,7 +148,7 @@ export default function Account({ session }) {
               <InputField
                 type="text"
                 onChangeText={(text) => setXcUrl(text)}
-                value={xcUrl}
+                value={xcUrl || ""}
                 placeholder="XC Url"
               />
             </Input>
@@ -165,7 +165,7 @@ export default function Account({ session }) {
               <InputField
                 type="text"
                 onChangeText={(text) => setXcUsername(text)}
-                value={xcUsername}
+                value={xcUsername || ""}
                 placeholder="XC Username"
               />
             </Input>
@@ -182,7 +182,7 @@ export default function Account({ session }) {
               <InputField
                 type="password"
                 onChangeText={(text) => setXcPassword(text)}
-                value={xcPassword}
+                value={xcPassword || ""}
                 placeholder="XC Password"
               />
             </Input>
@@ -199,7 +199,7 @@ export default function Account({ session }) {
               <InputField
                 type="text"
                 onChangeText={(text) => setTmdbApiKey(text)}
-                value={tmdbApiKey}
+                value={tmdbApiKey || ""}
                 placeholder="TMDB API Key"
               />
             </Input>
@@ -216,7 +216,7 @@ export default function Account({ session }) {
               <InputField
                 type="text"
                 onChangeText={(text) => setTmdbApiRAT(text)}
-                value={tmdbApiRAT}
+                value={tmdbApiRAT || ""}
                 placeholder="TMDB API Read Access Token"
               />
             </Input>

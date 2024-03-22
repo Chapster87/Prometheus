@@ -21,6 +21,7 @@ function VODHero({ heroMedia }) {
                 background: 'rgba(0, 0, 0, 0.5)',
                 padding: '$6 $4',
                 borderRadius: '$sm',
+                flexDirection: 'column',
                 alignItems: 'flex-start',
                 marginBottom: 100
               }}>
@@ -31,7 +32,7 @@ function VODHero({ heroMedia }) {
                   size="4xl"
                   color="$white"
                   fontWeight="$bold"
-                  lineHeight={1.1}
+                  lineHeight={52}
                   textAlign="left"
                   marginBottom="$4"
                 >
