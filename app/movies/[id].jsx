@@ -49,20 +49,6 @@ export default function Page() {
               }
             });
       }
-
-      // if(type === 'xc') {
-      //   spark.getVODInfo(id)
-      //     .then(data => {
-
-      //       // http(s)://domain:port/movie/username/password/streamID.ext
-      //       const streamUrl = `${spark.config.xcUrl}/movie/${spark.config.xcAuth.username}/${spark.config.xcAuth.password}/${data.movie_data.stream_id}.${data.movie_data.container_extension}`;
-            
-      //       data.movie_data.stream_url = streamUrl;
-
-      //       setXcData(data);
-      //       console.log("Stream Data", data);
-      //     });
-      // }
     }
   }, [session]);
 
@@ -91,10 +77,10 @@ export default function Page() {
         }}>
           <ImageBackground
             source={{ uri: `https://image.tmdb.org/t/p/original${movieData.backdrop_path}`}}
-            style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', justifyContent: "center", width: '100%', position: "absolute", top: 0, aspectRatio: "16 / 9" }}
+            style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', justifyContent: "flex-start", width: '100%', position: "absolute", top: 0, aspectRatio: "16 / 9" }}
           >
             <Box grid='container'
-              style={{ marginTop: '100px', background: 'rgba(0, 0, 0, 0.7)', paddingHorizontal: '30px', paddingVertical: '30px' }}
+              style={{ marginTop: 30, background: 'rgba(0, 0, 0, 0.7)', paddingHorizontal: '30px', paddingVertical: '30px' }}
             >
               {(xcData) &&
                 <Box grid='row'>
@@ -134,7 +120,7 @@ export default function Page() {
                         <Box><Text>Genre(s):{' '}
                           {movieData.genres.map((genre, index, genres) => {
                             let output = genre.name;
-                            if(!index + 1 === genres.length) {
+                            if (index + 1 !== genres.length) {
                               output += ', '
                             }
                             return output;

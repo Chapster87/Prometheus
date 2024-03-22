@@ -176,7 +176,7 @@ export default class Spark {
     }
 
     /**
-     * Fetch Trending Series from TMDB and attach stream id to link to Series Detail
+     * Fetch Movie Details from TMDB
      *
      */
     async getTmdbMovie(id) {
@@ -215,8 +215,38 @@ export default class Spark {
         // }
 
         return series;
+    }
 
-        // return series;
+    /**
+     * Fetch TV Series Details from TMDB
+     *
+     */
+    async getTmdbSeries(id) {
+        const params = {
+            language:'en-US'
+        };
+
+        const seriesDetails = await this.getTmdb('tv', id, null, params);
+
+        return seriesDetails;
+    }
+
+    /**
+     * Fetch TV Series Details from TMDB
+     *
+     */
+    async searchTmdbSeries(title, year) {
+        const params = {
+            query: title,
+            first_air_date_year: year,
+            include_adult: false,
+            language:'en-US',
+            page: 1
+        };
+
+        const res = await this.getTmdb('search', 'tv', null, params);
+
+        return res.results[0];
     }
 
     /**

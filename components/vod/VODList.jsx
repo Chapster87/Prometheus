@@ -13,18 +13,18 @@ function VODList({page, spark, session, catId, catName}) {
     if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
       if(page === 'Series') {
         // GET Series Streams
-        // spark.getSeriesStreams(catId)
-        //   .then(console.log)
-        //   .catch(console.log)
+        spark.getSeriesStreams(catId)
+          .then(console.log)
+          .catch(console.log)
 
         spark.getSeriesStreams(catId)
           .then((data) => setVODCatData(data));
 
       } else if (page === 'Movies') {
         // GET Movie Streams
-        spark.getVODStreams(catId)
-          .then(data => console.log("VOD", data))
-          .catch(console.log);
+        // spark.getVODStreams(catId)
+        //   .then(data => console.log("VOD", data))
+        //   .catch(console.log);
       
         spark.getVODStreams(catId)
           .then(data => setVODCatData(data));
