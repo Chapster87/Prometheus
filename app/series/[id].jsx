@@ -1,10 +1,12 @@
 import { useState, useEffect, useContext, useRef } from 'react';
+import Head from 'expo-router/head';
 import { AuthContext } from '../../components/session/AuthContext';
 import { useLocalSearchParams, Link } from 'expo-router';
-import { Box, Button, ButtonText, Heading, Image, ImageBackground, LinkText, Modal, ModalBackdrop, ModalContent, ModalHeader, ModalBody,  ModalFooter, ModalCloseButton, Icon, CloseIcon, View, VStack, Text, Tabs, TabsTab, TabsTabTitle, TabsTabList, TabsTabPanel, TabsTabPanels } from '@gluestack-ui/themed';
+import { Box, Button, ButtonText, Heading, Icon, Image, ImageBackground, LinkText, Modal, ModalBackdrop, ModalContent, ModalHeader, ModalBody,  ModalFooter, ModalCloseButton, CloseIcon, View, VStack, Text, Tabs, TabsTab, TabsTabTitle, TabsTabList, TabsTabPanel, TabsTabPanels } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
 import VideoJS from '../../components/VideoJS'
+import { Clapperboard } from 'lucide-react-native';
 
 const MODAL_DEFAULT = {
   show: false,
@@ -16,6 +18,8 @@ export default function Page() {
   const { id, type } = useLocalSearchParams(); 
   const [seriesData, setSeriesData] = useState();
   const [xcData, setXcData] = useState();
+  const [xcEpisodes, setXcEpisodes] = useState();
+  const [xcSeasons, setXcSeasons] = useState();
   const [showVideoModal, setShowVideoModal] = useState(MODAL_DEFAULT);
 
   // initialize api engine
@@ -33,7 +37,13 @@ export default function Page() {
         const fetchXcInfo = spark.getSeriesInfo(id)
           .then(data => {
             setXcData(data);
-            console.log('XC Data', data)
+            const episodes = []
+            for (const index in data.episodes) {
+              episodes.push(data.episodes[index]);
+            }
+            setXcEpisodes(episodes);
+            setXcSeasons(data.seasons);
+            console.log('XC Data', data);
             return data;
           })
           .then(data => {
@@ -92,6 +102,9 @@ export default function Page() {
       {/* May be better to define a dummy data object and then replace than checking to see if it's there and rendering on the second page load */}
       {(seriesData) &&
         <>
+          <Head>
+            <title>{`${seriesData.name} (${seriesData.first_air_date.substr(0,4)})`}</title>
+          </Head>
           <View style={{
             display: 'block',
             width: '100%'
@@ -118,7 +131,6 @@ export default function Page() {
                       <Box><Text>Genre(s):{' '}
                         {seriesData.genres.map((genre, index, genres) => {
                           let output = genre.name;
-                          console.log(genres);
                           if (index + 1 !== genres.length) {
                             output += ', '
                           }
@@ -132,55 +144,61 @@ export default function Page() {
                     </VStack>
                   </Box>
                 </Box>
-                {(xcData) &&
+                {(xcData && xcEpisodes && xcSeasons) &&
                   <Box grid="row">
-                    <Box grid="col" columns='12' columnsMd='9'>
+                    <Box grid="col" columns='12'>
                       <Tabs defaultValue={`tab-1`}>
                         <TabsTabList>
-                        {xcData.seasons.map((season, index) => 
-                          <TabsTab value={`tab-${season.season_number}`} key={season.id}>
-                            <TabsTabTitle color='$white'>{season.name}</TabsTabTitle>
-                          </TabsTab>
-                        )}
+                        {xcEpisodes.map((season, index) => {
+                          let seasonIndex = xcData && xcData.episodes.length && xcEpisodes[0].length > 0 ? index : index + 1;
+                          return (
+                            <TabsTab value={`tab-${index}`} key={index}>
+                              <TabsTabTitle color='$white'>
+                                {(xcSeasons[seasonIndex] && xcSeasons[seasonIndex].name) ? `${xcSeasons[seasonIndex].name} (S${seasonIndex})` : `Season ${seasonIndex}`}
+                              </TabsTabTitle>
+                            </TabsTab>
+                          )
+                        })}
                         </TabsTabList>
                         <TabsTabPanels>
-                          {xcData.seasons.map((season, index) => {
-                          let episodeIndex = xcData && xcData.episodes.length && xcData.episodes[0].length > 0 ? index : index + 1;
-                            
+                          {xcEpisodes.map((season, index) => {
                             return (
-                              <TabsTabPanel value={`tab-${episodeIndex}`} key={season.id} sx={{ marginTop: 20 }}>
-                                {(xcData.episodes[episodeIndex]) &&
-                                  xcData.episodes[episodeIndex].map(episode => {
-                                    // http(s)://domain:port/series/username/password/streamID.ext
-                                    const episodeURL = `${spark.config.xcUrl}/series/${spark.config.xcAuth.username}/${spark.config.xcAuth.password}/${episode.id}.${episode.container_extension}`;
-                                    return (
-                                      <Box grid='row' key={episode.id} sx={{ marginBottom: 20 }}>
-                                        <Box grid='col' columns='12' columnsMd='6' columnsLg='3'>
+                              <TabsTabPanel value={`tab-${index}`} key={index} sx={{ marginTop: 20 }}>
+                                {xcEpisodes[index].map(episode => {
+                                  // http(s)://domain:port/series/username/password/streamID.ext
+                                  const episodeURL = `${spark.config.xcUrl}/series/${spark.config.xcAuth.username}/${spark.config.xcAuth.password}/${episode.id}.${episode.container_extension}`;
+                                  return (
+                                    <Box grid='row' key={episode.id} sx={{ marginBottom: 20 }}>
+                                      <Box grid='col' columns='12' columnsMd='6' columnsLg='3'>
+                                        {(episode.info.movie_image) ?
                                           <Image
-                                            borderRadius="$none"
                                             alt={episode.title}
-                                            sx={{ width: '100%', height: 'auto', aspectRatio: '16/9' }}
+                                            sx={{ width: '100%', height: 'auto', aspectRatio: '16/9', borderRadius: 4 }}
                                             source={{
                                               uri: episode.info.movie_image
                                             }}
                                           />
-                                          <Button onPress={() => handleShow(episodeURL)} ref={ref}>
-                                            <ButtonText>Show Modal</ButtonText>
-                                          </Button>
-                                        </Box>
-                                        <Box grid='col' columns='12' columnsMd='6' columnsLg='9'>
-                                          <Heading size='xl'>{episode.title}</Heading>
-                                          <VStack space="md" reversed={false}>
-                                            <Box><Text><strong>Runtime:</strong> {episode.info.duration}</Text></Box>
-                                            <Box><Text><strong>Rating:</strong> <strong>{episode.info.rating}</strong> / 10</Text></Box>
-                                            <Box><Text>{episodeURL}</Text></Box>
-                                            <Box><Text>{episode.info.plot}</Text></Box>
-                                          </VStack>
-                                        </Box>
+                                        :
+                                          <Box sx={episodeVideoPlaceholder}>
+                                            <Icon as={Clapperboard} sx={episodeVideoIcon} />
+                                          </Box>
+                                        }
+                                        <Button onPress={() => handleShow(episodeURL)} ref={ref}>
+                                          <ButtonText>Show Modal</ButtonText>
+                                        </Button>
                                       </Box>
-                                    )
-                                  }
-                                )}
+                                      <Box grid='col' columns='12' columnsMd='6' columnsLg='9'>
+                                        <Heading size='xl'>{episode.title}</Heading>
+                                        <VStack space="md" reversed={false}>
+                                          <Box><Text><strong>Runtime:</strong> {episode.info.duration}</Text></Box>
+                                          <Box><Text><strong>Rating:</strong> <strong>{episode.info.rating}</strong> / 10</Text></Box>
+                                          <Box><Text>{episodeURL}</Text></Box>
+                                          <Box><Text>{episode.info.plot}</Text></Box>
+                                        </VStack>
+                                      </Box>
+                                    </Box>
+                                  )
+                                })}
                               </TabsTabPanel>
                             )
                           })}
@@ -229,4 +247,21 @@ export default function Page() {
       }
     </>
   );
+}
+
+const episodeVideoPlaceholder = {
+  width: '100%',
+  height: 'auto',
+  aspectRatio: '16/9',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '$warmGray800',
+  borderRadius: 4
+};
+
+const episodeVideoIcon = {
+  width: 50,
+  height: 50,
+  coilor: '$warmGray400'
 }
