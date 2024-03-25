@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Link } from 'expo-router';
-import { Box, Button, ButtonText, HStack, LinkText } from '@gluestack-ui/themed';
+import { Avatar, AvatarFallbackText, Box, HStack, Icon, LinkText, Menu, MenuItem, MenuItemLabel, Pressable, SettingsIcon } from '@gluestack-ui/themed';
+import { CircleUserRound, LogOut } from 'lucide-react-native';
 import { supabase } from '../config/supabase'
 
 function Header({ session }) {
+  console.log(session);
   useEffect(() => {
     // do something
   }, []);
@@ -31,15 +33,38 @@ function Header({ session }) {
                     <Link href="/series" style={LinkSX}>
                       <LinkText sx={LinkTextSX}>Series</LinkText>
                     </Link>
-                    <Link href="/account" style={LinkSX}>
-                      <LinkText sx={LinkTextSX}>Account</LinkText>
-                    </Link>
                   </HStack>
                   <HStack reversed={false} sx={SecondaryNavSX}>
-                    {(!!session) &&
-                    <Button variant="gradient" onPress={() => supabase.auth.signOut()}>
-                      <ButtonText>Sign Out</ButtonText>
-                    </Button>}
+                    {(!!session) ?
+                      <>
+                        <Menu
+                          placement="bottom"
+                          trigger={({ ...triggerProps }) => {
+                            return (
+                              <Pressable {...triggerProps}>
+                                <Avatar bgColor="$green600" size="md" borderRadius="$full">
+                                  <AvatarFallbackText>{`${session.user.user_metadata.firstName} ${session.user.user_metadata.lastName}`}</AvatarFallbackText>
+                                </Avatar>
+                              </Pressable>
+                            )
+                          }}
+                        >
+                          <MenuItem key="Settings" textValue="Settings" onPress={() => {window.location.href = '/account'}}>
+                            <Icon as={SettingsIcon} size="sm" mr="$2" />
+                            <MenuItemLabel size="sm">Settings</MenuItemLabel>
+                          </MenuItem>
+                          <MenuItem key="SignOut" textValue="Settings" onPress={() => supabase.auth.signOut()}>
+                            <Icon as={LogOut} size="sm" mr="$2" />
+                            <MenuItemLabel size="sm">Sign Out</MenuItemLabel>
+                          </MenuItem>
+                        </Menu>
+                      </>
+                      :
+                      <Link href="/series" style={LinkSX}>
+                        <Icon as={CircleUserRound} size="xl" mr="$2" color="$white"/>
+                        <LinkText sx={LinkTextSX}>Sign In</LinkText>
+                      </Link>
+                    }
                   </HStack>
                 </Box>
               </Box>
