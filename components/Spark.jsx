@@ -181,6 +181,7 @@ export default class Spark {
      */
     async getTmdbMovie(id) {
         const params = {
+            append_to_response: 'release_dates,watch/providers',
             language:'en-US'
         };
 

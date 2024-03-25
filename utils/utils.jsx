@@ -5,6 +5,15 @@ export function optimizeName(name) {
   return name.trim();
 }
 
+export function minutesToHrs(totalMinutes) {
+  const hours = Math.floor(totalMinutes / 60);          
+  const minutes = totalMinutes % 60;
+
+  const finalTime = (hours > 0 ? hours + ' Hr ' : '') + minutes + ' Min';
+
+  return finalTime;
+}
+
 export function secondsToHms(d) {
   d = Number(d);
   var h = Math.floor(d / 3600);

@@ -2,10 +2,12 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import { AuthContext } from '../../components/session/AuthContext';
 import { useLocalSearchParams, Link } from 'expo-router';
 
-import { Box, Heading, Image, ImageBackground, LinkText, View, Text, VStack } from '@gluestack-ui/themed';
+import { Badge, BadgeText, Box, Heading, Image, ImageBackground, LinkText, View, Text, VStack } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
 import VideoJS from '../../components/VideoJS'
+
+import { minutesToHrs } from '../../utils/utils';
 
 export default function Page() {
   const [session, setSession] = useContext(AuthContext);
@@ -111,13 +113,13 @@ export default function Page() {
                     }}
                   />
                 </Box>
-                <Box grid='col' columns='12' columnsMd='9'>
+                <Box grid='col' columns='12' columnsMd='9' sx={{ position: 'relative' }}>
                   <Box grid='row'>
                     <Box grid='col' columns='12'>
-                      <Heading size='3xl'>{movieData.title}</Heading>
+                      <Heading size='3xl'>{movieData.title} <Text sx={{ fontWeight: '$bold' }}>({movieData.release_date.substr(0,4)})</Text></Heading>
                       <VStack space="md" reversed={false}>
                         {(movieData.tagline) && <Box><Text>"{movieData.tagline}"</Text></Box>}
-                        <Box><Text>Genre(s):{' '}
+                        <Box><Text><Text sx={{ fontWeight: '$bold' }}>Genre(s):{' '}</Text>
                           {movieData.genres.map((genre, index, genres) => {
                             let output = genre.name;
                             if (index + 1 !== genres.length) {
@@ -126,13 +128,16 @@ export default function Page() {
                             return output;
                           })}
                         </Text></Box>
-                        <Box><Text>Runtime: {movieData.runtime}</Text></Box>
-                        <Box><Text>Rating: NEED</Text></Box>
+                        <Box><Text><Text sx={{ fontWeight: '$bold' }}>Runtime:</Text> {minutesToHrs(movieData.runtime)}</Text></Box>
+                        <Box><Text><Text sx={{ fontWeight: '$bold' }}>Rating:</Text> NEED</Text></Box>
                         {(xcData) && <Box><Text>{xcData.movie_data.stream_url}</Text></Box>}
                         <Box><Text>{movieData.overview}</Text></Box>
-                        <Box><Text>Cast: NEED</Text></Box>
+                        <Box><Text><Text sx={{ fontWeight: '$bold' }}>Cast:</Text> NEED</Text></Box>
                         {(movieData.homepage) && <Box><Link href={movieData.homepage} target={'_blank'} rel={'noopener noreferrer'}><LinkText>{movieData.homepage}</LinkText></Link></Box>}
                       </VStack>
+                      <Badge size="md" variant="solid" borderRadius="$none" action="success" sx={badgeStyles}>
+                        <BadgeText>Status: {movieData.status}</BadgeText>
+                      </Badge>
                     </Box>
                   </Box>
                 </Box>
@@ -143,4 +148,14 @@ export default function Page() {
       }
     </>
   );
+}
+
+const badgeStyles = {
+  position: "absolute",
+  top: 16,
+  right: 12,
+  paddingVertical: 5,
+  paddingHorizontal: 12,
+  border: 0,
+  zIndex: 10
 }
