@@ -39,24 +39,33 @@ function VODHero({ heroMedia }) {
                   {mediaType === 'Movie' ? media.title : media.name}
                 </Heading>
                 <Text sx={{ marginBottom: '$8' }}>{media.overview}</Text>
-                {(media.stream_id) ? 
-                  <HStack>
-                    <Link href={`/${mediaType === 'Movie' ? 'movies' : 'series'}/${media.stream_id}`}>
+                <HStack>
+                  <Link
+                    href={{
+                      pathname: `/${mediaType === 'Movie' ? 'movies' : 'series'}/${media.stream_id ? media.stream_id : media.id }`,
+                      params: { type: media.stream_id ? 'xc' : 'tmdb' }
+                    }}
+                  >
+                    <Button variant="secondary" action="primary" sx={{ backgroundColor: '$white', border: '2px solid $white' }}>
+                      <Icon as={Library} sx={{ color: '$primary0', marginRight: '$2' }} />
+                      <ButtonText sx={{ color: '$primary0' }}>{mediaType} Info</ButtonText>
+                    </Button>
+                  </Link>
+                  {(media.stream_id) && 
+                    <Link 
+                      href={{
+                        pathname: `/${mediaType === 'Movie' ? 'movies' : 'series'}/${media.stream_id}`,
+                        params: { type: 'xc' }
+                      }}
+                      style={{ marginLeft: 24 }}
+                    >
                       <Button action="primary" variant="gradient">
                         <Icon as={Clapperboard} sx={{ color: '$white', marginRight: '$2' }} />
                         <ButtonText>Watch Now</ButtonText>
                       </Button>
                     </Link>
-                    <Link href={`/${mediaType === 'Movie' ? 'movies' : 'series'}/${media.stream_id}`} sx={{ marginLeft: '$4' }}>
-                      <Button variant="secondary" action="primary" sx={{ backgroundColor: '$white', border: '2px solid $white' }}>
-                        <Icon as={Library} sx={{ color: '$primary0', marginRight: '$2' }} />
-                        <ButtonText sx={{ color: '$primary0' }}>{mediaType} Info</ButtonText>
-                      </Button>
-                    </Link>
-                  </HStack>
-                :
-                  <Text>Coming Soon</Text>
-                }
+                  }
+                </HStack>
               </Box>
             </Box>
           </Box>
