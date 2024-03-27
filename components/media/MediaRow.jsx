@@ -7,7 +7,7 @@ function MediaRow({ title, mediaData, mediaType, xcEnabled }) {
     ((mediaData) &&
       <>
         {title && <Heading size="3xl" sx={headingSX}>{title}</Heading>}
-        <HStack space="none" reversed={false} wrap={false}>
+        <HStack space="none" reversed={false} wrap={false} sx={{ maxWidth: '100vw', overflow: 'auto', marginBottom: '$8' }}>
           {mediaData.map(media => {
             const isSeries = (mediaType === 'series');
             const mediaName = isSeries ? media.name : media.title;
