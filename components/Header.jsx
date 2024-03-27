@@ -2,8 +2,10 @@ import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Link } from 'expo-router';
 import { Avatar, AvatarFallbackText, Box, HStack, Icon, LinkText, Menu, MenuItem, MenuItemLabel, Pressable, SettingsIcon } from '@gluestack-ui/themed';
-import { CircleUserRound, LogOut } from 'lucide-react-native';
+import { CircleUserRound, LogOut, Search } from 'lucide-react-native';
 import { supabase } from '../config/supabase'
+
+import Logo from '../assets/images/svg/logo';
 
 function Header({ session }) {
   console.log(session);
@@ -14,13 +16,16 @@ function Header({ session }) {
   return (
     <>
       <StatusBar style="auto" />
-      <Box grid='container-fluid' sx={{ position: 'sticky', zIndex: 10, top: 0, background: 'rgba(0, 0, 0, 0.5)' }}>
+      <Box grid='container-fluid' sx={{ position: 'sticky', zIndex: 10, top: 0, background: 'rgba(0, 0, 0, 0.5)', marginTop: 10 }}>
         <Box grid='row'>
           <Box grid='col' columns='12'>
             <Box grid="container">
               <Box grid='row'>
                 <Box grid='col' columns='12' sx={navStyles}>
                   <HStack reversed={false} sx={MainNavSX}>
+                    <Link href="/" style={LinkSX}>
+                      <Logo width={75} height={94} />
+                    </Link>
                     <Link href="/" style={LinkSX}>
                       <LinkText sx={LinkTextSX}>Home</LinkText>
                     </Link>
@@ -35,7 +40,10 @@ function Header({ session }) {
                     </Link>
                   </HStack>
                   <HStack reversed={false} sx={SecondaryNavSX}>
-                    {(!!session) ?
+                    <Link href="/search" style={LinkSX}>
+                      <Icon as={Search} size="xl" color="$white" />
+                    </Link>
+                    {(session) ?
                       <>
                         <Menu
                           placement="bottom"
