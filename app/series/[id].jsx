@@ -2,11 +2,13 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import Head from 'expo-router/head';
 import { AuthContext } from '../../components/session/AuthContext';
 import { useLocalSearchParams, Link } from 'expo-router';
-import { Box, Button, ButtonText, Heading, Icon, Image, ImageBackground, LinkText, Modal, ModalBackdrop, ModalContent, ModalHeader, ModalBody,  ModalFooter, ModalCloseButton, CloseIcon, View, VStack, Text, Tabs, TabsTab, TabsTabTitle, TabsTabList, TabsTabPanel, TabsTabPanels } from '@gluestack-ui/themed';
+import { Box, Button, ButtonText, Heading, Icon, Image, ImageBackground, LinkText, Modal, ModalBackdrop, ModalContent, ModalHeader, ModalBody,  ModalFooter, ModalCloseButton, CloseIcon, View, VStack, Text, Tabs, TabsTab, TabsTabTitle, TabsTabList, TabsTabPanel, TabsTabPanels, HStack } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
+import { supabase } from '../../config/supabase'
 import VideoJS from '../../components/VideoJS'
 import { Clapperboard } from 'lucide-react-native';
+import WatchedBadge from '../../components/media/WatchedBadge';
 
 const MODAL_DEFAULT = {
   show: false,
@@ -14,9 +16,11 @@ const MODAL_DEFAULT = {
 }
 
 export default function Page() {
+  const [loading, setLoading] = useState(true);
   const [session, setSession] = useContext(AuthContext);
   const { id, type } = useLocalSearchParams(); 
   const [seriesData, setSeriesData] = useState();
+  const [watchHistory, setWatchHistory] = useState();
   const [xcData, setXcData] = useState();
   const [xcEpisodes, setXcEpisodes] = useState();
   const [xcSeasons, setXcSeasons] = useState();
@@ -62,8 +66,76 @@ export default function Page() {
             }
           });
       }
+
+      async function getWatchHistory() {
+        setLoading(true);
+        const { user } = session
+  
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('watchHistorySeries')
+          .eq('id', user.id)
+          .single();
+  
+        if (error) {
+          console.warn(error)
+        } else if (data) {
+          setWatchHistory(data.watchHistorySeries);
+        }
+      }
+  
+      getWatchHistory()
+      setLoading(false);
     }
   }, [session]);
+
+  async function updateHistory(event, ID) {
+    setLoading(true);
+    if (session) {
+      const { user } = session
+      let newHistory = null;
+
+      console.log('ID', ID);
+      console.log('history before', watchHistory);
+
+      if(ID && event === 'ADD') {
+        newHistory = [
+          ...watchHistory,
+          ID.toString()
+        ];
+      }
+
+      if (ID && event === 'REMOVE') {
+        newHistory = [...watchHistory];
+        const toRemove = newHistory.indexOf(ID.toString());
+        if (toRemove > -1) {
+          newHistory.splice(toRemove, 1);
+        }
+      }
+
+      console.log('newHistory', newHistory);
+
+      const updates = {
+        id: user.id,
+        watchHistorySeries: newHistory,
+        updated_at: new Date(),
+      }
+
+      async function updateDatabase() {
+        const { error } = await supabase.from('profiles').upsert(updates)
+
+        if (error) {
+          alert(error.message)
+        } else {
+          setWatchHistory(newHistory);
+        }
+      }
+
+      updateDatabase();
+    }
+
+    setLoading(false);
+  }
 
   const handleClose = () => setShowVideoModal(prevState => {
     return {
@@ -103,17 +175,18 @@ export default function Page() {
       {(seriesData) &&
         <>
           <Head>
-            <title>{`${seriesData.name} (${seriesData.first_air_date.substr(0,4)})`}</title>
+            <title>{`${seriesData.name} (${seriesData.first_air_date.substr(0,4)})`} | Prometheus</title>
           </Head>
           <View style={{
             display: 'block',
-            width: '100%'
+            width: '100%',
+            marginTop: -90
           }}>
             <ImageBackground
               source={{ uri: `https://image.tmdb.org/t/p/original${seriesData.backdrop_path}`}}
               style={{ flexGrow: 1, flexShrink: 1, flexBasis: '0%', justifyContent: "flex-start", width: '100%', position: "absolute", top: 0, aspectRatio: "16 / 9" }}
             >
-              <Box grid='container' style={{ marginTop: 30, background: 'rgba(0, 0, 0, 0.7)', padding: 30 }}>
+              <Box grid='container' style={{ marginTop: 130, background: 'rgba(0, 0, 0, 0.7)', padding: 30 }}>
                 <Box grid="row">
                   <Box grid='col' columns='12' columnsMd='3'>
                     <Image
@@ -183,9 +256,15 @@ export default function Page() {
                                             <Icon as={Clapperboard} sx={episodeVideoIcon} />
                                           </Box>
                                         }
-                                        <Button onPress={() => handleShow(episodeURL)} ref={ref}>
-                                          <ButtonText>Show Modal</ButtonText>
-                                        </Button>
+                                        <HStack sx={{ position: 'static', justifyContent: 'space-between', alignItems: 'center' }}>
+                                          {(watchHistory) &&
+                                            <WatchedBadge watchHistory={watchHistory} mediaID={episode.id} updateHistory={updateHistory} loading={loading} />
+                                          }
+                                          <Button variant="gradient" onPress={() => handleShow(episodeURL)} ref={ref}>
+                                            <ButtonText>Open Modal</ButtonText>
+                                          </Button>
+                                        </HStack>
+                                        
                                       </Box>
                                       <Box grid='col' columns='12' columnsMd='6' columnsLg='9'>
                                         <Heading size='xl'>{episode.title}</Heading>
@@ -214,6 +293,7 @@ export default function Page() {
             isOpen={showVideoModal.show}
             onClose={() => handleClose()}
             finalFocusRef={ref}
+            sx={{ position: 'fixed' }}
           >
             <ModalBackdrop />
             <ModalContent>
