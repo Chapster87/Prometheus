@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import App from '../components/App';
+import Home from '../components/Home';
 import { AuthContext } from '../components/session/AuthContext';
 
 import { enableLegacyWebImplementation } from 'react-native-gesture-handler';
@@ -10,6 +10,6 @@ export default function Page() {
   const [session, setSession] = useContext(AuthContext);
 
   return (
-    <App session={session} />
+    <Home session={session} />
   );
 }

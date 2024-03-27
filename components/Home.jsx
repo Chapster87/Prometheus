@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Head from 'expo-router/head';
 import { Box, View } from "@gluestack-ui/themed";
 
 import MediaHero from './media/MediaHero'
@@ -49,32 +50,37 @@ function App({ session }) {
   }, [session]);
 
   return (
-    <View sx={{ marginTop: -80 }}>
-      {(heroMedia) ? <MediaHero heroMedia={heroMedia} /> : <DummyHero />}
-      <Box grid="container-fluid">
-        <Box grid="row">
-          <Box grid="col" columns="12">
-            {/* <TrendingMovies /> */}
-            {(trendingMovies) ? 
-              <MediaRow title="Trending Movies" mediaData={trendingMovies} mediaType='movies' xcEnabled={account.user.user_metadata.xcUrl} />
-            :
-              <DummyRow title="Trending Movies" />
-            }
+    <>
+      <Head>
+        <title>Home | Prometheus</title>
+      </Head>
+      <View sx={{ marginTop: -90 }}>
+        {(heroMedia) ? <MediaHero heroMedia={heroMedia} /> : <DummyHero />}
+        <Box grid="container-fluid">
+          <Box grid="row">
+            <Box grid="col" columns="12">
+              {/* <TrendingMovies /> */}
+              {(trendingMovies) ? 
+                <MediaRow title="Trending Movies" mediaData={trendingMovies} mediaType='movies' xcEnabled={account.user.user_metadata.xcUrl} />
+              :
+                <DummyRow title="Trending Movies" />
+              }
+            </Box>
+          </Box>
+          <Box grid="row">
+            <Box grid="col" columns="12">
+              {(trendingSeries) ?
+                <>
+                  <MediaRow title="Trending Series" mediaData={trendingSeries} mediaType='series' xcEnabled={account.user.user_metadata.xcUrl} />
+                </>
+              :
+                <DummyRow title="Trending Series" />
+              }
+            </Box>
           </Box>
         </Box>
-        <Box grid="row">
-          <Box grid="col" columns="12">
-            {(trendingSeries) ?
-              <>
-                <MediaRow title="Trending Series" mediaData={trendingSeries} mediaType='series' xcEnabled={account.user.user_metadata.xcUrl} />
-              </>
-            :
-              <DummyRow title="Trending Series" />
-            }
-          </Box>
-        </Box>
-      </Box>
-    </View>
+      </View>
+    </>
   );
 }
 
