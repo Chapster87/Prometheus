@@ -8,7 +8,7 @@ export const Text = createStyle({
   fontWeight: '$normal',
   fontFamily: '$body',
   fontStyle: 'normal',
-  letterSpacing: '$md',
+  letterSpacing: '$lg',
 
   variants: {
     isTruncated: {
