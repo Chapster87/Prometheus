@@ -8,6 +8,19 @@ export const LinkText = createStyle({
   },
   _web: {
     textDecoration: 'underline',
-    color: '$info700'
-  }
+    color: '$info700',
+  },
+  variants: {
+    link: {
+      true: {
+        color: '$info700',
+        _dark: {
+          color: '$info300',
+        }
+      }
+    }
+  },
+  defaultProps: {
+    link: true, // fixes stupid bug causing Text defautl to change color
+  },
 });
