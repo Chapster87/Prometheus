@@ -151,6 +151,24 @@ export const Badge = createStyle({
           props: { size: 'sm' },
         },
       },
+      xl: {
+        px: '$2',
+        _icon: {
+          props: { size: 'md' },
+        },
+        _text: {
+          props: { size: 'md' },
+        },
+      },
+      '2xl': {
+        px: '$2',
+        _icon: {
+          props: { size: 'lg' },
+        },
+        _text: {
+          props: { size: 'lg' },
+        },
+      },
     },
   },
 

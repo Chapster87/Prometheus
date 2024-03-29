@@ -1,6 +1,12 @@
 - Search
+- Refine within Category (Search as you Type)
 - Improve Navigation
 - TV Guide
-- Sign In
 - All Series
+- Mark Watched - Movies
+- Video Marks Watched When Finished
+- Favorites
+- Bookmarks
+- Recently Viewed
+- MOBILE!
 

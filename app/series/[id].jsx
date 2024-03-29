@@ -8,7 +8,8 @@ import Spark from '../../components/Spark';
 import { supabase } from '../../config/supabase'
 import VideoJS from '../../components/VideoJS'
 import { Clapperboard } from 'lucide-react-native';
-import WatchedBadge from '../../components/media/WatchedBadge';
+import FavoriteBadge from '../../components/badges/Favorite';
+import WatchedBadge from '../../components/badges/Watched';
 
 const MODAL_DEFAULT = {
   show: false,
@@ -21,6 +22,7 @@ export default function Page() {
   const { id, type } = useLocalSearchParams(); 
   const [seriesData, setSeriesData] = useState();
   const [watchHistory, setWatchHistory] = useState();
+  const [favorites, setFavorites] = useState(null);
   const [xcData, setXcData] = useState();
   const [xcEpisodes, setXcEpisodes] = useState();
   const [xcSeasons, setXcSeasons] = useState();
@@ -67,13 +69,13 @@ export default function Page() {
           });
       }
 
-      async function getWatchHistory() {
+      async function getMediaMeta() {
         setLoading(true);
         const { user } = session
   
         const { data, error } = await supabase
-          .from('profiles')
-          .select('watchHistorySeries')
+          .from('media')
+          .select('watchHistorySeries, favoritesSeries')
           .eq('id', user.id)
           .single();
   
@@ -81,53 +83,67 @@ export default function Page() {
           console.warn(error)
         } else if (data) {
           setWatchHistory(data.watchHistorySeries);
+          setFavorites(data.favoritesSeries);
         }
+        setLoading(false);
       }
   
-      getWatchHistory()
-      setLoading(false);
+      getMediaMeta()
     }
   }, [session]);
 
-  async function updateHistory(event, ID) {
+  async function updateMediaMeta(event, ID) {
     setLoading(true);
     if (session) {
       const { user } = session
-      let newHistory = null;
+      let newHistory = [];
+      let newFavorites = [];
 
-      console.log('ID', ID);
-      console.log('history before', watchHistory);
-
-      if(ID && event === 'ADD') {
-        newHistory = [
-          ...watchHistory,
-          ID.toString()
-        ];
+      if(watchHistory) {
+        newHistory = [...watchHistory]
       }
 
-      if (ID && event === 'REMOVE') {
-        newHistory = [...watchHistory];
+      if(favorites) {
+        newFavorites = [...favorites];
+      }
+
+      if(ID && event === 'WATCHED' && !newHistory.includes(ID.toString())) {
+        newHistory.push(ID.toString());
+      }
+
+      if (ID && event === 'UNWATCH') {
         const toRemove = newHistory.indexOf(ID.toString());
         if (toRemove > -1) {
           newHistory.splice(toRemove, 1);
         }
       }
 
-      console.log('newHistory', newHistory);
+      if (ID && event === 'FAVORITE' && !newFavorites.includes(ID.toString())) {
+        newFavorites.push(ID.toString());
+      }
+
+      if (ID && event === 'UNFAVORITE') {
+        const toRemove = newFavorites.indexOf(ID.toString());
+        if (toRemove > -1) {
+          newFavorites.splice(toRemove, 1);
+        }
+      }
 
       const updates = {
         id: user.id,
         watchHistorySeries: newHistory,
+        favoritesSeries: newFavorites,
         updated_at: new Date(),
       }
 
       async function updateDatabase() {
-        const { error } = await supabase.from('profiles').upsert(updates)
+        const { error } = await supabase.from('media').upsert(updates)
 
         if (error) {
           alert(error.message)
         } else {
           setWatchHistory(newHistory);
+          setFavorites(newFavorites);
         }
       }
 
@@ -215,6 +231,13 @@ export default function Page() {
                       <Box><Text>Cast: NEED</Text></Box>
                       {(seriesData.homepage) && <Box><Link href={seriesData.homepage} target={'_blank'} rel={'noopener noreferrer'}><LinkText>{seriesData.homepage}</LinkText></Link></Box>}
                     </VStack>
+                    <FavoriteBadge
+                      favorites={favorites}
+                      mediaID={seriesData.id}
+                      updateMediaMeta={updateMediaMeta}
+                      loading={loading}
+                      mediaType={'series'}
+                    />
                   </Box>
                 </Box>
                 {(xcData && xcEpisodes && xcSeasons) &&
@@ -257,14 +280,17 @@ export default function Page() {
                                           </Box>
                                         }
                                         <HStack sx={{ position: 'static', justifyContent: 'space-between', alignItems: 'center' }}>
-                                          {(watchHistory) &&
-                                            <WatchedBadge watchHistory={watchHistory} mediaID={episode.id} updateHistory={updateHistory} loading={loading} />
-                                          }
+                                          <WatchedBadge
+                                            watchHistory={watchHistory}
+                                            mediaID={episode.id}
+                                            updateMediaMeta={updateMediaMeta}
+                                            loading={loading}
+                                            mediaType={'series'}
+                                          />
                                           <Button variant="gradient" onPress={() => handleShow(episodeURL)} ref={ref}>
                                             <ButtonText>Open Modal</ButtonText>
                                           </Button>
                                         </HStack>
-                                        
                                       </Box>
                                       <Box grid='col' columns='12' columnsMd='6' columnsLg='9'>
                                         <Heading size='xl'>{episode.title}</Heading>
