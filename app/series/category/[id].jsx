@@ -3,7 +3,7 @@ import { AuthContext } from '../../../components/session/AuthContext';
 import { useLocalSearchParams } from 'expo-router';
 
 import Spark from '../../../components/Spark';
-import VODList from '../../../components/vod/VODList';
+import MediaList from '../../../components/media/MediaList';
 
 export default function Page() {
   const [session, setSession] = useContext(AuthContext);
@@ -14,6 +14,6 @@ export default function Page() {
   const spark = new Spark(session);
 
   return (
-    <VODList page={activeMedia} spark={spark} session={session} catId={id} catName={name} />
+    <MediaList page={activeMedia} spark={spark} session={session} catId={id} catName={name} />
   );
 }

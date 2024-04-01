@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import { AuthContext } from '../../components/session/AuthContext';
 
 import Spark from '../../components/Spark';
-import VODCats from '../../components/vod/VODCats';
+import MediaCategories from '../../components/media/MediaCategories';
 
 function App() {
   const [session, setSession] = useContext(AuthContext);
@@ -12,7 +12,7 @@ function App() {
   const spark = new Spark(session);
 
   return (
-    <VODCats page={activePage} spark={spark} session={session} />
+    <MediaCategories page={activePage} spark={spark} session={session} />
   );
 }
 

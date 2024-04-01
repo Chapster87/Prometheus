@@ -1,4 +1,5 @@
 require('fetch-everywhere')
+const axios = require('axios').default;
 const qs = require('querystring-es3')
 const pickBy = require('lodash.pickby');
 export default class Spark {
@@ -40,6 +41,7 @@ export default class Spark {
         if (this.config && this.config.xcAuth && this.config.xcUrl) {
             const query = pickBy({ ...this.config.xcAuth, action, ...filter })
 
+            // const res = await fetch(`${this.config.xcUrl}/player_api.php?${qs.stringify(query)}`);
             const res = await fetch(`${this.config.xcUrl}/player_api.php?${qs.stringify(query)}`);
 
             if (!res.ok) {
@@ -55,6 +57,42 @@ export default class Spark {
                 const message = `Account disabled`;
                 throw new Error(message);
             }
+
+            return data;
+        }
+    }
+
+    /**
+     * execute query on xtream server
+     *
+     * @param {string} [action]
+     * @param {{ [ key: string ]: string }} [filter]
+     * @returns {Promise<any>}
+     */
+    async XCute(action, filter) {
+        if (this.config && this.config.xcAuth && this.config.xcUrl) {
+            const query = pickBy({ ...this.config.xcAuth, action, ...filter })
+
+            // const res = await fetch(`${this.config.xcUrl}/player_api.php?${qs.stringify(query)}`);
+            const data = await axios.get(`${this.config.xcUrl}/player_api.php?${qs.stringify(query)}`)
+                .catch(function (error) {
+                    if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                    } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    console.log(error.request);
+                    } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                    }
+                    console.log(error.config);
+                });
 
             return data;
         }
@@ -121,7 +159,7 @@ export default class Spark {
     }
 
     async getVODStreamCategories() {
-        const res = await this.execute('get_vod_categories');
+        const res = await this.XCute('get_vod_categories');
         return res;
     }
 
@@ -142,7 +180,7 @@ export default class Spark {
      * @param {string} [category]
      */
     async getVODStreams(category) {
-        const res = await this.execute('get_vod_streams', { category_id: category });
+        const res = await this.XCute('get_vod_streams', { category_id: category });
         return res;
     }
 

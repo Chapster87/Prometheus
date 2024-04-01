@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { StyleSheet} from 'react-native';
 import { Box, Heading } from '@gluestack-ui/themed';
 
-import MediaCard from '../media/MediaCard';
+import MediaCard from './MediaCard';
 import DummyCard from '../dummies/DummyCard';
 
-function VODList({page, spark, session, catId, catName}) {
+function MediaList({page, spark, session, catId, catName}) {
   const [VODCatData, setVODCatData] = useState();
   const [VodID, setVodID] = useState();
 
@@ -14,20 +14,18 @@ function VODList({page, spark, session, catId, catName}) {
       if(page === 'Series') {
         // GET Series Streams
         spark.getSeriesStreams(catId)
-          .then(console.log)
-          .catch(console.log)
-
-        spark.getSeriesStreams(catId)
-          .then((data) => setVODCatData(data));
+          .then((data) => {
+            setVODCatData(data);
+            // console.log(data);
+          });
 
       } else if (page === 'Movies') {
         // GET Movie Streams
-        // spark.getVODStreams(catId)
-        //   .then(data => console.log("VOD", data))
-        //   .catch(console.log);
-      
         spark.getVODStreams(catId)
-          .then(data => setVODCatData(data));
+          .then(data => {
+            setVODCatData(data);
+            // console.log(data);
+          });
       }
     }
   }, [session])
@@ -64,4 +62,4 @@ function VODList({page, spark, session, catId, catName}) {
   )
 }
 
-export default VODList;
+export default MediaList;

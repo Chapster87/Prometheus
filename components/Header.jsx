@@ -16,8 +16,8 @@ function Header({ session }) {
   return (
     <>
       <StatusBar style="auto" />
-      <Box grid='container-fluid' sx={{ position: 'sticky', zIndex: 10, top: 0, background: 'rgba(0, 0, 0, 0.5)', marginTop: 10 }}>
-        <Box grid='row'>
+      <Box grid='container-fluid' sx={{ position: 'sticky', zIndex: 10, top: 0, paddingTop: 10 }}>
+        <Box grid='row' sx={{ background: 'rgba(0, 0, 0, 0.5)' }}>
           <Box grid='col' columns='12'>
             <Box grid="container">
               <Box grid='row'>

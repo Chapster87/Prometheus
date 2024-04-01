@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
-import { Box, Card, Heading, View, Pressable } from '@gluestack-ui/themed';
+import { Box, Card, Heading, View, Pressable, VStack } from '@gluestack-ui/themed';
 
-function VODCats({ page, spark, session }) {
+function MediaCategories({ page, spark, session }) {
   const [mediaCategory, setMediaCategory] = useState();
 
   useEffect(() => {
@@ -26,7 +26,8 @@ function VODCats({ page, spark, session }) {
 
         spark.getVODStreamCategories()
           .then(categories => {
-            setMediaCategory(categories);
+            setMediaCategory(categories.data);
+            console.log(categories);
           });
       }
     }
@@ -41,13 +42,13 @@ function VODCats({ page, spark, session }) {
           </Box>
         </Box>
         <Box grid='row'>
-          {(mediaCategory) ?
-            <Box grid='col' columns='12'>
-              <View style={styles.tileGrid}>
+          <Box grid='col' columns='2'>
+            {(mediaCategory) ?
+              <VStack sx={categoryList}>
                 {(page === 'Movies') &&
                   <Link href="/movies/all" asChild>
                     <Pressable>
-                      <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }}>
+                      <Card sx={{ margin: '1rem', cursor: 'pointer' }}>
                         <Heading size='xl'>All Movies</Heading>
                       </Card>
                     </Pressable>
@@ -63,37 +64,32 @@ function VODCats({ page, spark, session }) {
                     key={cat.category_id}
                   >
                     <Pressable>
-                      <Card style={{ width: '18rem', margin: '1rem', cursor: 'pointer' }}>
+                      <Card sx={{ margin: '1rem', cursor: 'pointer' }}>
                         <Heading size='xl'>{cat.category_name}</Heading>
                       </Card>
                     </Pressable>
                   </Link>
                 ))}
-              </View>
-            </Box>
-          :
-            [...Array(60)].map((elementInArray, index) => ( 
-              <Box grid='col' columns='12' key={index}>
-                <View style={styles.tileGrid}>
-                  <Card style={{ width: '18rem', margin: '1rem' }}>
+              </VStack>
+            :
+              <VStack sx={categoryList}>
+                [...Array(60)].map((elementInArray, index) => ( 
+                  <Card sx={{ margin: '1rem' }}>
                   </Card>
-                </View>
-              </Box>
-            ))
-          }
+                ))
+              </VStack>
+            }
+          </Box>
+          <Box grid="col" columns="10"></Box>
         </Box>
       </Box>
-      {/* {(listData) && <VODList page={page} spark={spark} catData={listData} />} */}
     </>
   )
 }
 
-const styles = StyleSheet.create({
-  tileGrid: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap'
-  }
-});
+const categoryList = {
+  height: 'calc(100vh - 146px)', //header and heading height
+  overflow: 'auto'
+}
 
-export default VODCats;
+export default MediaCategories;
