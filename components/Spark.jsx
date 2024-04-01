@@ -188,7 +188,7 @@ export default class Spark {
      * @param {string} [category]
      */
     async getSeriesStreams(category) {
-        const res = await this.execute('get_series', { category_id: category });
+        const res = await this.XCute('get_series', { category_id: category });
         return res;
     }
 

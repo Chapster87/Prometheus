@@ -17,8 +17,13 @@ function MediaList({page, spark, session, catId, catName}) {
         // GET Series Streams
         spark.getSeriesStreams(catId)
           .then((series) => {
-            setVODCatData(series)
-            // console.log(series);
+            console.log(series);
+            const data = series.data;
+            // setVODCatData(series.data)
+            const { page, size } = mediaData;
+            const currPage = paginate(data, page, size);
+            console.log('currPage', currPage)
+            setMediaData({ ...mediaData, data: series.data, currPage: currPage });
           });
 
       } else if (page === 'Movies') {
@@ -29,7 +34,6 @@ function MediaList({page, spark, session, catId, catName}) {
             const data = movies.data;
             // setVODCatData(movies.data)
             const { page, size } = mediaData;
-            // const paginated = paginate(res.data, 2, 100);
             const currPage = paginate(data, page, size);
             console.log('currPage', currPage)
             setMediaData({ ...mediaData, data: movies.data, currPage: currPage }); 

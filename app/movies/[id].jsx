@@ -6,7 +6,6 @@ import { useLocalSearchParams, Link } from 'expo-router';
 import { Badge, BadgeText, Box, Heading, Image, ImageBackground, LinkText, View, Text, VStack } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
-import { supabase } from '../../config/supabase'
 import VideoJS from '../../components/VideoJS'
 import FavoriteBadge from '../../components/badges/Favorite';
 import WatchedBadge from '../../components/badges/Watched';
@@ -14,12 +13,10 @@ import WatchedBadge from '../../components/badges/Watched';
 import { minutesToHrs } from '../../utils/utils';
 
 export default function Page() {
-  const [loading, setLoading] = useState(true);
   const [session, setSession] = useContext(AuthContext);
   const { id, type } = useLocalSearchParams();
   const [movieData, setMovieData] = useState();
-  const [watchHistory, setWatchHistory] = useState();
-  const [favorites, setFavorites] = useState(null);
+  // const [watchHistory, setWatchHistory] = useState();
   const [xcData, setXcData] = useState();
 
   // initialize api engine
@@ -58,91 +55,8 @@ export default function Page() {
               }
             });
       }
-
-      async function getMediaMeta() {
-        setLoading(true);
-        const { user } = session
-  
-        const { data, error } = await supabase
-          .from('media')
-          .select('watchHistoryMovies, favoritesMovies')
-          .eq('id', user.id)
-          .single();
-  
-        if (error) {
-          console.warn(error)
-        } else if (data) {
-          setWatchHistory(data.watchHistoryMovies);
-          setFavorites(data.favoritesMovies);
-        }
-
-        console.log('data', data);
-        setLoading(false);
-      }
-  
-      getMediaMeta()
     }
   }, [session]);
-
-  async function updateMediaMeta(event, ID) {
-    setLoading(true);
-    if (session) {
-      const { user } = session
-      let newHistory = [];
-      let newFavorites = [];
-
-      if(watchHistory) {
-        newHistory = [...watchHistory]
-      }
-
-      if(favorites) {
-        newFavorites = [...favorites];
-      }
-
-      if(ID && event === 'WATCHED' && !newHistory.includes(ID.toString())) {
-        newHistory.push(ID.toString());
-      }
-
-      if (ID && event === 'UNWATCH') {
-        const toRemove = newHistory.indexOf(ID.toString());
-        if (toRemove > -1) {
-          newHistory.splice(toRemove, 1);
-        }
-      }
-
-      if (ID && event === 'FAVORITE' && !newFavorites.includes(ID.toString())) {
-        newFavorites.push(ID.toString());
-      }
-
-      if (ID && event === 'UNFAVORITE') {
-        const toRemove = newFavorites.indexOf(ID.toString());
-        if (toRemove > -1) {
-          newFavorites.splice(toRemove, 1);
-        }
-      }
-
-      const updates = {
-        id: user.id,
-        watchHistoryMovies: newHistory,
-        favoritesMovies: newFavorites,
-        updated_at: new Date(),
-      }
-
-      async function updateDatabase() {
-        const { error } = await supabase.from('media').upsert(updates)
-
-        if (error) {
-          alert(error.message)
-        } else {
-          setWatchHistory(newHistory);
-          setFavorites(newFavorites);
-        }
-      }
-
-      updateDatabase();
-    }
-    setLoading(false);
-  }
 
   const playerRef = useRef(null);
 
@@ -207,13 +121,7 @@ export default function Page() {
                         uri: `https://image.tmdb.org/t/p/w500${movieData.poster_path}`
                       }}
                     />
-                    <WatchedBadge
-                      watchHistory={watchHistory}
-                      mediaID={movieData.id}
-                      updateMediaMeta={updateMediaMeta}
-                      loading={loading}
-                      mediaType={'movie'}
-                    />
+                    <WatchedBadge session={session} mediaID={movieData.id} mediaType={'movie'} />
                   </Box>
                   <Box grid='col' columns='12' columnsMd='9' sx={{ position: 'relative' }}>
                     <Box grid='row'>
@@ -242,13 +150,7 @@ export default function Page() {
                           <Box><Text><Text sx={{ fontWeight: '$bold' }}>Cast:</Text> NEED</Text></Box>
                           {(movieData.homepage) && <Box><Link href={movieData.homepage} target={'_blank'} rel={'noopener noreferrer'}><LinkText>{movieData.homepage}</LinkText></Link></Box>}
                         </VStack>
-                        <FavoriteBadge
-                          favorites={favorites}
-                          mediaID={movieData.id}
-                          updateMediaMeta={updateMediaMeta}
-                          loading={loading}
-                          mediaType={'movie'}
-                        />
+                        <FavoriteBadge session={session} mediaID={movieData.id} mediaType={'movie'} />
                       </Box>
                     </Box>
                   </Box>

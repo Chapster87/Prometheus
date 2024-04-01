@@ -7,7 +7,7 @@ import MediaList from './MediaList';
 
 function MediaCategories({ page, spark, session }) {
   const [mediaCategory, setMediaCategory] = useState();
-  const [activeCategory, setActiveCategory] = useState({id: 'X', name: 'All Movies'});
+  const [activeCategory, setActiveCategory] = useState({id: 'X', name: `All ${page}`});
 
   useEffect(() => {
     if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
@@ -89,7 +89,7 @@ function MediaCategories({ page, spark, session }) {
           </Box>
           <Box grid="col" columns="10" sx={stickyColumns}>
             {(activeCategory) &&
-              <MediaList page={'Movies'} spark={spark} session={session} catId={activeCategory.id} catName={activeCategory.name} />
+              <MediaList page={page} spark={spark} session={session} catId={activeCategory.id} catName={activeCategory.name} />
             }
           </Box>
         </Box>
