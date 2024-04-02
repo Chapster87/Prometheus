@@ -1,31 +1,59 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Link } from 'expo-router';
-import { Avatar, AvatarFallbackText, Box, HStack, Icon, LinkText, Menu, MenuItem, MenuItemLabel, Pressable, SettingsIcon } from '@gluestack-ui/themed';
-import { CircleUserRound, LogOut, Search } from 'lucide-react-native';
-import { supabase } from '../config/supabase'
+import { Avatar, AvatarFallbackText, Box, HStack, Icon, LinkText, Menu, MenuItem, MenuItemLabel, Pressable, SettingsIcon, View } from '@gluestack-ui/themed';
+import { CircleUserRound, LogOut, Menu as MenuIcon, Search, X } from 'lucide-react-native';
+import { supabase } from '../../config/supabase'
 
-import Logo from '../assets/images/svg/logo';
+import Logo from '../../assets/images/svg/logo';
 
 function Header({ session }) {
-  console.log(session);
+  const [menuState, setMenuState] = useState(mainNav);
+
   useEffect(() => {
-    // do something
+    const handleResize = () => {
+      setMenuState(mainNav);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup: Remove event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
+
+  function mobileMenuOpen() {
+    setMenuState(mainNavMobileOpen);
+  }
+
+  function mobileMenuClose() {
+    setMenuState(mainNav);
+  }
 
   return (
     <>
       <StatusBar style="auto" />
       <Box grid='container-fluid' sx={{ position: 'sticky', zIndex: 10, top: 0, paddingTop: 10 }}>
-        <Box grid='row' sx={{ background: 'rgba(0, 0, 0, 0.5)' }}>
+        <Box grid='row' sx={{ background: 'rgba(0, 0, 0, 0.6)' }}>
           <Box grid='col' columns='12'>
             <Box grid="container">
               <Box grid='row'>
                 <Box grid='col' columns='12' sx={navStyles}>
-                  <HStack reversed={false} sx={MainNavSX}>
+                  <Box sx={navOpenBtn}>
+                    <Pressable onPress={mobileMenuOpen}>
+                      <Icon as={MenuIcon} size="2xl" color="$white" />
+                    </Pressable>
+                  </Box>
+                  <Box sx={siteLogo}>
                     <Link href="/" style={LinkSX}>
                       <Logo width={75} height={94} />
                     </Link>
+                  </Box>
+                  <View sx={menuState}>
+                    <Pressable sx={navCloseBtn} onPress={mobileMenuClose}>
+                      <Icon as={X} size="2xl" color="$white" />
+                    </Pressable>
                     <Link href="/" style={LinkSX}>
                       <LinkText sx={LinkTextSX}>Home</LinkText>
                     </Link>
@@ -38,7 +66,7 @@ function Header({ session }) {
                     <Link href="/series" style={LinkSX}>
                       <LinkText sx={LinkTextSX}>Series</LinkText>
                     </Link>
-                  </HStack>
+                  </View>
                   <HStack reversed={false} sx={SecondaryNavSX}>
                     <Link href="/search" style={LinkSX}>
                       <Icon as={Search} size="xl" color="$white" />
@@ -90,16 +118,72 @@ const navStyles = {
   justifyContent: 'space-between'
 }
 
-const MainNavSX = {
+const navOpenBtn = {
   display: 'flex',
+  justifyContent: 'center',
   height: 80,
-  gap: 75
+  '@lg_up': {
+    display: 'none'
+  }
+}
+
+const navCloseBtn = {
+  position: 'absolute',
+  right: -45,
+  top: 5,
+  background: 'rgba(0, 0, 0, 0.94)',
+  height: 40,
+  width: 40,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  '@lg_up': {
+    display: 'none'
+  }
+}
+
+const siteLogo = {
+  display: 'flex',
+  height: 80
+}
+
+const mainNav = {
+  display: 'flex',
+  height: '100vh',
+  width: 280,
+  maxWidth: '83%',
+  gap: 20,
+  position: 'fixed',
+  top: 0,
+  left: '-115%',
+  transition: 'left 0.3s ease',
+  background: 'rgba(0, 0, 0, 0.94)',
+  padding: 20,
+  zIndex: 10,
+  '@lg_up': {
+    gap: 75,
+    height: 80,
+    maxWidth: 'none',
+    flexDirection: 'row',
+    position: 'static',
+    backgroundColor: 'transparent',
+    padding: 0
+  }
+}
+
+const mainNavMobileOpen = {
+  ...mainNav,
+  left: 0
 }
 
 const LinkSX = {
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center'
+  width: '100%',
+  '@lg_up': {
+    justifyContent: 'center',
+    width: 'auto'
+  }
 }
 
 const LinkTextSX = {
@@ -110,6 +194,7 @@ const LinkTextSX = {
   borderBottomWidth: 3,
   borderColor: 'transparent',
   textTransform: 'uppercase',
+  whiteSpace: 'nowrap',
   ":hover": {
     borderBottomWidth: 3,
     borderColor:'$borderLight200',

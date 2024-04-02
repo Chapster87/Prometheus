@@ -47,7 +47,7 @@ import {
 //   NotoSansDisplay_900Black_Italic,
 // } from '@expo-google-fonts/noto-sans-display';
 
-import Header from '../components/Header';
+import Header from '../components/navigation/Header';
 
 import '../assets/css/index.css';
 import SiteLock from '../components/SiteLock';
