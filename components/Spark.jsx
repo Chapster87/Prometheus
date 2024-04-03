@@ -187,6 +187,38 @@ export default class Spark {
     /**
      * @param {string} [category]
      */
+    async getAllMovies() {
+        const res = await this.XCute('get_vod_streams', { category_id: 'X' });
+
+        
+        
+        function removeFromResults(media) {
+            const blockedCats = ['20913','20992', '20991', '20987', '21022', '20984', '20967', '20956', '20964', '20963', '20838', '20966',
+            '21020', '21010', '20965', '20968', '20989', '20933', '20993', '21006', '20772', '21019', '21004', '21018', '20974', '20975',
+            '20800', '20986'];
+
+            const isBlocked = blockedCats.indexOf(media.category_id);
+            if (isBlocked > -1) {
+                return false;
+            }
+            return true;
+        }
+
+        const filteredData = res.data.filter(removeFromResults);
+
+        console.log(filteredData);
+
+        const newRes = {
+            ...res,
+            data: filteredData
+        }
+
+        return newRes;
+    }
+
+    /**
+     * @param {string} [category]
+     */
     async getSeriesStreams(category) {
         const res = await this.XCute('get_series', { category_id: category });
         return res;
