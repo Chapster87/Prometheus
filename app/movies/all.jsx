@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../components/session/AuthContext';
-import { Box, Heading, Text } from '@gluestack-ui/themed';
+import { Box, Heading, Text, View } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
 
@@ -16,7 +16,8 @@ function Page() {
   
   useEffect(() => {
     if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
-      spark.getAllMovies()
+      const useFiltered = true;
+      spark.getAllMovies(useFiltered)
         .then(movies => {
           console.log(movies)
           setAllMedia(movies.data);
@@ -35,10 +36,10 @@ function Page() {
         {(allMedia) ?
           allMedia.slice(0, 50).map(media => {
               return (
-                <>
+                <View key={media.stream_id}>
                   {/* <Box><Text>{media.category_id}</Text></Box> */}
                   <MediaCard key={media.stream_id} streamType='movie' mediaID={media.stream_id} image={media.stream_icon} name={media.title} />
-                </>
+                </View>
               );
             })
         :
