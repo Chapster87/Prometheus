@@ -37,11 +37,6 @@ function MediaCategories({ page, spark, session }) {
     <>
       <Box grid='container-fluid'>
         <Box grid='row'>
-          <Box grid='col' columns='12'>
-            <Heading size='3xl'>{page}</Heading>
-          </Box>
-        </Box>
-        <Box grid='row'>
           <Box grid='col' columns='2' sx={stickyColumns}>
             {(mediaCategory) ?
               <VStack>

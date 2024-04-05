@@ -590,7 +590,8 @@ export const gluestackUIConfig = createConfig({
       heading:'NotoSans_700Bold',
       body: 'NotoSans_500Medium',
       mono: undefined,
-      badge: 'NotoSans_900Black'
+      badge: 'NotoSans_900Black',
+      neon: 'NeonOne'
     },
     fontSizes: {
       '2xs': 10,
@@ -625,6 +626,11 @@ export const gluestackUIConfig = createConfig({
       95: 0.95,
       100: 1,
     },
+    neonGlow: {
+      redGlow: '0 0 7px #ed6a5c, 0 0 12px #ed6a5c, 0 0 22px var(--colors-analogous100), 0 0 32px var(--colors-analogous100), 0 0 62px var(--colors-analogous100), 0 0 82px var(--colors-analogous100), 0 0 92px var(--colors-analogous100), 0 0 112px var(--colors-analogous100)',
+      orangeGlow: '0 0 7px #e8aa5b, 0 0 12px #e8aa5b, 0 0 22px var(--colors-analogous500), 0 0 32px var(--colors-analogous500), 0 0 62px var(--colors-analogous500), 0 0 82px var(--colors-analogous500), 0 0 92px var(--colors-analogous500), 0 0 112px var(--colors-analogous500)',
+      whiteGlow: '0 0 7px #fff, 0 0 12px #fff, 0 0 22px var(--colors-light400), 0 0 32px var(--colors-light400), 0 0 62px var(--colors-light400), 0 0 82px var(--colors-light400), 0 0 92px var(--colors-light400), 0 0 112px var(--colors-light400)'
+    }
   } as const,
   globalStyle: {
     variants: {
@@ -805,6 +811,26 @@ export const gluestackUIConfig = createConfig({
           },
         },
       },
+      neon: {
+        'red': {
+          fontFamily: '$neon !important',
+          fontWeight: 'normal !important',
+          color: 'var(--colors-light50) !important',
+          textShadow: '0 0 7px #ed6a5c, 0 0 12px #ed6a5c, 0 0 22px var(--colors-analogous100), 0 0 32px var(--colors-analogous100), 0 0 62px var(--colors-analogous100), 0 0 82px var(--colors-analogous100), 0 0 92px var(--colors-analogous100), 0 0 112px var(--colors-analogous100)'
+        },
+        'orange': {
+          fontFamily: '$neon !important',
+          fontWeight: 'normal !important',
+          color: 'var(--colors-light50) !important',
+          textShadow: '0 0 7px #e8aa5b, 0 0 12px #e8aa5b, 0 0 22px var(--colors-analogous500), 0 0 32px var(--colors-analogous500), 0 0 62px var(--colors-analogous500), 0 0 82px var(--colors-analogous500), 0 0 92px var(--colors-analogous500), 0 0 112px var(--colors-analogous500)'
+        },
+        'white': {
+          fontFamily: '$neon !important',
+          fontWeight: 'normal !important',
+          color: 'var(--colors-light50) !important',
+          textShadow: '0 0 7px #fff, 0 0 12px #fff, 0 0 22px var(--colors-light400), 0 0 32px var(--colors-light400), 0 0 62px var(--colors-light400), 0 0 82px var(--colors-light400), 0 0 92px var(--colors-light400), 0 0 112px var(--colors-light400)'
+        }
+      }
     },
   },
   plugins: [new AnimationResolver(MotionAnimationDriver)],

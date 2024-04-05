@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
 import AppLoading from 'expo-app-loading';
 import { GluestackUIProvider } from "@gluestack-ui/themed"
@@ -6,7 +7,6 @@ import { config } from '../config/gluestack-ui.config'
 import { supabase } from '../config/supabase'
 import { AuthProvider } from '../components/session/AuthContext';
 import {
-  useFonts,
   // NotoSans_100Thin,
   // NotoSans_100Thin_Italic,
   // NotoSans_200ExtraLight,
@@ -91,7 +91,8 @@ export default function HomeLayout() {
     // NotoSansDisplay_600SemiBold_Italic,
     // NotoSansDisplay_700Bold_Italic,
     // NotoSansDisplay_800ExtraBold_Italic,
-    // NotoSansDisplay_900Black_Italic
+    // NotoSansDisplay_900Black_Italic,
+    'NeonOne': require('../assets/fonts/NeonOne.otf'),
   });
 
   useEffect(() => {

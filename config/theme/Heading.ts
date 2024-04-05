@@ -53,6 +53,23 @@ export const Heading = createStyle({
         bg: '$yellow500',
       },
     },
+    type: {
+      'h1': {
+        props: { as: H1 },
+        fontSize: '80px !important',
+        lineHeight: '1.2em !important'
+      },
+      'h1-neon': {
+        props: { as: H1 },
+        fontSize: '80px !important',
+        lineHeight: '1 !important'
+      },
+      'h2-neon': {
+        props: { as: H2 },
+        fontSize: '38px !important',
+        lineHeight: '1 !important'
+      },
+    },
     size: {
       '5xl': {
         //@ts-ignore

@@ -93,7 +93,8 @@ function MediaList({page, spark, session, catId, catName}) {
         <Box grid='container-fluid'>
           <Box grid='row'>
             <Box grid='col' columns='12'>
-              <Heading size='3xl'>{page} - {catName}</Heading>
+              <Heading type="h1-neon" neon={page === 'Movies' ? 'red': 'orange'} sx={{ display: 'block', width: '100%', textAlign: 'center', marginTop: 20, marginBottom: 12 }}>{page}</Heading>
+              <Heading type="h2-neon" neon="white" sx={{ display: 'block', width: '100%', textAlign: 'center', marginBottom: 30 }}>- {catName} -</Heading> 
             </Box>
           </Box>
           <Box grid='row' sx={{ marginBottom: 30 }}>
