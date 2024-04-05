@@ -56,13 +56,13 @@ function WatchedBadge({ session, mediaID, mediaType }) {
       if (mediaType === 'movies') {
         updates = {
           id: user.id,
-          watchHistoryMovies: newHistory,
+          watchHistoryMovies: newHistory.sort(),
           updated_at: new Date(),
         }
       } else {
         updates = {
           id: user.id,
-          watchHistorySeries: newHistory,
+          watchHistorySeries: newHistory.sort(),
           updated_at: new Date(),
         }
       }

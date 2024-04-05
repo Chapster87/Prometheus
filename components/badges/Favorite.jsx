@@ -58,13 +58,13 @@ function FavoriteBadge({ session, mediaID, mediaType }) {
       if((mediaType === 'movies')) {
         updates = {
           id: user.id,
-          favoritesMovies: newFavorites,
+          favoritesMovies: newFavorites.sort(),
           updated_at: new Date(),
         }
       } else {
         updates = {
           id: user.id,
-          favoritesSeries: newFavorites,
+          favoritesSeries: newFavorites.sort(),
           updated_at: new Date(),
         }
       }
