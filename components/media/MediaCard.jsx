@@ -1,12 +1,9 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { Link } from "expo-router";
-import { Badge, BadgeText, Card, Heading, Image, View } from "@gluestack-ui/themed"
+import { Badge, BadgeText, Box, Card, Heading, Image } from "@gluestack-ui/themed"
 
 const { width, height } = Dimensions.get('window');
-const cardWidth = width * 0.1666666;
-const cardAR = 400 / 660;
-const cardHeight = cardWidth / cardAR;
-const imageWidth = cardWidth;
+const imageWidth = width * 0.2;
 
 function MediaCard({ mediaID, tmdbID, streamType, xcEnabled, name, image }) {
 
@@ -14,10 +11,7 @@ function MediaCard({ mediaID, tmdbID, streamType, xcEnabled, name, image }) {
   const mediaType = isSeries ? 'series' : 'movies';
 
   return (
-    <View
-      style={styles.container}
-      key={tmdbID}
-    >
+    <Box key={tmdbID}>
       {(mediaID) ?
         <Link 
           href={{
@@ -25,7 +19,7 @@ function MediaCard({ mediaID, tmdbID, streamType, xcEnabled, name, image }) {
             params: { type: 'xc' }
           }}
         >
-          <Card style={styles.card}>
+          <Card sx={card}>
             <Image
               style={styles.cardImage}
               resizeMode="cover"
@@ -45,7 +39,7 @@ function MediaCard({ mediaID, tmdbID, streamType, xcEnabled, name, image }) {
             params: { type: 'tmdb' }
           }}
         >
-          <Card style={styles.card}>
+          <Card sx={card}>
             {xcEnabled &&
               <Badge style={styles.cardBadge} size="lg" bg="$amber400">
                 <BadgeText style={styles.cardBadgeText} color="$white">Coming Soon</BadgeText>
@@ -64,23 +58,18 @@ function MediaCard({ mediaID, tmdbID, streamType, xcEnabled, name, image }) {
           </Card>
         </Link>
       }
-    </View>
+    </Box>
   );
 }
 
+const card = {
+  position: "relative",
+  padding: 0,
+  width: '100%',
+  minHeight: '100%',
+}
+
 const styles = StyleSheet.create({
-  container: {
-    width: cardWidth,
-    minHeight: cardHeight,
-    paddingHorizontal: 12,
-    marginBottom: 16
-  },
-  card: {
-    position: "relative",
-    padding: 0,
-    height: "100%",
-    width: "100%"
-  },
   cardImage: {
     width: imageWidth,
     height: 'auto',

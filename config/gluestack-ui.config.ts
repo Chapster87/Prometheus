@@ -532,25 +532,19 @@ export const gluestackUIConfig = createConfig({
       base: 0,
       xs: 320,
       sm: 480,
-      // sm: 576,
       md: 768,
       lg: 992,
       xl: 1280,
-      // xl: 1200,
       xxl: 1440
-      // xxl: 1400
     },
     mediaQueries: {
       base: '@media screen and (min-width: 0)',
       xs_up: '@media screen and (min-width: 320px)',
       sm_up: '@media screen and (min-width: 480px)',
-      // sm_up: '@media screen and (min-width: 576px)',
       md_up: '@media screen and (min-width: 768px)',
       lg_up: '@media screen and (min-width: 992px)',
       xl_up: '@media screen and (min-width: 1280px)',
-      // xl_up: '@media screen and (min-width: 1200px)',
       xxl_up: '@media screen and (min-width: 1440px)'
-      // xxl_up: '@media screen and (min-width: 1400px)'
     },
     letterSpacings: {
       'xs': -0.4,

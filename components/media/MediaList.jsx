@@ -117,13 +117,17 @@ function MediaList({page, spark, session, catId, catName}) {
                   const mediaImg = isSeries ? vod.cover : vod.stream_icon;
 
                   return (
-                    <MediaCard key={mediaID} mediaID={mediaID} streamType={vod.stream_type} name={vod.name} image={mediaImg} />
+                    <Box grid="col" columns="6" columnsMd="4" columnsLg="3" columnsXl="2" sx={{ marginBottom: 24 }}>
+                      <MediaCard key={mediaID} mediaID={mediaID} streamType={vod.stream_type} name={vod.name} image={mediaImg} />
+                    </Box>
                   );
                 })}
               </>
             :
               [...Array(18)].map((elementInArray, index) =>
-                <DummyCard key={index} />
+                <Box grid="col" columns="6" columnsMd="4" columnsLg="3" columnsXl="2" sx={{ marginBottom: 24 }}>
+                  <DummyCard key={index} />
+                </Box>
               )
             }
           </Box>

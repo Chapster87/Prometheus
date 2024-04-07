@@ -3,11 +3,6 @@ import { Box, Card } from '@gluestack-ui/themed';
 
 import ImgPlaceholder from '../../assets/images/svg/card-image.svg';
 
-const { width, height } = Dimensions.get('window');
-const cardWidth = width * 0.1666666;
-const cardAR = 400 / 660;
-const cardHeight = cardWidth / cardAR;
-
 function DummyCard() {
   return (
     <>
@@ -29,8 +24,9 @@ const placeholderCardImg = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: cardWidth,
-  height: cardHeight
+  width: '100%',
+  height: 'auto',
+  aspectRatio: '2/3',
 };
 
 export default DummyCard;
