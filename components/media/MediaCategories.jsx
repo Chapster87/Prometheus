@@ -30,7 +30,7 @@ function MediaCategories({ page, spark, session }) {
 
   function categoryClick (id, name) {
     console.log('clicked');
-    setActiveCategory({id: id, name: name});
+    setActiveCategory({ ...activeCategory, id: id, name: name});
   }
 
   return (
