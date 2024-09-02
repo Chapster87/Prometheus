@@ -118,7 +118,7 @@ const favoriteBadge = {
   borderColor: '$amber700',
   backgroundColor: '$amber400',
   zIndex: 10,
-  width: 250
+  width: 'auto'
 }
 
 const badgeInner = {
@@ -137,7 +137,8 @@ const badgeText = {
   backgroundColor: '$amber700',
   color: 'transparent',
   backgroundClip: 'text',
-  textShadow: '0 8px 5px rgba(255, 255, 255, 0.12)'
+  textShadow: '0 8px 5px rgba(255, 255, 255, 0.12)',
+  marginRight: 28
 }
 
 export default FavoriteBadge;

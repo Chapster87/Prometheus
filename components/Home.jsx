@@ -3,47 +3,55 @@ import Head from 'expo-router/head';
 import { Box, View } from "@gluestack-ui/themed";
 
 import MediaHero from './media/MediaHero'
-import MediaRow from './media/MediaRow'
+import MediaRowTabs from './media/MediaRowTabs';
 import Spark from './Spark';
 import DummyHero from './dummies/DummyHero';
-import DummyRow from './dummies/DummyRow';
 
 function App({ session }) {
   const [heroMedia, setHeroMedia] = useState();
-  const [trendingMovies, setTrendingMovies] = useState();
-  const [trendingSeries, setTrendingSeries] = useState();
+  const [trendingGroups, setTrendingGroups] = useState();
   const [account, setAccount] = useState(session);
 
   // initialize api engine
   const spark = new Spark(session);
 
   useEffect(() => {
-    if(session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
+    if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
       setAccount(session);
-      const fetchMovies = spark.getTrendingMovies()
+      const fetchTrendingMovies = spark.getTrendingMovies()
         .then(response => {
           // console.log(response);
-          setTrendingMovies(response);
           return response;
         });
 
-      const fetchSeries = spark.getTrendingSeries()
+      const fetchTrendingSeries = spark.getTrendingSeries()
         .then(response => {
           // console.log(response);
-          setTrendingSeries(response);
           return response;
         });
 
-      Promise.all([fetchMovies, fetchSeries])
+      Promise.all([fetchTrendingMovies, fetchTrendingSeries])
         .then((values) => {
-          if(values && values.length > 1 && values[0] && values[1]) {
+          if (values && values.length > 1 && values[0] && values[1]) {
             const allTrending = values[0].concat(values[1]);
+            const random = Math.floor(Math.random() * allTrending.length);
+            const randomMedia = allTrending[random];
 
-            if (allTrending.length > 0) {
-                const random = Math.floor(Math.random() * allTrending.length);
-                const randomMedia = allTrending[random];
-                setHeroMedia(randomMedia);
-            }
+            console.log(allTrending);
+  
+            setHeroMedia(randomMedia);
+            setTrendingGroups([
+              {
+                id: 'trendingMovies',
+                title: 'Trending Movies',
+                mediaData: values[0]
+              }, 
+              {
+                id: 'trendingSeries',
+                title: 'Trending Series',
+                mediaData: values[1]
+              }
+            ]);
           }
         });
     }
@@ -59,22 +67,29 @@ function App({ session }) {
         <Box grid="container-fluid">
           <Box grid="row">
             <Box grid="col" columns="12">
-              {/* <TrendingMovies /> */}
-              {(trendingMovies) ? 
-                <MediaRow title="Trending Movies" mediaData={trendingMovies} mediaType='movies' xcEnabled={account.user.user_metadata.xcUrl} />
-              :
-                <DummyRow title="Trending Movies" />
+              {(trendingGroups) &&
+                <>
+                  <MediaRowTabs
+                    tabGroups={trendingGroups}
+                    defaultTab='trendingMovies'
+                    xcEnabled={account.user.user_metadata.xcUrl}
+                    session={session ? session : null}
+                  />
+                </>
               }
             </Box>
           </Box>
-          <Box grid="row">
+          <Box grid="row" sx={{ marginTop: 20 }}>
             <Box grid="col" columns="12">
-              {(trendingSeries) ?
+              {(trendingGroups) &&
                 <>
-                  <MediaRow title="Trending Series" mediaData={trendingSeries} mediaType='series' xcEnabled={account.user.user_metadata.xcUrl} />
+                  <MediaRowTabs
+                    tabGroups={trendingGroups}
+                    defaultTab='trendingMovies'
+                    xcEnabled={account.user.user_metadata.xcUrl}
+                    session={session ? session : null}
+                  />
                 </>
-              :
-                <DummyRow title="Trending Series" />
               }
             </Box>
           </Box>

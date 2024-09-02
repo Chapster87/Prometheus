@@ -124,7 +124,13 @@ function Search() {
               const mediaImg = isSeries ? media.item.cover : media.item.stream_icon;
 
               return (
-                <MediaCard key={mediaID} mediaID={mediaID} streamType={media.item.stream_type} name={media.item.name} image={mediaImg} />
+                <MediaCard
+                  key={mediaID}
+                  mediaID={mediaID}
+                  streamType={media.item.stream_type} 
+                  name={media.item.name}
+                  image={mediaImg}
+                />
               );
             })}
           </Box>

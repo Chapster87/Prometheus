@@ -2,10 +2,12 @@ import { Dimensions, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 import { Badge, BadgeText, Box, Card, Heading, Image } from "@gluestack-ui/themed"
 
+import FavoriteBadge from '../badges/tile/Favorite';
+
 const { width, height } = Dimensions.get('window');
 const imageWidth = width * 0.2;
 
-function MediaCard({ mediaID, tmdbID, streamType, xcEnabled, name, image }) {
+function MediaCard({ mediaID, tmdbID, streamType, xcEnabled, name, image, session }) {
 
   const isSeries = (streamType === 'series');
   const mediaType = isSeries ? 'series' : 'movies';
@@ -20,6 +22,9 @@ function MediaCard({ mediaID, tmdbID, streamType, xcEnabled, name, image }) {
           }}
         >
           <Card sx={card}>
+            {(session) &&
+              <FavoriteBadge session={session} mediaID={mediaID} mediaType={'series'} />
+            }
             <Image
               style={styles.cardImage}
               resizeMode="cover"

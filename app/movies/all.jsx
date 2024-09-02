@@ -38,7 +38,11 @@ function Page() {
               return (
                 <View key={media.stream_id}>
                   {/* <Box><Text>{media.category_id}</Text></Box> */}
-                  <MediaCard key={media.stream_id} streamType='movie' mediaID={media.stream_id} image={media.stream_icon} name={media.title} />
+                  <MediaCard 
+                    streamType='movie'
+                    mediaID={media.stream_id}
+                    image={media.stream_icon}
+                    name={media.title} />
                 </View>
               );
             })

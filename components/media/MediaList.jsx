@@ -18,12 +18,11 @@ function MediaList({page, spark, session, catId, catName}) {
         // GET Series Streams
         spark.getSeriesStreams(catId)
           .then((series) => {
-            console.log(series);
+            // console.log(series);
             const data = series.data;
             // setVODCatData(series.data)
             const { page, size } = mediaData;
             const currPage = paginate(data, page, size);
-            console.log('currPage', currPage)
             setMediaData({ ...mediaData, data: series.data, currPage: currPage });
           });
 
@@ -31,12 +30,11 @@ function MediaList({page, spark, session, catId, catName}) {
         // GET Movie Streams
         spark.getVODStreams(catId)
           .then(movies => {
-            console.log(movies);
+            // console.log(movies);
             const data = movies.data;
             // setVODCatData(movies.data)
             const { page, size } = mediaData;
             const currPage = paginate(data, page, size);
-            console.log('currPage', currPage)
             setMediaData({ ...mediaData, data: movies.data, currPage: currPage }); 
           });
       }
@@ -117,16 +115,16 @@ function MediaList({page, spark, session, catId, catName}) {
                   const mediaImg = isSeries ? vod.cover : vod.stream_icon;
 
                   return (
-                    <Box grid="col" columns="6" columnsMd="4" columnsLg="3" columnsXl="2" sx={{ marginBottom: 24 }}>
-                      <MediaCard key={mediaID} mediaID={mediaID} streamType={vod.stream_type} name={vod.name} image={mediaImg} />
+                    <Box grid="col" columns="6" columnsMd="4" columnsLg="3" columnsXl="2" sx={{ marginBottom: 24 }} key={mediaID}>
+                      <MediaCard mediaID={mediaID} streamType={vod.stream_type} name={vod.name} image={mediaImg} session={session ? session : null}/>
                     </Box>
                   );
                 })}
               </>
             :
               [...Array(18)].map((elementInArray, index) =>
-                <Box grid="col" columns="6" columnsMd="4" columnsLg="3" columnsXl="2" sx={{ marginBottom: 24 }}>
-                  <DummyCard key={index} />
+                <Box grid="col" columns="6" columnsMd="4" columnsLg="3" columnsXl="2" sx={{ marginBottom: 24 }} key={index}>
+                  <DummyCard />
                 </Box>
               )
             }

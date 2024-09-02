@@ -4,9 +4,11 @@ import { Box, HStack, Heading } from '@gluestack-ui/themed';
 import DummyCard from './DummyCard';
 
 const { width, height } = Dimensions.get('window');
-const cardWidth = (width / 6) - 12;
 
-function DummyRow({ title }) {
+function DummyRow({ title, rowPadding }) {
+  let defaultRowPadding = rowPadding ? rowPadding : '12';
+  const cardWidth = (width / 10) - defaultRowPadding;
+
   return (
     <>
       {title && <Heading size="3xl" sx={headingSX}>{title}</Heading>}

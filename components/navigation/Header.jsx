@@ -64,7 +64,17 @@ function Header({ session }) {
                       <LinkText sx={LinkTextSX}>Movies</LinkText>
                     </Link>
                     <Link href="/series" style={LinkSX}>
-                      <LinkText sx={LinkTextSX}>Series</LinkText>
+                      <LinkText 
+                        sx={{
+                          ...LinkTextSX,
+                          ":hover": {
+                            borderBottomWidth: 3,
+                            borderColor:'$borderLight200',
+                          }
+                        }}
+                      >
+                        Series
+                      </LinkText>
                     </Link>
                   </View>
                   <HStack reversed={false} sx={SecondaryNavSX}>
@@ -194,11 +204,7 @@ const LinkTextSX = {
   borderBottomWidth: 3,
   borderColor: 'transparent',
   textTransform: 'uppercase',
-  whiteSpace: 'nowrap',
-  ":hover": {
-    borderBottomWidth: 3,
-    borderColor:'$borderLight200',
-  }
+  whiteSpace: 'nowrap'
 }
 
 const SecondaryNavSX = {
