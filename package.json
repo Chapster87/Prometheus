@@ -1,7 +1,7 @@
 {
   "name": "prometheus",
   "version": "1.0.0",
-  "description": "IPTV Player based on the use of the XC API",
+  "description": "Media website using TMBD.org as data source",
   "repository": {
     "type": "git",
     "url": "https://github.com/Chapster87/prometheus"

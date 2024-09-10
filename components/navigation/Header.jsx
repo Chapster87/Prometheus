@@ -8,6 +8,7 @@ import { supabase } from '../../config/supabase'
 import Logo from '../../assets/images/svg/logo';
 
 function Header({ session }) {
+  const [account, setAccount] = useState(session);
   const [menuState, setMenuState] = useState(mainNav);
 
   useEffect(() => {
@@ -57,9 +58,11 @@ function Header({ session }) {
                     <Link href="/" style={LinkSX}>
                       <LinkText sx={LinkTextSX}>Home</LinkText>
                     </Link>
-                    <Link href="/tv" style={LinkSX}>
-                      <LinkText sx={LinkTextSX}>Live TV</LinkText>
-                    </Link>
+                    {(account && account.user.user_metadata.xcUrl) &&
+                      <Link href="/tv" style={LinkSX}>
+                        <LinkText sx={LinkTextSX}>Live TV</LinkText>
+                      </Link>
+                    }
                     <Link href="/movies" style={LinkSX}>
                       <LinkText sx={LinkTextSX}>Movies</LinkText>
                     </Link>
