@@ -26,6 +26,12 @@ import {
   NotoSans_900Black,
   // NotoSans_900Black_Italic,
 } from '@expo-google-fonts/noto-sans';
+import {
+  // Jost_400Regular,
+  // Jost_500Medium,
+  Jost_600SemiBold,
+  // Jost_700Bold,
+} from '@expo-google-fonts/jost';
 // import {
 //   NotoSansDisplay_100Thin,
 //   NotoSansDisplay_200ExtraLight,
@@ -48,6 +54,7 @@ import {
 // } from '@expo-google-fonts/noto-sans-display';
 
 import Header from '../components/navigation/Header';
+import Footer from '../components/navigation/Footer';
 
 import '../assets/css/index.css';
 import SiteLock from '../components/SiteLock';
@@ -91,6 +98,10 @@ export default function HomeLayout() {
     // NotoSansDisplay_700Bold_Italic,
     // NotoSansDisplay_800ExtraBold_Italic,
     // NotoSansDisplay_900Black_Italic,
+    // Jost_400Regular,
+    // Jost_500Medium,
+    Jost_600SemiBold,
+    // Jost_700Bold,
     'NeonOne': require('../assets/fonts/NeonOne.otf'),
   });
 
@@ -132,6 +143,7 @@ export default function HomeLayout() {
           <AuthProvider> 
             <Header session={session} />
             <Slot />
+            <Footer />
           </AuthProvider>
         :
           <SiteLock />

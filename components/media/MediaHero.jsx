@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'expo-router';
-import { Box, Button, ButtonText, HStack, Heading, Icon, ImageBackground, Text } from '@gluestack-ui/themed';
-import { Clapperboard, Library, TrendingUp } from 'lucide-react-native';
+import { Badge, BadgeText, Box, Button, ButtonText, HStack, Heading, Icon, Image, ImageBackground, Text } from '@gluestack-ui/themed';
+import { Clapperboard, Dot, Library, TrendingUp } from 'lucide-react-native';
+import TmdbShortSvg from '../svgs/TmdbShort';
+
 
 function VODHero({ heroMedia }) {
   const [media, setMedia] = useState(heroMedia);
-  const [mediaType, setMediaType] = useState(heroMedia.media_type === 'movie' ? 'Movie' : 'Series'); 
+  const [mediaType, setMediaType] = useState(heroMedia.media_type === 'movie' ? 'Movie' : 'Series');
+
+  console.log('media', heroMedia);
 
   return (
     (media && mediaType) &&
@@ -34,10 +38,45 @@ function VODHero({ heroMedia }) {
                   fontWeight="$bold"
                   lineHeight={52}
                   textAlign="left"
-                  marginBottom="$4"
+                  marginBottom="$3"
+                  sx={{ textTransform: 'uppercase' }}
                 >
                   {mediaType === 'Movie' ? media.title : media.name}
                 </Heading>
+                
+                  <HStack sx={{ alignItems: 'center', marginBottom:'$4' }}>
+                    {media.certification_rating &&
+                      <>
+                        <Badge action="rating" borderRadius="$none">
+                          <BadgeText sx={{ textTransform: 'uppercase' }}>{media.certification_rating}</BadgeText>
+                        </Badge>
+                        <Icon as={Dot} size='40' sx={{ color: '$white', marginHorizontal: 5 }} />
+                      </>
+                    }
+                    {media.vote_average &&
+                      <Box sx={{ backgroundColor: '#0d253f', flexDirection: 'row', paddingHorizontal: 10, paddingVertical: 8, borderRadius: 4 }}>
+                        <TmdbShortSvg height={28}/>
+                        <Text sx={{ fontFamily: '$rating', fontSize: 20, marginLeft: 12 }}>{ Math.round(media.vote_average * 10) / 10}</Text>
+                      </Box>
+                    }
+                    {/* {mediaType === 'Movie' ? */}
+                    {/* <Image
+                      borderRadius="$none"
+                      alt={media['watch/providers'].results.US.rent[0].provider_name}
+                      source={{
+                        uri: `https://image.tmdb.org/t/p/original${media['watch/providers'].results.US.rent[0].logo_path}`
+                      }}
+                    /> */}
+                    {/* : */}
+                    {/* <Image
+                      borderRadius="$none"
+                      alt={media['watch/providers'].results.US.ads[0].provider_name}
+                      source={{
+                        uri: `https://image.tmdb.org/t/p/original${media['watch/providers'].results.US.ads[0].logo_path}`
+                      }}
+                    /> */}
+                    {/* } */}
+                  </HStack>
                 <Text sx={{ marginBottom: '$8' }}>{media.overview}</Text>
                 <HStack>
                   <Link

@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
+    "@expo-google-fonts/jost": "^0.2.3",
     "@expo-google-fonts/noto-sans": "^0.2.3",
     "@expo-google-fonts/noto-sans-display": "^0.2.3",
     "@expo/html-elements": "latest",

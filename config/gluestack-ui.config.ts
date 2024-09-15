@@ -582,10 +582,11 @@ export const gluestackUIConfig = createConfig({
     },
     fonts: {
       heading:'NotoSans_700Bold',
+      badge: 'NotoSans_900Black',
       body: 'NotoSans_500Medium',
       mono: undefined,
-      badge: 'NotoSans_900Black',
-      neon: 'NeonOne'
+      neon: 'NeonOne',
+      rating: 'Jost_600SemiBold'
     },
     fontSizes: {
       '2xs': 10,

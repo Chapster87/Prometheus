@@ -106,6 +106,31 @@ export const Badge = createStyle({
           },
         },
       },
+      rating: {
+        bg: 'transparent',
+        borderColor: '$black',
+        borderWidth: '$1',
+        paddingHorizontal: 8,
+        paddingVertical: 2,
+        _icon: {
+          color: '$black',
+        },
+        _text: {
+          color: '$black',
+          fontFamily: '$rating',
+          fontSize: 16
+        },
+        _dark: {
+          bg: 'transparent',
+          borderColor: '$white',
+          _text: {
+            color: '$white',
+          },
+          _icon: {
+            color: '$white',
+          },
+        },
+      },
     },
 
     variant: {

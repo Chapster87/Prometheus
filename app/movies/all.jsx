@@ -19,7 +19,7 @@ function Page() {
       const useFiltered = true;
       spark.getAllMovies(useFiltered)
         .then(movies => {
-          console.log(movies)
+          // console.log(movies)
           setAllMedia(movies.data);
         });
     }

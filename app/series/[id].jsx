@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react';
 import Head from 'expo-router/head';
 import { AuthContext } from '../../components/session/AuthContext';
 import { useLocalSearchParams, Link } from 'expo-router';
-import { Box, Button, ButtonText, Heading, Icon, Image, ImageBackground, LinkText, Modal, ModalBackdrop, ModalContent, ModalHeader, ModalBody,  ModalFooter, ModalCloseButton, CloseIcon, View, VStack, Text, Tabs, TabsTab, TabsTabTitle, TabsTabList, TabsTabPanel, TabsTabPanels, HStack } from '@gluestack-ui/themed';
+import { Badge, BadgeText, Box, Button, ButtonText, Heading, HStack, Icon, Image, ImageBackground, LinkText, Modal, ModalBackdrop, ModalContent, ModalHeader, ModalBody,  ModalFooter, ModalCloseButton, CloseIcon, View, VStack, Text, Tabs, TabsTab, TabsTabTitle, TabsTabList, TabsTabPanel, TabsTabPanels} from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
 import VideoJS from '../../components/VideoJS'
@@ -130,6 +130,13 @@ export default function Page() {
                   </Box>
                   <Box grid='col' columns='12' columnsMd='9'>
                     <Heading size='3xl'>{seriesData.name}</Heading>
+                    <HStack>
+                      {seriesData.certification_rating && 
+                        <Badge action="rating" borderRadius="$none" sx={{ marginBottom:'$3' }}>
+                          <BadgeText sx={{ textTransform: 'uppercase' }}>{seriesData.certification_rating}</BadgeText>
+                        </Badge>
+                      }
+                    </HStack>
                     <VStack space="md" reversed={false}>
                       <Box><Text>Genre(s):{' '}
                         {seriesData.genres.map((genre, index, genres) => {

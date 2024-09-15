@@ -3,7 +3,7 @@ import Head from 'expo-router/head';
 import { AuthContext } from '../../components/session/AuthContext';
 import { useLocalSearchParams, Link } from 'expo-router';
 
-import { Badge, BadgeText, Box, Heading, Image, ImageBackground, LinkText, View, Text, VStack } from '@gluestack-ui/themed';
+import { Badge, BadgeText, Box, Heading, HStack, Image, ImageBackground, LinkText, View, Text, VStack } from '@gluestack-ui/themed';
 
 import Spark from '../../components/Spark';
 import VideoJS from '../../components/VideoJS'
@@ -127,11 +127,16 @@ export default function Page() {
                     <Box grid='row'>
                       <Box grid='col' columns='12'>
                         <Heading size='3xl'>{movieData.title} <Text sx={{ fontWeight: '$bold' }}>({movieData.release_date.substr(0,4)})</Text></Heading>
-                        <Box sx={{ flexDirection: 'row', marginBottom: '$4' }}>
+                        <HStack sx={{ marginBottom:'$4' }}>
+                          {movieData.certification_rating && 
+                            <Badge action="rating" borderRadius="$none" sx={{ marginRight: 14 }}>
+                              <BadgeText sx={{ textTransform: 'uppercase' }}>{movieData.certification_rating}</BadgeText>
+                            </Badge>
+                          }
                           <Badge size="md" variant="solid" borderRadius="$none" action="success" sx={badgeStyles}>
                             <BadgeText>Status: {movieData.status}</BadgeText>
                           </Badge>
-                        </Box>
+                        </HStack>
                         <VStack space="md" reversed={false}>
                           {(movieData.tagline) && <Box><Text>"{movieData.tagline}"</Text></Box>}
                           <Box><Text><Text sx={{ fontWeight: '$bold' }}>Genre(s):{' '}</Text>
