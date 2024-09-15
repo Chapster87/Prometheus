@@ -131,7 +131,9 @@ export default class Spark {
             const res = await fetch(fetchUrl, options);
             if (!res.ok) {
                 const message = `An error has occured: ${res.status}`;
-                throw new Error(message);
+                // throw new Error(message);
+                console.error(message, "FetchURL: " + fetchUrl);
+                return;
             }
 
             const data = await res.json();
@@ -262,9 +264,71 @@ export default class Spark {
             language:'en-US'
         };
 
-        const movieDetails = await this.getTmdb('movie', id, null, params);
+        let movieDetails = await this.getTmdb('movie', id, null, params);
+        movieDetails.media_type = 'movie';
+        movieDetails = await this.getTmdbCertificationRating(movieDetails)
 
         return movieDetails;
+    }
+
+    /**
+     * Fetch Movie Details for an array of ids from TMDB
+     *
+     */
+    async getTmdbMoviesGroup(movieIdArray) {
+        const params = {
+            append_to_response: 'release_dates,watch/providers',
+            language:'en-US'
+        };
+
+        const movieDetails = [];
+
+        for (let i in movieIdArray){
+            let movie = await this.getTmdb('movie', movieIdArray[i], null, params);
+            movie.media_type = 'movie'
+            movie = await this.getTmdbCertificationRating(movie)
+
+            if (movie) {
+                movieDetails.push(movie);
+            }
+        }
+
+        if (movieDetails.length > 0) {
+            return movieDetails;
+        }
+    }
+
+    /**
+     * Fetch Movie Genres from TMDB
+     *
+     */
+    async getTmdbMovieGenres() {
+        const params = {
+            language:'en-US'
+        };
+
+        const movieGenres = await this.getTmdb('genre', 'movie/list', null, params);
+
+        return movieGenres.genres;
+    }
+
+    /**
+     * Fetch Movies from specific genre(s) id
+     *
+     */
+    async getTmdbMoviesByGenres(ids) {
+        const params = {
+            include_adult: false,
+            include_video: false,
+            language:'en-US',
+            page: 1,
+            sort_by: 'popularity.desc',
+            with_genres: ids
+        };
+
+        const moviesByGenres = await this.getTmdb('discover', 'movie', null, params);
+
+        return moviesByGenres;
     }
 
     /**
@@ -301,16 +365,60 @@ export default class Spark {
      */
     async getTmdbSeries(id) {
         const params = {
+            append_to_response: 'content_ratings,watch/providers',
             language:'en-US'
         };
 
-        const seriesDetails = await this.getTmdb('tv', id, null, params);
+        let seriesDetails = await this.getTmdb('tv', id, null, params);
+        seriesDetails.media_type = 'series';
+        seriesDetails = await this.getTmdbCertificationRating(seriesDetails)
 
         return seriesDetails;
     }
 
     /**
-     * Fetch TV Series Details from TMDB
+     * Fetch Series Genres from TMDB
+     *
+     */
+    async getTmdbSeriesGenres() {
+        const params = {
+            language:'en-US'
+        };
+
+        const seriesGenres = await this.getTmdb('genre', 'tv/list', null, params);
+
+        return seriesGenres.genres;
+    }
+
+    /**
+     * Fetch Movie Details for an array of ids from TMDB
+     *
+     */
+    async getTmdbSeriesGroup(seriesIdArray) {
+        const params = {
+            append_to_response: 'content_ratings,watch/providers',
+            language:'en-US'
+        };
+
+        const seriesDetails = [];
+
+        for (let i in seriesIdArray){
+            let series = await this.getTmdb('tv', seriesIdArray[i], null, params);
+            series.media_type = 'tv';
+            series = await this.getTmdbCertificationRating(series)
+
+            if (series) {
+                seriesDetails.push(series);
+            }
+        }
+
+        if (seriesDetails.length > 0) {
+            return seriesDetails;
+        }
+    }
+
+    /**
+     * Search TMDB for series details using title and year
      *
      */
     async searchTmdbSeries(title, year) {
@@ -376,13 +484,24 @@ export default class Spark {
             };
 
             const trendingMovies = await this.getTmdb('trending', 'movie', 'week', params);
-
+            
             if(trendingMovies && trendingMovies.results) {
+                const trendingMoviesIDs = [];
+                let updatedTrendingMovies = null;
+
+                trendingMovies.results.map(movies => {
+                    trendingMoviesIDs.push(movies.id);
+                });
+
+                if(trendingMoviesIDs.length) {
+                    updatedTrendingMovies = await this.getTmdbMoviesGroup(trendingMoviesIDs);
+                }
+                
                 if (this.config.xcUrl) {
-                    const updatedTrendingMovies = await this.getTrendingMovieIDs(trendingMovies.results);
-                    return updatedTrendingMovies;
+                    const updatedTrendingMoviesWXc = await this.getTrendingMovieXcIDs(updatedTrendingMovies);
+                    return updatedTrendingMoviesWXc;
                 } else {
-                    return trendingMovies.results;
+                    return updatedTrendingMovies;
                 }
             }
         }
@@ -400,11 +519,22 @@ export default class Spark {
         const trendingSeries = await this.getTmdb('trending', 'tv', 'week', params);
 
         if(trendingSeries && trendingSeries.results) {
+            const trendingSeriesIDs = [];
+            let updatedTrendingSeries = null;
+
+            trendingSeries.results.map(series => {
+                trendingSeriesIDs.push(series.id);
+            });
+
+            if(trendingSeriesIDs.length) {
+                updatedTrendingSeries = await this.getTmdbSeriesGroup(trendingSeriesIDs);
+            }
+
             if (this.config.xcUrl) {
-                const updatedTrendingSeries = await this.getTrendingSeriesIDs(trendingSeries.results);
-                return updatedTrendingSeries;
+                const updatedTrendingSeriesWXc = await this.getTrendingSeriesXcIDs(trendingSeries.results);
+                return updatedTrendingSeriesWXc;
             } else {
-                return trendingSeries.results;
+                return updatedTrendingSeries;
             }
         }
     }
@@ -432,7 +562,7 @@ export default class Spark {
      * @param {string} name
      * @param {number} year
      */
-    async getTrendingMovieIDs(movieList) {
+    async getTrendingMovieXcIDs(movieList) {
         if (!movieList) {
             const message = `Movie List not defined`;
             throw new Error(message);
@@ -468,7 +598,7 @@ export default class Spark {
      *
      * @param {Object} seriesList
      */
-    async getTrendingSeriesIDs(seriesList) {
+    async getTrendingSeriesXcIDs(seriesList) {
         if (!seriesList) {
             const message = `Series List not defined`;
             throw new Error(message);
@@ -496,5 +626,29 @@ export default class Spark {
         }
 
         return seriesList;
+    }
+
+    /**
+     * GET Media Certification Rating
+     *
+     * @param {Object} seriesList
+     */
+    async getTmdbCertificationRating(media) {
+        let updatedMedia = media;
+        updatedMedia.certification_rating = null;
+
+        if(media.media_type === 'movie') {
+            let ratingMatch = media.release_dates.results.filter(rating => rating.iso_3166_1 === 'US');
+            if(ratingMatch && ratingMatch.length && ratingMatch[0].release_dates.length && ratingMatch[0].release_dates[0].certification) {
+                updatedMedia.certification_rating = ratingMatch[0].release_dates[0].certification;
+            }
+        } else {
+            let ratingMatch = media.content_ratings.results.filter(rating => rating.iso_3166_1 === 'US');
+            if (ratingMatch && ratingMatch.length && ratingMatch[0].rating) {
+                updatedMedia.certification_rating = ratingMatch[0].rating;
+            }
+        }
+
+        return updatedMedia;
     }
 } 
