@@ -4,8 +4,7 @@ import { Link } from 'expo-router';
 import { Avatar, AvatarFallbackText, Box, HStack, Icon, LinkText, Menu, MenuItem, MenuItemLabel, Pressable, SettingsIcon, View } from '@gluestack-ui/themed';
 import { CircleUserRound, LogOut, Menu as MenuIcon, Search, X } from 'lucide-react-native';
 import { supabase } from '../../config/supabase'
-
-import Logo from '../../assets/images/svg/logo';
+import PrometheusIcon from '../svgs/PrometheusIcon';
 
 function Header({ session }) {
   const [account, setAccount] = useState(session);
@@ -48,7 +47,7 @@ function Header({ session }) {
                   </Box>
                   <Box sx={siteLogo}>
                     <Link href="/" style={LinkSX}>
-                      <Logo width={75} height={94} />
+                      <PrometheusIcon width={75} height={94} />
                     </Link>
                   </Box>
                   <View sx={menuState}>

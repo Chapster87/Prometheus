@@ -20,7 +20,7 @@ function TrendingMovies() {
   useEffect(() => {
     spark.getTrendingMovies()
       .then(response => {
-        console.log(response);
+        // console.log(response);
         setTrendingData(response)
         setMovieCount(response.length);
       });
