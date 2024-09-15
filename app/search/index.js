@@ -48,7 +48,7 @@ function Search() {
   async function searchSeries() {
     if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
       setLoading(true)
-      console.log('Series');
+      // console.log('Series');
       if (searchTerm) {
         const allSeries = await spark.getAllSeries()
           .then(series => {
@@ -105,15 +105,9 @@ function Search() {
         </Box>
         <Box grid='row'>
           <Box grid='col' columns='2'>
-            {(searchCategory === 'movies') ?
-              <Button variant="gradient" isDisabled={loading} onPress={() => searchMovies()}>
+              <Button variant="gradient" isDisabled={loading} onPress={() => searchCategory === 'movies' ? searchMovies() : searchSeries()}>
                 <ButtonText>{loading ? 'Loading ...' : 'Search'}</ButtonText>
               </Button>
-            :
-              <Button variant="gradient" isDisabled={loading} onPress={() => searchSeries()}>
-                <ButtonText>{loading ? 'Loading ...' : 'Search'}</ButtonText>
-              </Button>
-            }
           </Box>
         </Box>
         {(searchResults) &&
