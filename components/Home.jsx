@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Head from 'expo-router/head';
 import { Box, View } from "@gluestack-ui/themed";
+import { supabase } from '../config/supabase'
 
 import MediaHero from './media/MediaHero'
 import MediaRowTabs from './media/MediaRowTabs';
@@ -9,6 +10,7 @@ import DummyHero from './dummies/DummyHero';
 
 function App({ session }) {
   const [heroMedia, setHeroMedia] = useState();
+  const [favGroups, setFavGroups] = useState();
   const [trendingGroups, setTrendingGroups] = useState();
   const [account, setAccount] = useState(session);
 
@@ -18,6 +20,81 @@ function App({ session }) {
   useEffect(() => {
     if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
       setAccount(session);
+
+      if (session) {
+        async function getMediaMeta() {
+          const { user } = session;
+    
+          const { data, error } = await supabase
+            .from('media')
+            .select(`favoritesMovies, favoritesSeries`)
+            .eq('id', user.id)
+            .single();
+    
+          if (error) {
+            console.warn(error)
+          } else if (data) {
+            const fetchFavoriteSeries = spark.getTmdbSeriesGroup(data.favoritesSeries)
+              .then(response => {
+                // console.log('favroiteSeries', response);
+                return response;
+              });
+
+            const fetchFavoriteMovies = spark.getTmdbMoviesGroup(data.favoritesMovies)
+              .then(response => {
+                // console.log('favroiteMovies', response);
+                return response;
+              });
+
+            Promise.all([fetchFavoriteSeries, fetchFavoriteMovies])
+              .then((values) => {
+                if (values && values.length > 1 && values[0] && values[1]) {
+                  const series = values[0];
+                  const movies = values[1];
+                  const favoriteGroups = [
+                    {
+                      id: 'favoriteSeries',
+                      title: 'Favorite Series',
+                      mediaData: []
+                    },
+                    {
+                      id: 'favoriteMovies',
+                      title: 'Favorite Movies',
+                      mediaData: []
+                    }
+                  ];
+
+                  if (series.length > 0) {
+                    for (let i in series){
+                      favoriteGroups[0].mediaData.push({
+                        media_type: 'tv',
+                        id: series[i].id,
+                        name: series[i].name,
+                        poster_path: series[i].poster_path
+                      });
+                    }
+                  }
+
+                  if (movies.length > 0) {
+                    for (let j in movies){
+                      favoriteGroups[1].mediaData.push({
+                        media_type: 'movie',
+                        id: movies[j].id,
+                        title: movies[j].title,
+                        poster_path: movies[j].poster_path
+                      });
+                    }
+                  }
+
+                  setFavGroups(favoriteGroups);
+                }
+              });
+          }
+        }
+    
+        getMediaMeta();
+      }
+
       const fetchTrendingMovies = spark.getTrendingMovies()
         .then(response => {
           // console.log(response);
@@ -37,19 +114,17 @@ function App({ session }) {
             const random = Math.floor(Math.random() * allTrending.length);
             const randomMedia = allTrending[random];
 
-            console.log(allTrending);
-  
             setHeroMedia(randomMedia);
             setTrendingGroups([
-              {
-                id: 'trendingMovies',
-                title: 'Trending Movies',
-                mediaData: values[0]
-              }, 
               {
                 id: 'trendingSeries',
                 title: 'Trending Series',
                 mediaData: values[1]
+              },
+              {
+                id: 'trendingMovies',
+                title: 'Trending Movies',
+                mediaData: values[0]
               }
             ]);
           }
@@ -67,11 +142,11 @@ function App({ session }) {
         <Box grid="container-fluid">
           <Box grid="row">
             <Box grid="col" columns="12">
-              {(trendingGroups) &&
+              {(favGroups) &&
                 <>
                   <MediaRowTabs
-                    tabGroups={trendingGroups}
-                    defaultTab='trendingMovies'
+                    tabGroups={favGroups}
+                    defaultTab='favoriteSeries'
                     xcEnabled={account.user.user_metadata.xcUrl}
                     session={session ? session : null}
                   />
@@ -85,7 +160,7 @@ function App({ session }) {
                 <>
                   <MediaRowTabs
                     tabGroups={trendingGroups}
-                    defaultTab='trendingMovies'
+                    defaultTab='trendingSeries'
                     xcEnabled={account.user.user_metadata.xcUrl}
                     session={session ? session : null}
                   />
