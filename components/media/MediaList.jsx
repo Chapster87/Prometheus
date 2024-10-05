@@ -8,35 +8,58 @@ import MediaCard from './MediaCard';
 import DummyCard from '../dummies/DummyCard';
 
 function MediaList({page, spark, session, catId, catName}) {
+  const [account, setAccount] = useState(session);
   const [VODCatData, setVODCatData] = useState();
   const [mediaData, setMediaData] = useState({ data: [], size: 50, page: 1, currPage: null });
   const [VodID, setVodID] = useState();
+  const [isTmdb, setIsTmdb] = useState(false);
 
   useEffect(() => {
     if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
-      if(page === 'Series') {
-        // GET Series Streams
-        spark.getSeriesStreams(catId)
-          .then((series) => {
-            // console.log(series);
-            const data = series.data;
-            // setVODCatData(series.data)
-            const { page, size } = mediaData;
-            const currPage = paginate(data, page, size);
-            setMediaData({ ...mediaData, data: series.data, currPage: currPage });
-          });
+      if(session.user.user_metadata.xcUrl) {
+        if(page === 'Series') {
+          // GET Series Streams
+          {account.user.user_metadata.xcUrl && 
+            spark.getSeriesStreams(catId)
+              .then((series) => {
+                // console.log(series);
+                const data = series.data;
+                // setVODCatData(series.data)
+                const { page, size } = mediaData;
+                const currPage = paginate(data, page, size);
+                setMediaData({ ...mediaData, data: series.data, currPage: currPage });
+              });
+          }
+        } else if (page === 'Movies') {
+          // GET Movie Streams
+          {account.user.user_metadata.xcUrl && 
+            spark.getVODStreams(catId)
+              .then(movies => {
+                // console.log(movies);
+                const data = movies.data;
+                // setVODCatData(movies.data)
+                const { page, size } = mediaData;
+                const currPage = paginate(data, page, size);
+                setMediaData({ ...mediaData, data: movies.data, currPage: currPage }); 
+              });
+          }
+        }
+      } else if(session.user.user_metadata.tmdbApiKey && session.user.user_metadata.tmdbApiReadAccessToken) {
+        setIsTmdb(true);
+        if(page === 'Series') {
 
-      } else if (page === 'Movies') {
-        // GET Movie Streams
-        spark.getVODStreams(catId)
-          .then(movies => {
-            // console.log(movies);
-            const data = movies.data;
-            // setVODCatData(movies.data)
-            const { page, size } = mediaData;
-            const currPage = paginate(data, page, size);
-            setMediaData({ ...mediaData, data: movies.data, currPage: currPage }); 
-          });
+        } else if (page === 'Movies') {
+          spark. getTmdbMoviesByGenres(catId)
+            .then(movies => {
+              console.log("Movies By Genre", movies);
+              const data = movies.results;
+              const page = movies.page;
+              const size = movies.results.length;
+              const currPage = paginate(data, page, size);
+              setMediaData({ ...mediaData, data: data, currPage: currPage }); 
+              console.log(currPage);
+            });
+        }
       }
     }
   }, [session])
@@ -111,8 +134,13 @@ function MediaList({page, spark, session, catId, catName}) {
               <>
                 {mediaData.currPage.data.map(vod => {
                   const isSeries = (vod.stream_type === 'series');
-                  const mediaID = isSeries ? vod.series_id : vod.stream_id;
-                  const mediaImg = isSeries ? vod.cover : vod.stream_icon;
+                  if(isTmdb) {
+                    const mediaID = vod.id;
+                    const mediaImg = vod.poster_path;
+                  } else {
+                    const mediaID = isSeries ? vod.series_id : vod.stream_id;
+                    const mediaImg = isSeries ? vod.cover : vod.stream_icon;
+                  }
 
                   return (
                     <Box grid="col" columns="6" columnsMd="4" columnsLg="3" columnsXl="2" sx={{ marginBottom: 24 }} key={mediaID}>

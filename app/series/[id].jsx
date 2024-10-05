@@ -3,12 +3,14 @@ import Head from 'expo-router/head';
 import { AuthContext } from '../../components/session/AuthContext';
 import { useLocalSearchParams, Link } from 'expo-router';
 import { Badge, BadgeText, Box, Button, ButtonText, Heading, HStack, Icon, Image, ImageBackground, LinkText, Modal, ModalBackdrop, ModalContent, ModalHeader, ModalBody,  ModalFooter, ModalCloseButton, CloseIcon, View, VStack, Text, Tabs, TabsTab, TabsTabTitle, TabsTabList, TabsTabPanel, TabsTabPanels} from '@gluestack-ui/themed';
+import { Dot } from 'lucide-react-native';
 
 import Spark from '../../components/Spark';
 import VideoJS from '../../components/VideoJS'
 import { Clapperboard } from 'lucide-react-native';
 import FavoriteBadge from '../../components/badges/Favorite';
 import WatchedBadge from '../../components/badges/Watched';
+import TmdbShortSvg from '../../components/svgs/TmdbShort';
 
 const MODAL_DEFAULT = {
   show: false,
@@ -130,11 +132,20 @@ export default function Page() {
                   </Box>
                   <Box grid='col' columns='12' columnsMd='9'>
                     <Heading size='3xl'>{seriesData.name}</Heading>
-                    <HStack>
+                    <HStack  sx={{ alignItems: 'center', marginBottom:'$4' }}>
                       {seriesData.certification_rating && 
-                        <Badge action="rating" borderRadius="$none" sx={{ marginBottom:'$3' }}>
+                        <Badge action="rating" borderRadius="$none">
                           <BadgeText sx={{ textTransform: 'uppercase' }}>{seriesData.certification_rating}</BadgeText>
                         </Badge>
+                      }
+                      {(seriesData.certification_rating && seriesData.vote_average) &&
+                        <Icon as={Dot} size='40' sx={{ color: '$white', marginHorizontal: 5 }} />
+                      }
+                      {seriesData.vote_average &&
+                        <Box sx={{ backgroundColor: '#0d253f', flexDirection: 'row', paddingHorizontal: 10, paddingVertical: 8, borderRadius: 4 }}>
+                          <TmdbShortSvg height={28}/>
+                          <Text sx={{ fontFamily: '$rating', fontSize: 20, marginLeft: 12 }}>{ Math.round(seriesData.vote_average * 10) / 10}</Text>
+                        </Box>
                       }
                     </HStack>
                     <VStack space="md" reversed={false}>

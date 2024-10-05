@@ -9,7 +9,7 @@ const imageWidth = width * 0.2;
 
 function MediaCard({ mediaID, tmdbID, streamType, xcEnabled, name, image, session }) {
 
-  const isSeries = (streamType === 'tv');
+  const isSeries = (streamType === 'tv' || streamType === 'series');
   const mediaType = isSeries ? 'series' : 'movies';
 
   return (

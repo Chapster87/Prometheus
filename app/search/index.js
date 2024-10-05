@@ -37,7 +37,6 @@ function Search() {
           .then(movies => {
             const fuse = new Fuse(movies.data, fuseOptions)
             const found = fuse.search(searchTerm);
-            // console.log(found);
             setSearchResults(found);
           });
       }
@@ -54,7 +53,6 @@ function Search() {
           .then(series => {
             const fuse = new Fuse(series.data, fuseOptions)
             const found = fuse.search(searchTerm);
-            // console.log(found);
             setSearchResults(found);
           });
       }

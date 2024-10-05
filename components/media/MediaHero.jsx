@@ -46,12 +46,12 @@ function VODHero({ heroMedia }) {
                 
                   <HStack sx={{ alignItems: 'center', marginBottom:'$4' }}>
                     {media.certification_rating &&
-                      <>
-                        <Badge action="rating" borderRadius="$none">
-                          <BadgeText sx={{ textTransform: 'uppercase' }}>{media.certification_rating}</BadgeText>
-                        </Badge>
-                        <Icon as={Dot} size='40' sx={{ color: '$white', marginHorizontal: 5 }} />
-                      </>
+                      <Badge action="rating" borderRadius="$none">
+                        <BadgeText sx={{ textTransform: 'uppercase' }}>{media.certification_rating}</BadgeText>
+                      </Badge>
+                    }
+                    {(media.certification_rating && media.vote_average) &&
+                      <Icon as={Dot} size='40' sx={{ color: '$white', marginHorizontal: 5 }} />
                     }
                     {media.vote_average &&
                       <Box sx={{ backgroundColor: '#0d253f', flexDirection: 'row', paddingHorizontal: 10, paddingVertical: 8, borderRadius: 4 }}>

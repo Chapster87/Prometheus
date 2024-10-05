@@ -36,7 +36,7 @@ export const Radio = createStyle({
           },
         },
         _indicator: {
-          p: 1.5,
+          p: 2,
           h: '$5',
           w: '$5',
         },
