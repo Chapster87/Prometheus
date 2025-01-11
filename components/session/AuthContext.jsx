@@ -7,7 +7,6 @@ export const AuthProvider = (props) => {
   const [session, setSession] = useState(null);
 
   useEffect(() => {
-    if(process.env.EXPO_PUBLIC_USE_ENV === 'false') {
       supabase.auth.getSession().then(({ data: { session } }) => {
         setSession(session)
       });
@@ -15,24 +14,26 @@ export const AuthProvider = (props) => {
       supabase.auth.onAuthStateChange((_event, session) => {
         setSession(session)
       });
-    } else {
-      setSession(
-        {
-          user: {
-            user_metadata: {
-              firstName: 'Demo',
-              lastName: 'User',
-              id: '1',
-              tmdbApiKey: process.env.EXPO_PUBLIC_TMDB_API_KEY,
-              tmdbApiReadAccessToken: process.env.EXPO_PUBLIC_TMDB_API_READ_ACCESS_TOKEN,
-              xcUrl: process.env.EXPO_PUBLIC_XC_URL,
-              xcUsername: process.env.EXPO_PUBLIC_XC_USERNAME,
-              xcPassword: process.env.EXPO_PUBLIC_XC_PASSWORD
-            }
-          }
-        }
-      );
+    if(process.env.EXPO_PUBLIC_USE_ENV === 'false') {
     }
+    // else {
+    //   setSession(
+    //     {
+    //       user: {
+    //         user_metadata: {
+    //           firstName: 'Demo',
+    //           lastName: 'User',
+    //           id: '1',
+    //           tmdbApiKey: process.env.EXPO_PUBLIC_TMDB_API_KEY,
+    //           tmdbApiReadAccessToken: process.env.EXPO_PUBLIC_TMDB_API_READ_ACCESS_TOKEN,
+    //           xcUrl: process.env.EXPO_PUBLIC_XC_URL,
+    //           xcUsername: process.env.EXPO_PUBLIC_XC_USERNAME,
+    //           xcPassword: process.env.EXPO_PUBLIC_XC_PASSWORD
+    //         }
+    //       }
+    //     }
+    //   );
+    // }
   }, []);
 
   return (

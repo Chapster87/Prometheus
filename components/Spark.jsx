@@ -11,10 +11,10 @@ export default class Spark {
             this.config = {
                 tmdbApiKey: process.env.EXPO_PUBLIC_TMDB_API_KEY,
                 tmdbApiReadAccessToken: process.env.EXPO_PUBLIC_TMDB_API_READ_ACCESS_TOKEN,
-                xcUrl: process.env.EXPO_PUBLIC_XC_URL,
+                xcUrl: process.env.EXPO_PUBLIC_XC_URL2,
                 xcAuth: {
-                    username: process.env.EXPO_PUBLIC_XC_USERNAME,
-                    password: process.env.EXPO_PUBLIC_XC_PASSWORD
+                    username: process.env.EXPO_PUBLIC_XC_USERNAME2,
+                    password: process.env.EXPO_PUBLIC_XC_PASSWORD2
                 }
             }
         } else if (session && session.user) {
