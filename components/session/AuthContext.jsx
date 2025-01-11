@@ -14,8 +14,8 @@ export const AuthProvider = (props) => {
       supabase.auth.onAuthStateChange((_event, session) => {
         setSession(session)
       });
-    if(process.env.EXPO_PUBLIC_USE_ENV === 'false') {
-    }
+    // if(process.env.EXPO_PUBLIC_USE_ENV === 'false') {
+    // }
     // else {
     //   setSession(
     //     {
