@@ -15,24 +15,25 @@ export const AuthProvider = (props) => {
       supabase.auth.onAuthStateChange((_event, session) => {
         setSession(session)
       });
-    } else {
-      setSession(
-        {
-          user: {
-            user_metadata: {
-              firstName: 'Demo',
-              lastName: 'User',
-              id: '1',
-              tmdbApiKey: process.env.EXPO_PUBLIC_TMDB_API_KEY,
-              tmdbApiReadAccessToken: process.env.EXPO_PUBLIC_TMDB_API_READ_ACCESS_TOKEN,
-              xcUrl: process.env.EXPO_PUBLIC_XC_URL,
-              xcUsername: process.env.EXPO_PUBLIC_XC_USERNAME,
-              xcPassword: process.env.EXPO_PUBLIC_XC_PASSWORD
-            }
-          }
-        }
-      );
     }
+    // else {
+    //   setSession(
+    //     {
+    //       user: {
+    //         user_metadata: {
+    //           firstName: 'Demo',
+    //           lastName: 'User',
+    //           id: '1',
+    //           tmdbApiKey: process.env.EXPO_PUBLIC_TMDB_API_KEY,
+    //           tmdbApiReadAccessToken: process.env.EXPO_PUBLIC_TMDB_API_READ_ACCESS_TOKEN,
+    //           xcUrl: process.env.EXPO_PUBLIC_XC_URL,
+    //           xcUsername: process.env.EXPO_PUBLIC_XC_USERNAME,
+    //           xcPassword: process.env.EXPO_PUBLIC_XC_PASSWORD
+    //         }
+    //       }
+    //     }
+    //   );
+    // }
   }, []);
 
   return (
