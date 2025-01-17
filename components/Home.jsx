@@ -36,13 +36,13 @@ function App({ session }) {
           } else if (data) {
             const fetchFavoriteSeries = spark.getTmdbSeriesGroup(data.favoritesSeries)
               .then(response => {
-                // console.log('favroiteSeries', response);
+                // console.log('favoriteSeries', response);
                 return response;
               });
 
             const fetchFavoriteMovies = spark.getTmdbMoviesGroup(data.favoritesMovies)
               .then(response => {
-                // console.log('favroiteMovies', response);
+                // console.log('favoriteMovies', response);
                 return response;
               });
 

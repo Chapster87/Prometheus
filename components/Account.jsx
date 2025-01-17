@@ -4,6 +4,7 @@ import { supabase } from '../config/supabase'
 
 export default function Account({ session }) {
   const [loading, setLoading] = useState(true);
+  const [isDemo, setIsDemo] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [tmdbApiKey, setTmdbApiKey] = useState('');
@@ -36,6 +37,10 @@ export default function Account({ session }) {
           setXcUrl(data.xcUrl)
           setXcUsername(data.xcUsername)
           setXcPassword(data.xcPassword)
+          
+          if(data.email === 'test@pixelfoundry.app') {
+            setIsDemo(true);
+          }
         }
       }
 
@@ -138,91 +143,95 @@ export default function Account({ session }) {
           </FormControl>
         </Box>
       </Box>
-      <Box grid='row'>
-        <Box grid='col' columns='3' mb="$5">
-          <FormControl>
-            <FormControlLabel mb="$1">
-              <FormControlLabelText>XC Url</FormControlLabelText>
-            </FormControlLabel>
-            <Input>
-              <InputField
-                type="text"
-                onChangeText={(text) => setXcUrl(text)}
-                value={xcUrl || ""}
-                placeholder="XC Url"
-              />
-            </Input>
-          </FormControl>
-        </Box>
-      </Box>
-      <Box grid='row'>
-        <Box grid='col' columns='3' mb="$5">
-          <FormControl>
-            <FormControlLabel mb="$1">
-              <FormControlLabelText>XC Username</FormControlLabelText>
-            </FormControlLabel>
-            <Input>
-              <InputField
-                type="text"
-                onChangeText={(text) => setXcUsername(text)}
-                value={xcUsername || ""}
-                placeholder="XC Username"
-              />
-            </Input>
-          </FormControl>
-        </Box>
-      </Box>
-      <Box grid='row'>
-        <Box grid='col' columns='3' mb="$5">
-          <FormControl>
-            <FormControlLabel mb="$1">
-              <FormControlLabelText>XC Password</FormControlLabelText>
-            </FormControlLabel>
-            <Input>
-              <InputField
-                type="password"
-                onChangeText={(text) => setXcPassword(text)}
-                value={xcPassword || ""}
-                placeholder="XC Password"
-              />
-            </Input>
-          </FormControl>
-        </Box>
-      </Box>
-      <Box grid='row'>
-        <Box grid='col' columns='6' mb="$5">
-          <FormControl>
-            <FormControlLabel mb="$1">
-              <FormControlLabelText>TMDB API Key</FormControlLabelText>
-            </FormControlLabel>
-            <Input>
-              <InputField
-                type="text"
-                onChangeText={(text) => setTmdbApiKey(text)}
-                value={tmdbApiKey || ""}
-                placeholder="TMDB API Key"
-              />
-            </Input>
-          </FormControl>
-        </Box>
-      </Box>
-      <Box grid='row'>
-        <Box grid='col' columns='6' mb="$5">
-          <FormControl>
-            <FormControlLabel mb="$1">
-              <FormControlLabelText>TMDB API Read Access Token</FormControlLabelText>
-            </FormControlLabel>
-            <Input>
-              <InputField
-                type="text"
-                onChangeText={(text) => setTmdbApiRAT(text)}
-                value={tmdbApiRAT || ""}
-                placeholder="TMDB API Read Access Token"
-              />
-            </Input>
-          </FormControl>
-        </Box>
-      </Box>
+      {isDemo && (
+        <>
+          <Box grid='row'>
+            <Box grid='col' columns='6' mb="$5">
+              <FormControl>
+                <FormControlLabel mb="$1">
+                  <FormControlLabelText>TMDB API Key</FormControlLabelText>
+                </FormControlLabel>
+                <Input>
+                  <InputField
+                    type="text"
+                    onChangeText={(text) => setTmdbApiKey(text)}
+                    value={tmdbApiKey || ""}
+                    placeholder="TMDB API Key"
+                  />
+                </Input>
+              </FormControl>
+            </Box>
+          </Box>
+          <Box grid='row'>
+            <Box grid='col' columns='6' mb="$5">
+              <FormControl>
+                <FormControlLabel mb="$1">
+                  <FormControlLabelText>TMDB API Read Access Token</FormControlLabelText>
+                </FormControlLabel>
+                <Input>
+                  <InputField
+                    type="text"
+                    onChangeText={(text) => setTmdbApiRAT(text)}
+                    value={tmdbApiRAT || ""}
+                    placeholder="TMDB API Read Access Token"
+                  />
+                </Input>
+              </FormControl>
+            </Box>
+          </Box>
+          <Box grid='row'>
+            <Box grid='col' columns='3' mb="$5">
+              <FormControl>
+                <FormControlLabel mb="$1">
+                  <FormControlLabelText>XC Url</FormControlLabelText>
+                </FormControlLabel>
+                <Input>
+                  <InputField
+                    type="text"
+                    onChangeText={(text) => setXcUrl(text)}
+                    value={xcUrl || ""}
+                    placeholder="XC Url"
+                  />
+                </Input>
+              </FormControl>
+            </Box>
+          </Box>
+          <Box grid='row'>
+            <Box grid='col' columns='3' mb="$5">
+              <FormControl>
+                <FormControlLabel mb="$1">
+                  <FormControlLabelText>XC Username</FormControlLabelText>
+                </FormControlLabel>
+                <Input>
+                  <InputField
+                    type="text"
+                    onChangeText={(text) => setXcUsername(text)}
+                    value={xcUsername || ""}
+                    placeholder="XC Username"
+                  />
+                </Input>
+              </FormControl>
+            </Box>
+          </Box>
+          <Box grid='row'>
+            <Box grid='col' columns='3' mb="$5">
+              <FormControl>
+                <FormControlLabel mb="$1">
+                  <FormControlLabelText>XC Password</FormControlLabelText>
+                </FormControlLabel>
+                <Input>
+                  <InputField
+                    type="password"
+                    onChangeText={(text) => setXcPassword(text)}
+                    value={xcPassword || ""}
+                    placeholder="XC Password"
+                  />
+                </Input>
+              </FormControl>
+            </Box>
+          </Box>
+        </>
+      )}
       <Box grid='row'>
         <Box grid='col' columns='2'>
           <Button variant="gradient" isDisabled={loading} onPress={() => updateProfile()}>

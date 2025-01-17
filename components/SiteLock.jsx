@@ -23,13 +23,12 @@ function SiteLock() {
         <ModalBackdrop />
         <ModalContent>
           <ModalHeader>
-            <Heading size="lg">Sign In For Site Access</Heading>
+            <Heading size="lg">Site Access</Heading>
             <ModalCloseButton>
               <Icon as={CloseIcon} />
             </ModalCloseButton>
           </ModalHeader>
           <ModalBody>
-            <Text mb="$5">If you have a user account, sign in and verify that your TMDB API Read Access Token is set.</Text>
             <Login />
           </ModalBody>
         </ModalContent>
