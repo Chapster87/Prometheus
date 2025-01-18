@@ -391,6 +391,25 @@ export default class Spark {
     }
 
     /**
+     * Fetch Movies from specific genre(s) id
+     *
+     */
+    async getTmdbSeriesByGenres(ids) {
+        const params = {
+            include_adult: false,
+            include_video: false,
+            language:'en-US',
+            page: 1,
+            sort_by: 'popularity.desc',
+            with_genres: ids
+        };
+
+        const moviesByGenres = await this.getTmdb('discover', 'tv', null, params);
+
+        return moviesByGenres;
+    }
+
+    /**
      * Fetch Movie Details for an array of ids from TMDB
      *
      */

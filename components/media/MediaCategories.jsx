@@ -8,22 +8,45 @@ import MediaList from './MediaList';
 function MediaCategories({ page, spark, session }) {
   const [mediaCategory, setMediaCategory] = useState();
   const [activeCategory, setActiveCategory] = useState({id: 'X', name: `All ${page}`});
+  const [listKey, setListKey] = useState(0);
+  const [isTmdb, setIsTmdb] = useState(false);
 
   useEffect(() => {
     if (session || process.env.EXPO_PUBLIC_USE_ENV === 'true') {
-      if(page === 'Series') {
+      if(session.user.user_metadata.xcUrl) {
+        if(page === 'Series') {
 
-        spark.getSeriesCategories()
-          .then(categories => {
-            setMediaCategory(categories);
-            // console.log(categories);
-          });
-      } else if (page === 'Movies') {
-        spark.getVODStreamCategories()
-          .then(categories => {
-            setMediaCategory(categories.data);
-            console.log(categories);
-          });
+          spark.getSeriesCategories()
+            .then(categories => {
+              setMediaCategory(categories);
+              // console.log(categories);
+            });
+        } else if (page === 'Movies') {
+          spark.getVODStreamCategories()
+            .then(categories => {
+              setMediaCategory(categories.data);
+              // console.log('Movie Cats:', categories);
+            });
+        }
+      } else if(session.user.user_metadata.tmdbApiKey && session.user.user_metadata.tmdbApiReadAccessToken) {
+        setIsTmdb(true);
+        if(page === 'Series') {
+          spark.getTmdbSeriesGenres()
+            .then(genres => {
+              setMediaCategory(genres);
+              setActiveCategory({id: genres[0].id, name: genres[0].name});
+              setListKey(key => key + 1);
+              console.log('Tmdb Genres:', genres);
+            });
+        } else if (page === 'Movies') {
+          spark.getTmdbMovieGenres()
+            .then(genres => {
+              setMediaCategory(genres);
+              setActiveCategory({id: genres[0].id, name: genres[0].name});
+              setListKey(key => key + 1);
+              // console.log('Tmdb Genres:', genres);
+            });
+        }
       }
     }
   }, [session])
@@ -31,6 +54,7 @@ function MediaCategories({ page, spark, session }) {
   function categoryClick (id, name) {
     console.log('clicked');
     setActiveCategory({ ...activeCategory, id: id, name: name});
+    setListKey(key => key + 1);
   }
 
   return (
@@ -38,9 +62,9 @@ function MediaCategories({ page, spark, session }) {
       <Box grid='container-fluid'>
         <Box grid='row'>
           <Box grid='col' columns='2' sx={stickyColumns}>
-            {(mediaCategory) ?
+            {mediaCategory ?
               <VStack>
-                {(page === 'Movies') &&
+                {(page === 'Movies' && !isTmdb) &&
                   <>
                     <Link href="/movies/all" asChild>
                       <Pressable>
@@ -56,22 +80,41 @@ function MediaCategories({ page, spark, session }) {
                     </Pressable>
                   </>
                 }
-                {mediaCategory.map(cat => (
-                  <Link 
-                    href={{
-                      pathname: (page === 'Movies') ? '/movies/category/[id]' : '/series/category/[id]',
-                      params: { id: cat.category_id, name: cat.category_name }
-                    }}
-                    asChild
-                    key={cat.category_id}
-                  >
-                    <Pressable>
-                      <Card sx={{ margin: '1rem', cursor: 'pointer' }}>
-                        <Heading size='xl'>{cat.category_name}</Heading>
-                      </Card>
-                    </Pressable>
-                  </Link>
-                ))}
+                {mediaCategory.map(cat => {
+                  let categoryName;
+                  let categoryId;
+                  if(isTmdb) {
+                    categoryName = cat.name;
+                    categoryId = cat.id;
+                  } else {
+                    categoryName = cat.category_name;
+                    categoryId = cat.category_id;
+                  }
+
+                  return (
+                    (categoryName && categoryId) &&
+                      // Link to seperate Page
+                      // <Link 
+                      //   href={{
+                      //     pathname: (page === 'Movies') ? '/movies/category/[id]' : '/series/category/[id]',
+                      //     params: { id: categoryId, name: categoryName }
+                      //   }}
+                      //   asChild
+                      //   key={categoryId}
+                      // >
+                      //   <Pressable>
+                      //     <Card sx={{ margin: '1rem', cursor: 'pointer' }}>
+                      //       <Heading size='xl'>{categoryName}</Heading>
+                      //     </Card>
+                      //   </Pressable>
+                      // </Link>
+                      <Pressable onPress={() => categoryClick(categoryId, categoryName)} key={categoryId}>
+                        <Card sx={{ margin: '1rem', cursor: 'pointer' }}>
+                          <Heading size='xl'>{categoryName}</Heading>
+                        </Card>
+                      </Pressable>
+                  )
+                })}
               </VStack>
             :
               <VStack>
@@ -84,7 +127,7 @@ function MediaCategories({ page, spark, session }) {
           </Box>
           <Box grid="col" columns="10" sx={stickyColumns}>
             {(activeCategory) &&
-              <MediaList page={page} spark={spark} session={session} catId={activeCategory.id} catName={activeCategory.name} />
+              <MediaList key={listKey} page={page} spark={spark} session={session} catId={activeCategory.id} catName={activeCategory.name} />
             }
           </Box>
         </Box>

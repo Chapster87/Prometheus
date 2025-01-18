@@ -11,6 +11,7 @@ function MediaList({page, spark, session, catId, catName}) {
   const [account, setAccount] = useState(session);
   const [VODCatData, setVODCatData] = useState();
   const [mediaData, setMediaData] = useState({ data: [], size: 50, page: 1, currPage: null });
+  const [mediaType, setMediaType] = useState(page === 'Movies' ? 'movie' : 'tv');
   const [VodID, setVodID] = useState();
   const [isTmdb, setIsTmdb] = useState(false);
 
@@ -47,11 +48,21 @@ function MediaList({page, spark, session, catId, catName}) {
       } else if(session.user.user_metadata.tmdbApiKey && session.user.user_metadata.tmdbApiReadAccessToken) {
         setIsTmdb(true);
         if(page === 'Series') {
-
-        } else if (page === 'Movies') {
-          spark. getTmdbMoviesByGenres(catId)
+          spark.getTmdbSeriesByGenres(catId)
             .then(movies => {
-              console.log("Movies By Genre", movies);
+              console.log("Series By Genre", movies);
+              const data = movies.results;
+              const page = movies.page;
+              const size = movies.results.length;
+              const currPage = paginate(data, page, size);
+              setMediaData({ ...mediaData, data: data, currPage: currPage }); 
+              console.log(currPage);
+            });
+        } else if (page === 'Movies') {
+          console.log("Movies");
+          spark.getTmdbMoviesByGenres(catId)
+            .then(movies => {
+              // console.log("Movies By Genre", movies);
               const data = movies.results;
               const page = movies.page;
               const size = movies.results.length;
@@ -133,18 +144,27 @@ function MediaList({page, spark, session, catId, catName}) {
             {(mediaData && mediaData.currPage && mediaData.currPage.data) ?
               <>
                 {mediaData.currPage.data.map(vod => {
-                  const isSeries = (vod.stream_type === 'series');
+                  const isSeries = (mediaType === 'tv');
+                  let mediaID;
+                  let mediaImg;
+                  let mediaName;
                   if(isTmdb) {
-                    const mediaID = vod.id;
-                    const mediaImg = vod.poster_path;
+                    mediaID = vod.id;
+                    mediaName = isSeries ? vod.name : vod.title;
+                    mediaImg = `https://image.tmdb.org/t/p/w400${vod.poster_path}`;
                   } else {
-                    const mediaID = isSeries ? vod.series_id : vod.stream_id;
-                    const mediaImg = isSeries ? vod.cover : vod.stream_icon;
+                    mediaID = isSeries ? vod.series_id : vod.stream_id;
+                    mediaName = vod.name;
+                    mediaImg = isSeries ? vod.cover : vod.stream_icon;
                   }
 
                   return (
                     <Box grid="col" columns="6" columnsMd="4" columnsLg="3" columnsXl="2" sx={{ marginBottom: 24 }} key={mediaID}>
-                      <MediaCard mediaID={mediaID} streamType={vod.stream_type} name={vod.name} image={mediaImg} session={session ? session : null}/>
+                      {!isTmdb ? (
+                        <MediaCard mediaID={mediaID} streamType={mediaType} name={mediaName} image={mediaImg} session={session ? session : null}/>
+                      ) : (
+                        <MediaCard tmdbID={mediaID} streamType={mediaType} name={mediaName} image={mediaImg} session={session ? session : null}/>
+                      )}
                     </Box>
                   );
                 })}
@@ -157,7 +177,7 @@ function MediaList({page, spark, session, catId, catName}) {
               )
             }
           </Box>
-          {(mediaData && mediaData.currPage && mediaData.currPage.data) &&
+          {(mediaData && mediaData.currPage && mediaData.currPage.data && mediaData.currPage.totalPages > 1) &&
             <Box grid='row' sx={{ width: '100%', background: 'rgba(0, 0, 0, 0.6)', position: 'fixed', bottom: 0, paddingVertical: 14 }}>
               <Box grid='col' columns='12' sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Button variant="gradient" onPress={firstPage} sx={{ marginRight: '$3' }}>

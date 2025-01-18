@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Link } from 'expo-router';
-import { Avatar, AvatarFallbackText, Box, HStack, Icon, LinkText, Menu, MenuItem, MenuItemLabel, Pressable, SettingsIcon, View } from '@gluestack-ui/themed';
+import { Avatar, AvatarFallbackText, Box, Heading, HStack, Icon, LinkText, Menu, MenuItem, MenuItemLabel, Pressable, SettingsIcon, View } from '@gluestack-ui/themed';
 import { CircleUserRound, LogOut, Menu as MenuIcon, Search, X } from 'lucide-react-native';
 import { supabase } from '../../config/supabase'
 import PrometheusIcon from '../svgs/PrometheusIcon';
@@ -46,8 +46,9 @@ function Header({ session }) {
                     </Pressable>
                   </Box>
                   <Box sx={siteLogo}>
-                    <Link href="/" style={LinkSX}>
+                    <Link href="/" style={logoContainer}>
                       <PrometheusIcon width={75} height={94} />
+                      {/* <Heading style={logoText}>Prometheus</Heading> */}
                     </Link>
                   </Box>
                   <View sx={menuState}>
@@ -122,6 +123,25 @@ function Header({ session }) {
       </Box>
     </>
   );
+}
+
+const logoContainer = {
+  display: 'flex',
+  alignItems: 'center',
+  width: '100%',
+  '@lg_up': {
+    justifyContent: 'center',
+    width: 'auto'
+  }
+}
+
+const logoText = {
+  minHeight: 60,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  textTransform: "uppercase",
+  textAlign: "center"
 }
 
 const navStyles = {
