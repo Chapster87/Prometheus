@@ -1,13 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Button, ButtonText, FormControl, FormControlLabel, FormControlLabelText, HStack, Pressable, Input, InputField, Text } from '@gluestack-ui/themed';
 import { Alert, StyleSheet, View } from 'react-native'
 import { supabase } from '../../config/supabase'
+
+import {
+  loadCaptchaEnginge,
+  LoadCanvasTemplate,
+  LoadCanvasTemplateNoReload,
+  validateCaptcha,
+} from "react-simple-captcha";
 
 export default function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('demo');
+
+  useEffect(() => {
+    loadCaptchaEnginge(6);
+  }, [])
 
   async function signInWithEmail() {
     setLoading(true)
@@ -17,18 +28,26 @@ export default function Auth() {
     })
 
     if (error) Alert.alert(error.message)
+    
     setLoading(false)
   }
 
   async function demoAccount() {
     setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({
-      email: 'test@pixelfoundry.app',
-      password: 'demo',
-    })
+    let user_captcha = document.getElementById("user_captcha_input").value;
+    if (validateCaptcha(user_captcha) === true) {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: 'test@pixelfoundry.app',
+        password: 'demo',
+      })
 
-    if (error) Alert.alert(error.message)
-    setLoading(false)
+      if (error) Alert.alert(error.message)
+      setLoading(false)
+    } else {
+      setLoading(false)
+      alert("Captcha Does Not Match");
+      document.getElementById("user_captcha_input").value = "";
+    }
   }
 
   // async function signUpWithEmail() {
@@ -67,6 +86,24 @@ export default function Auth() {
         <Box grid='row'>
           <Box grid='col' columns='12'>
             <Box sx={{ padding: 30 }}>
+
+                <Box grid='row'>
+                    <Box grid='col' columns='12' columnsMd='6' sx={{ marginBottom: 20 }}>
+                      <LoadCanvasTemplate reloadColor="orange" />
+                    </Box>
+                    <Box grid='col' columns='12' columnsMd='6'  sx={{ marginBottom: 20 }}>
+                      <Input
+                        variant="outline"
+                        size="sm"
+                        isDisabled={false}
+                        isInvalid={false}
+                        isReadOnly={false}
+                      >
+                        <InputField id="user_captcha_input" name="user_captcha_input"placeholder="Enter Captcha Value" />
+                      </Input>
+                    </Box>
+                </Box>
+
               <Button variant="gradient" disabled={loading} onPress={() => demoAccount()}>
                 <ButtonText>View Demo</ButtonText>
               </Button>

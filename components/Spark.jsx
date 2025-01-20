@@ -285,10 +285,10 @@ export default class Spark {
 
         for (let i in movieIdArray){
             let movie = await this.getTmdb('movie', movieIdArray[i], null, params);
-            movie.media_type = 'movie'
-            movie = await this.getTmdbCertificationRating(movie)
 
             if (movie) {
+                movie.media_type = 'movie'
+                movie = await this.getTmdbCertificationRating(movie)
                 movieDetails.push(movie);
             }
         }
@@ -423,10 +423,10 @@ export default class Spark {
 
         for (let i in seriesIdArray){
             let series = await this.getTmdb('tv', seriesIdArray[i], null, params);
-            series.media_type = 'tv';
-            series = await this.getTmdbCertificationRating(series)
 
             if (series) {
+                series.media_type = 'tv';
+                series = await this.getTmdbCertificationRating(series)
                 seriesDetails.push(series);
             }
         }
